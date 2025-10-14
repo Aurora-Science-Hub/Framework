@@ -70,16 +70,8 @@ jobs:
             - name: Push to GitHub Packages
               if: ${{ github.ref_name != 'main' }}
               env:
-                  GH_USER: ${{ secrets.GH_PACKAGES_USER }}
                   GH_API_KEY: ${{ secrets.GH_PACKAGES_NUGET_API_KEY }}
-              run: |
-                  dotnet nuget remove source AuroraScienceHub || true
-                  dotnet nuget add source https://nuget.pkg.github.com/Aurora-Science-Hub/index.json \
-                    --name AuroraScienceHub \
-                    --username $GH_USER \
-                    --password $GH_API_KEY \
-                    --store-password-in-clear-text
-                  dotnet nuget push ./artifacts/*.nupkg --source AuroraScienceHub --api-key $GH_API_KEY --skip-duplicate
+              run: dotnet nuget push ./artifacts/*.nupkg --source AuroraScienceHub --api-key $GH_API_KEY --skip-duplicate
 
             - name: Push to NuGet.org
               if: ${{ github.ref_name == 'main' }}
