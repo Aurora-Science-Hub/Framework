@@ -4,6 +4,10 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/GitHub/" />
+  <Folder Name="/GitHub/Workflows/">
+    <File Path=".github\workflows\dotnet.yml" />
+  </Folder>
   <Folder Name="/Solution items/">
     <File Path=".dockerignore" />
     <File Path=".editorconfig" />

@@ -50,5 +50,9 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="MinVer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>
