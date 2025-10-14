@@ -9,7 +9,8 @@ on:
 env:
     DOTNET_NOLOGO: true
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-    MINVERBUILDMETADATA: build.${{ github.run_id }}.${{ github.run_attempt}}
+    MINVERBUILDMETADATA: build.${{ github.run_id }}.${{ github.run_attempt }}
+    MINVERAUTOINCREMENT: patch
 jobs:
     build:
         runs-on: ubuntu-latest
