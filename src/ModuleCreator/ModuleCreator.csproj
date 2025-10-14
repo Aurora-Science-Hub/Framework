@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+      <AssemblyName>AuroraScienceHub.Framework.ModuleCreator</AssemblyName>
+      <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Templates\**" />
+      <Content Include="Templates\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Scriban" />
+      <PackageReference Include="System.CommandLine" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+
+</Project>

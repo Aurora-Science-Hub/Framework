@@ -1,0 +1,54 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>False</IsPackable>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <WarningLevel>9999</WarningLevel>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);</NoWarn>
+<!--    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1900;</WarningsNotAsErrors>-->
+
+    <!-- Pack everything with embedded .pdb -->
+    <EmbedAllSources>true</EmbedAllSources>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CompanyName>AuroraScienceHub</CompanyName>
+    <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+
+    <Copyright>Copyright $(CurrentYear) © $(CompanyName). All rights reserved</Copyright>
+    <Authors>$(CompanyName)</Authors>
+    <Company>$(CompanyName)</Company>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>9.0</VersionPrefix>
+  </PropertyGroup>
+
+  <!--
+    This instruction automatically allows XXX.Tests to access internals of XXX.
+    Signed assemblies have to add friends manually because of public key requirement.
+  -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+    <InternalsVisibleTo Include="AuroraScienceHub.Framework.UnitTests" />
+  </ItemGroup>
+
+  <!-- Automatically add dev packages to all projects -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AuroraScienceHub.Framework.EntityFramework.NpgSql</AssemblyName>
+    <IsPackable>True</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Configuration\Configuration.csproj" />
+    <ProjectReference Include="..\Diagnostics\Diagnostics.csproj" />
+    <ProjectReference Include="..\EntityFramework\EntityFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EFCore.NamingConventions" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" />
+    <PackageReference Include="Npgsql.NetTopologySuite" />
+  </ItemGroup>
+
+</Project>

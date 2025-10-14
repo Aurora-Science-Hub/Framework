@@ -1,0 +1,133 @@
+﻿<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution items/">
+    <File Path=".dockerignore" />
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Directory.Packages.props" />
+    <File Path="NuGet.Config" />
+    <File Path="README.md" />
+    <File Path="global.json" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src\Ai\Ai.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\AspNetCore\AspNetCore.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Caching\Caching.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\ClickHouse\ClickHouse.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Composition\Composition.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Configuration\Configuration.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Diagnostics\Diagnostics.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Entities\Entities.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\EntityFramework.NpgSql\EntityFramework.NpgSql.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\EntityFramework\EntityFramework.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Exceptions\Exceptions.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Http\Http.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Json\Json.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Logging.OpenTelemetry\Logging.OpenTelemetry.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\ModuleCreator\ModuleCreator.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Ocr\Ocr.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\Utilities\Utilities.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <File Path="src\Directory.Build.props" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests\UnitTests\UnitTests.csproj">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <File Path="tests\Directory.Build.props" />
+  </Folder>
+</Solution>

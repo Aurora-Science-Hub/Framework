@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <PackageReference Include="ChatGptNet" />
+      <PackageReference Include="DeepL.net" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "ModuleCreator": {
+      "commandName": "Project",
+        "commandLineArgs": "new module MyModuleName",
+        "environmentVariables": {
+      }
+    }
+  }
+}

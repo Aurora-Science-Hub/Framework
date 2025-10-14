@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AuroraScienceHub.Framework.Http</AssemblyName>
+    <IsPackable>True</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Json\Json.csproj" />
+  </ItemGroup>
+
+</Project>

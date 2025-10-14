@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>{{CompanyName}}.{{ServiceName}}.{{ModuleName}}.Data</AssemblyName>
+  </PropertyGroup>
+  {{ if AddDbContext == true }}
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Framework\Composition\Composition.csproj" />
+    <ProjectReference Include="..\..\..\Framework\Diagnostics\Diagnostics.csproj" />
+    <ProjectReference Include="..\..\..\Framework\Entities\Entities.csproj" />
+    <ProjectReference Include="..\..\..\Framework\EntityFramework.NpgSql\EntityFramework.NpgSql.csproj" />
+    <ProjectReference Include="..\..\..\Framework\Utilities\Utilities.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+  </ItemGroup>
+  {{ else }}
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Framework\Composition\Composition.csproj" />
+    <ProjectReference Include="..\..\..\Framework\Utilities\Utilities.csproj" />
+  </ItemGroup>
+  {{ end }}
+</Project>
