@@ -9,7 +9,6 @@ on:
 env:
     DOTNET_NOLOGO: true
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-    MINVERDEFAULTPRERELEASEIDENTIFIERS: ""
     MINVERBUILDMETADATA: build.${{ github.run_number }}
 jobs:
     build:
