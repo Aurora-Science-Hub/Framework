@@ -6,10 +6,11 @@ on:
             - '**'
         tags:
             - '*.*.*'
+
 env:
     DOTNET_NOLOGO: true
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-    MINVERBUILDMETADATA: build.${{ github.run_number }}
+
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -19,20 +20,45 @@ jobs:
               with:
                   fetch-depth: 0
                   filter: tree:0
+
             - name: Setup dotnet
               uses: actions/setup-dotnet@v4
               with:
                   dotnet-version: 9.0.x
-            - name: Restore dependencies
+
+            - name: Compute version
+              shell: bash
+              run: |
+                  BASE=$(sed -n 's|.*<PackageBaseVersion>\(.*\)</PackageBaseVersion>.*|\1|p' Directory.Build.props | head -n1)
+                  if [[ -z "$BASE" ]]; then
+                    echo "Failed to read PackageBaseVersion from Directory.Build.props" >&2
+                    exit 1
+                  fi
+
+                  if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+                    PKG_VERSION="${BASE}"
+                  else
+                    SAFE_BRANCH=$(echo "${GITHUB_REF_NAME}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^0-9a-zA-Z.-]+/-/g' | sed -E 's/^-+|-+$//g')
+                    PKG_VERSION="${BASE}-${SAFE_BRANCH}.${GITHUB_RUN_NUMBER}"
+                  fi
+
+                  echo "PKG_VERSION=${PKG_VERSION}" >> "$GITHUB_ENV"
+                  echo "Using version: ${PKG_VERSION}"
+
+            - name: Restore
               run: dotnet restore
-            -   name: Build
-                run: dotnet build --no-restore --configuration Release
-            -   name: Test
-                run: dotnet test --no-build --configuration Release --verbosity normal
-            -   name: Pack
-                run: dotnet pack --no-build --configuration Release --output ./artifacts
-            -   name: Push to NuGet
-                env:
-                    NUGET_URL: https://api.nuget.org/v3/index.json
-                    NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-                run: dotnet nuget push ./artifacts/*.nupkg --source $NUGET_URL --api-key $NUGET_API_KEY --skip-duplicate
+
+            - name: Build
+              run: dotnet build --no-restore --configuration Release -p:MinVerVersionOverride=${PKG_VERSION}
+
+            - name: Test
+              run: dotnet test --no-build --configuration Release --verbosity normal -p:MinVerVersionOverride=${PKG_VERSION}
+
+            - name: Pack
+              run: dotnet pack --no-build --configuration Release --output ./artifacts -p:MinVerVersionOverride=${PKG_VERSION}
+
+            - name: Push to NuGet
+              env:
+                  NUGET_URL: https://api.nuget.org/v3/index.json
+                  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+              run: dotnet nuget push ./artifacts/*.nupkg --source $NUGET_URL --api-key $NUGET_API_KEY --skip-duplicate
