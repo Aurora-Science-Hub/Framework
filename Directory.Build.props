@@ -30,6 +30,7 @@
 
   <PropertyGroup>
     <VersionPrefix>9.0</VersionPrefix>
+    <MinVerMinimumMajorMinor>$(VersionPrefix)</MinVerMinimumMajorMinor>
   </PropertyGroup>
 
   <!--
