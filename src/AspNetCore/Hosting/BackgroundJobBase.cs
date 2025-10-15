@@ -72,7 +72,7 @@ public abstract class BackgroundJobBase : BackgroundService
     /// <summary>
     /// Execute a task in the background
     /// </summary>
-    protected internal abstract Task ExecuteOnceAsync(CancellationToken stoppingToken);
+    protected abstract Task ExecuteOnceAsync(CancellationToken stoppingToken);
 
     private static async Task<bool> WaitForAppStartupAsync(IHostApplicationLifetime lifetime,
         CancellationToken stoppingToken)
