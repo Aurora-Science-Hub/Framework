@@ -55,7 +55,7 @@ public abstract class ScheduledBackgroundJob : BackgroundJobBase
         ActivitySource.AddActivityListener(listener);
     }
 
-    protected override async Task ExecuteOnceAsync(CancellationToken stoppingToken)
+    public override async Task ExecuteOnceAsync(CancellationToken stoppingToken)
     {
         using var activity = s_activitySource.StartActivity(_commands.GetType().Name);
         Activity.Current = activity;
