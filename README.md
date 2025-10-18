@@ -1,6 +1,12 @@
-# AuroraScienceHub Framework
+<div align="center">
 
-This repository contains the framework for AuroraScienceHub applications, including common libraries, tools,
+    [![NuGet](https://img.shields.io/nuget/v/AuroraScuenceHub.svg)](https://www.nuget.org/packages/AuroraScienceHub/)
+
+</div>
+
+# Aurora Science Hub Framework
+
+This repository contains the framework for Aurora Science Hub applications, including common libraries, tools,
 and configurations to streamline development and ensure consistency across projects.
 
 ## Code style
