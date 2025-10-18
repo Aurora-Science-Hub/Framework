@@ -1,9 +1,3 @@
-<div align="center">
-
-    [![NuGet](https://img.shields.io/nuget/v/AuroraScuenceHub.svg)](https://www.nuget.org/packages/AuroraScienceHub/)
-
-</div>
-
 # Aurora Science Hub Framework
 
 This repository contains the framework for Aurora Science Hub applications, including common libraries, tools,
