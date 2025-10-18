@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Utilities</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.Utilities</PackageId>
+    <RootNamespace>AuroraScienceHub</RootNamespace>
     <IsPackable>True</IsPackable>
   </PropertyGroup>
 

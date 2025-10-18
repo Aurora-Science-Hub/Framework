@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.AspNetCore</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.AspNetCore</PackageId>
+    <RootNamespace>AuroraScienceHub</RootNamespace>
     <IsPackable>True</IsPackable>
   </PropertyGroup>
 

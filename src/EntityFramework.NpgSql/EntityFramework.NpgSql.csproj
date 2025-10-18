@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.EntityFramework.NpgSql</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.EntityFramework.NpgSql</PackageId>
+    <RootNamespace>AuroraScienceHub</RootNamespace>
     <IsPackable>True</IsPackable>
   </PropertyGroup>
 

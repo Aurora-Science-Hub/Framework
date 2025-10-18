@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.ClickHouse</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.ClickHouse</PackageId>
+    <RootNamespace>AuroraScienceHub</RootNamespace>
     <IsPackable>True</IsPackable>
   </PropertyGroup>
 
