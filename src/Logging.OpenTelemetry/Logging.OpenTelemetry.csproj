@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Logging.OpenTelemetry</AssemblyName>
-    <IsPackable>True</IsPackable>
+    <PackageId>AuroraScienceHub.Framework.Logging.OpenTelemetry</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

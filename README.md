@@ -1,6 +1,6 @@
-# AuroraScienceHub Framework
+# Aurora Science Hub Framework
 
-This repository contains the framework for AuroraScienceHub applications, including common libraries, tools,
+This repository contains the framework for Aurora Science Hub applications, including common libraries, tools,
 and configurations to streamline development and ensure consistency across projects.
 
 ## Code style

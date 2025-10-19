@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Http</AssemblyName>
-    <IsPackable>True</IsPackable>
+    <PackageId>AuroraScienceHub.Framework.Http</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

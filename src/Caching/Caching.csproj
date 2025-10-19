@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Caching</AssemblyName>
-    <IsPackable>True</IsPackable>
+    <PackageId>AuroraScienceHub.Framework.Caching</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
