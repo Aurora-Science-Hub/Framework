@@ -3,7 +3,6 @@
     <PropertyGroup>
       <AssemblyName>AuroraScienceHub.Framework.Ai</AssemblyName>
       <PackageId>AuroraScienceHub.Framework.Ai</PackageId>
-      <IsPackable>True</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>

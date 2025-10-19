@@ -3,7 +3,6 @@
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Utilities</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.Utilities</PackageId>
-    <IsPackable>True</IsPackable>
   </PropertyGroup>
 
 </Project>

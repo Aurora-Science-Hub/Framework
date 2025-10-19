@@ -3,7 +3,6 @@
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Diagnostics</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.Diagnostics</PackageId>
-    <IsPackable>True</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

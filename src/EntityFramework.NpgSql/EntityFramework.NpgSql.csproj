@@ -3,7 +3,6 @@
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.EntityFramework.NpgSql</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.EntityFramework.NpgSql</PackageId>
-    <IsPackable>True</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

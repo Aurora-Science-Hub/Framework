@@ -3,7 +3,6 @@
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.ClickHouse</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.ClickHouse</PackageId>
-    <IsPackable>True</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

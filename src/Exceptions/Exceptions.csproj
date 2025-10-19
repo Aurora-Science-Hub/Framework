@@ -3,7 +3,6 @@
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Exceptions</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.Exceptions</PackageId>
-    <IsPackable>True</IsPackable>
   </PropertyGroup>
 
 </Project>

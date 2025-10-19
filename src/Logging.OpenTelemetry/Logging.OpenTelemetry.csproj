@@ -3,7 +3,6 @@
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Logging.OpenTelemetry</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.Logging.OpenTelemetry</PackageId>
-    <IsPackable>True</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
