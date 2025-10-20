@@ -29,7 +29,9 @@ public static class HybridCacheExtensions
                 key,
                 options: s_fastExpireCacheOptions,
                 factory: _ => ValueTask.FromResult<string?>(null),
-                // There is no Get method in HybridCache for now. https://github.com/dotnet/aspnetcore/issues/54647#issuecomment-2515652588
+                // There is no Get method in HybridCache for now. See more details:
+                // https://github.com/dotnet/aspnetcore/issues/54647#issuecomment-2515652588
+                // https://github.com/dotnet/aspnetcore/discussions/57191
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
     }

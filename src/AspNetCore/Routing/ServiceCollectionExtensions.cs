@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AuroraScienceHub.Framework.AspNetCore.Routing;
 
+/// <summary>
+/// <see cref="IServiceCollection"/> extensions for registering Minimal API endpoints
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>

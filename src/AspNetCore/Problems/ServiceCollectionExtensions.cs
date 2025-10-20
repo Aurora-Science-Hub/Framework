@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AuroraScienceHub.Framework.AspNetCore.Problems;
 
+/// <summary>
+/// <see cref="IServiceCollection"/> extensions for exception to problem details conversion
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
