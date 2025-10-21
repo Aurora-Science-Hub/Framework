@@ -8,10 +8,10 @@ Provides simplified OpenTelemetry logging configuration with automatic resource 
 
 ## Key Features
 
-- 📊 **OpenTelemetry Integration** - Structured logging with OpenTelemetry
-- 🏷️ **Automatic Resource Tagging** - Application name and namespace detection
-- 🔍 **Distributed Tracing** - Correlation across microservices
-- 📈 **Observability Ready** - Works with Grafana, Jaeger, etc.
+- **OpenTelemetry Integration** - Structured logging with OpenTelemetry
+- **Automatic Resource Tagging** - Application name and namespace detection
+- **Distributed Tracing** - Correlation across microservices
+- **Observability Ready** - Works with Grafana, Jaeger, etc.
 
 ## Installation
 
@@ -98,13 +98,6 @@ public class OrderService
 }
 ```
 
-## Best Practices
-
-- Use structured logging with context
-- Set appropriate log levels
-- Include correlation IDs to track requests across services
-- Use scopes to group related log entries
-- Configure sampling to reduce overhead in production
 
 ## License
 

@@ -8,10 +8,10 @@ Provides consistent JSON serialization configuration with sensible defaults for 
 
 ## Key Features
 
-- 🎯 **Consistent Serialization** - Uniform JSON settings across the application
-- 🐫 **camelCase by Default** - Web-friendly property naming
-- 📝 **Enum String Conversion** - Human-readable enum values
-- ⚡ **Performance Optimized** - Configured for best performance
+- **Consistent Serialization** - Uniform JSON settings across the application
+- **camelCase by Default** - Web-friendly property naming
+- **Enum String Conversion** - Human-readable enum values
+- **Performance Optimized** - Configured for best performance
 
 ## Installation
 
@@ -60,12 +60,6 @@ DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 Converters = { new JsonStringEnumConverter() }
 ```
 
-## Best Practices
-
-- Use DefaultJsonSerializer for consistency across the app
-- Configure ASP.NET Core to use same settings
-- Handle deserialization errors gracefully
-- Document your API contracts with clear DTOs
 
 ## License
 

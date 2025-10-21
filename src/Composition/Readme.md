@@ -22,25 +22,38 @@ dotnet add package AuroraScienceHub.Framework.Composition
 
 ## Architecture
 
+The composition framework uses a hierarchical structure where Application Modules aggregate multiple Service Modules. Each Service Module encapsulates a cohesive set of service registrations and is guaranteed to be registered only once, preventing duplicate dependencies.
+
+```mermaid
+graph TD
+    App[Your Application]
+    AppModule[ApplicationModule]
+    SM1[ServiceModule 1<br/>Database]
+    SM2[ServiceModule 2<br/>Caching]
+    SM3[ServiceModule 3<br/>Messaging]
+    Services[IServiceCollection]
+
+    App -->|Creates & Configures| AppModule
+    AppModule -->|Contains| SM1
+    AppModule -->|Contains| SM2
+    AppModule -->|Contains| SM3
+
+    SM1 -->|Registers Services| Services
+    SM2 -->|Registers Services| Services
+    SM3 -->|Registers Services| Services
+
+    style AppModule fill:#e1f5ff
+    style SM1 fill:#fff4e1
+    style SM2 fill:#fff4e1
+    style SM3 fill:#fff4e1
+    style Services fill:#f0e1ff
 ```
-┌─────────────────────────────────────┐
-│      ApplicationModule              │
-│  (Composes Service Modules)         │
-└──────────────┬──────────────────────┘
-               │
-               │ Contains
-               ▼
-    ┌──────────────────────┐
-    │  ServiceModuleBase   │◄────┐
-    │  (Registration Unit) │     │
-    └──────────────────────┘     │
-               │                 │
-               │ Configures      │ Multiple
-               ▼                 │
-    ┌──────────────────────┐     │
-    │  IServiceCollection  │◄────┘
-    └──────────────────────┘
-```
+
+**Key Concepts:**
+
+- **ApplicationModule** - Top-level module that composes multiple service modules and represents a complete application or subsystem
+- **ServiceModule** - Self-contained unit that registers a cohesive set of related services (e.g., database, caching, messaging)
+- **Single Registration** - Each service module maintains internal state to ensure its services are registered exactly once, even if referenced by multiple application modules
 
 ## Usage
 

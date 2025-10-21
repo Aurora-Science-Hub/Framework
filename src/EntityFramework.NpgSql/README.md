@@ -8,10 +8,10 @@ Provides PostgreSQL-specific implementations for Entity Framework Core, includin
 
 ## Key Features
 
-- 🏭 **DbContext Factories** - Design-time factories for EF migrations
-- 🌍 **PostGIS Support** - Spatial data types and operations
-- 🎯 **PostgreSQL Conventions** - Database naming and configuration
-- ⚡ **Performance Optimizations** - PostgreSQL-specific optimizations
+- **DbContext Factories** - Design-time factories for EF migrations
+- **PostGIS Support** - Spatial data types and operations
+- **PostgreSQL Conventions** - Database naming and configuration
+- **Performance Optimizations** - PostgreSQL-specific optimizations
 
 ## Installation
 
@@ -124,14 +124,6 @@ dotnet ef database update --project src/MyApp.Infrastructure
 dotnet ef migrations script --output migration.sql
 ```
 
-## Best Practices
-
-- Use DbContext factories for design-time operations
-- Enable connection pooling for better performance
-- Use appropriate indexes (GIN for arrays/JSONB, GIST for spatial)
-- Leverage PostgreSQL features (arrays, JSONB, full-text search)
-- Use snake_case naming for PostgreSQL convention
-- Enable retry on failure for transient errors
 
 ## Configuration Example
 

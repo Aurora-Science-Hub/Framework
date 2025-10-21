@@ -8,11 +8,11 @@ Provides extension methods for `HttpClient` to simplify JSON-based API communica
 
 ## Key Features
 
-- 🚀 **Simplified HTTP Calls** - Extension methods for common operations
-- 📦 **Automatic JSON Handling** - Built-in serialization/deserialization
-- 🛡️ **Error Handling** - Structured exception handling with `ApiClientException`
-- 🔗 **URL Builder** - Safe and fluent URL construction
-- 📋 **Problem Details Support** - RFC 7807 compliant error responses
+- **Simplified HTTP Calls** - Extension methods for common operations
+- **Automatic JSON Handling** - Built-in serialization/deserialization
+- **Error Handling** - Structured exception handling with `ApiClientException`
+- **URL Builder** - Safe and fluent URL construction
+- **Problem Details Support** - RFC 7807 compliant error responses
 
 ## Installation
 
@@ -93,13 +93,6 @@ Task<TResponse?> PostAsJsonAsync<TRequest, TResponse>(Uri uri, TRequest body, Ca
 Task<TResponse?> PutAsJsonAsync<TRequest, TResponse>(Uri uri, TRequest body, CancellationToken ct = default)
 ```
 
-## Best Practices
-
-- Use typed HTTP clients with `AddHttpClient<T>`
-- Set appropriate timeouts
-- Implement retry policies with Polly
-- Use cancellation tokens
-- Log HTTP errors for monitoring
 
 ## License
 

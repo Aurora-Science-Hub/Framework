@@ -1,8 +1,16 @@
+<div align="center">
+
 # Aurora Science Hub Framework
 
 A comprehensive collection of reusable infrastructure packages for building modern .NET 9 applications. This repository contains production-ready NuGet packages that provide common functionality, best practices, and architectural patterns for Aurora Science Hub applications.
 
-## 📦 Available Packages
+[![](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
+[![](https://img.shields.io/badge/C%23-13.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
+[![](https://img.shields.io/github/license/aurorasciencehub/framework)](LICENSE)
+
+</div>
+
+## Available Packages
 
 ### Core Infrastructure
 
@@ -41,7 +49,7 @@ A comprehensive collection of reusable infrastructure packages for building mode
 
 - **[Json](src/Json/)** - JSON serialization extensions and converters
 
-## 🚀 Getting Started
+## Getting Started
 
 All packages are distributed via NuGet and target **.NET 9.0**. Install individual packages as needed:
 
@@ -54,18 +62,17 @@ dotnet add package AuroraScienceHub.Framework.EntityFramework
 
 Each package includes its own README with detailed usage instructions and examples.
 
-## 🏗️ Architecture
+## Architecture
 
 The framework follows these principles:
 
 - **Modular Design** - Each package is self-contained and can be used independently
 - **Clean Architecture** - Clear separation of concerns with minimal coupling
 - **Domain-Driven Design** - Support for DDD patterns and practices
-- **Best Practices** - Built-in support for auditing, soft deletes, health checks, etc.
 - **Type Safety** - Strong typing with nullable reference types enabled
 - **Modern .NET** - Leverages latest .NET 9 features and patterns
 
-## 🛠️ Development
+## Development
 
 ### Prerequisites
 
@@ -88,7 +95,7 @@ dotnet test
 dotnet pack
 ```
 
-## 📋 Code Style
+## Code Style
 
 The solution uses [EditorConfig](.editorconfig) based on [Azure SDK .NET](https://github.com/Azure/azure-sdk-for-net/blob/main/.editorconfig) to maintain consistent code style across all packages.
 
@@ -104,13 +111,13 @@ dotnet format --verify-no-changes
 
 ### Code Quality Standards
 
-- ✅ Nullable reference types enabled
-- ✅ Warnings treated as errors
-- ✅ Latest C# language version
-- ✅ Code style enforcement in build
-- ✅ Embedded debug symbols in packages
+- Nullable reference types enabled
+- Warnings treated as errors
+- Latest C# language version
+- Code style enforcement in build
+- Embedded debug symbols in packages
 
-## 🧪 Testing
+## Testing
 
 Unit tests are located in the `tests/UnitTests/` directory. The framework uses:
 
@@ -118,11 +125,11 @@ Unit tests are located in the `tests/UnitTests/` directory. The framework uses:
 - AutoFixture with AutoMoq for test data generation
 - Moq for mocking
 
-## 📄 License
+## License
 
 See [LICENSE](LICENSE) and [PackageLicenses.txt](PackageLicenses.txt) for details.
 
-## 🤝 Contributing
+## Contributing
 
 When contributing to this repository:
 

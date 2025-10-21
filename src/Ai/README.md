@@ -8,10 +8,10 @@ Provides unified interfaces for common AI services including GPT-based chat comp
 
 ## Key Features
 
-- 🤖 **GPT Integration** - OpenAI GPT chat completions
-- 🌐 **DeepL Translation** - High-quality machine translation
-- 🔌 **Proxy Support** - HTTP proxy configuration for AI services
-- 🎯 **Unified Interfaces** - Consistent API across providers
+- **GPT Integration** - OpenAI GPT chat completions
+- **DeepL Translation** - High-quality machine translation
+- **Proxy Support** - HTTP proxy configuration for AI services
+- **Unified Interfaces** - Consistent API across providers
 
 ## Installation
 
@@ -81,13 +81,6 @@ public class TranslationService
 }
 ```
 
-## Best Practices
-
-- Handle API rate limits with retry logic
-- Cache responses to avoid duplicate API calls
-- Monitor costs and track API usage
-- Validate and sanitize inputs
-- Secure API keys (use environment variables or key vaults)
 
 ## License
 

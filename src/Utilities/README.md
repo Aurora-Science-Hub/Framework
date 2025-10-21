@@ -8,10 +8,10 @@ Collection of utility classes and extension methods for date/time handling, regi
 
 ## Key Features
 
-- 📅 **Date/Time Utilities** - Date ranges, time zone handling
-- 🌍 **Regional Support** - Culture and localization helpers
-- 🔧 **System Extensions** - Null checking, string operations
-- ⚙️ **Configuration Helpers** - Option description interfaces
+- **Date/Time Utilities** - Date ranges, time zone handling
+- **Regional Support** - Culture and localization helpers
+- **System Extensions** - Null checking, string operations
+- **Configuration Helpers** - Option description interfaces
 
 ## Installation
 
@@ -77,12 +77,6 @@ public class HostOptions : IOptionDescription
 }
 ```
 
-## Best Practices
-
-- Use Required() for cleaner null validation
-- Leverage DateTimeRange for period operations
-- Implement IOptionDescription for self-documenting config
-- Handle time zones explicitly (use UTC for storage)
 
 ## License
 

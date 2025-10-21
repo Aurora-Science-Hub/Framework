@@ -8,10 +8,10 @@ Provides extension methods to simplify .NET's configuration system, including re
 
 ## Key Features
 
-- ✅ **Required Configuration** - Enforce presence of configuration sections
-- 🔒 **Type-Safe Options** - Strongly typed configuration with validation
-- 🏗️ **Minimal Loading** - Lightweight configuration for design-time tools
-- 🎯 **Option Descriptions** - Self-documenting configuration classes
+- **Required Configuration** - Enforce presence of configuration sections
+- **Type-Safe Options** - Strongly typed configuration with validation
+- **Minimal Loading** - Lightweight configuration for design-time tools
+- **Option Descriptions** - Self-documenting configuration classes
 
 ## Installation
 
@@ -90,12 +90,6 @@ public static class ServiceCollectionExtensions
 }
 ```
 
-## Best Practices
-
-- Implement IOptionDescription for self-documenting configuration
-- Use GetRequiredOptions early to fail fast if configuration is missing
-- Use strongly typed options to avoid magic strings
-- Don't store secrets in appsettings.json (use user secrets or Key Vault)
 
 ## License
 

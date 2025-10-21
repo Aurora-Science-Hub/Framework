@@ -8,10 +8,10 @@ Provides well-defined exception classes that follow best practices. All exceptio
 
 ## Key Features
 
-- 🎯 **Standardized Exceptions** - Common exception types for typical scenarios
-- 🔗 **Hierarchical Structure** - All exceptions inherit from `FrameworkException`
-- ✅ **Validation Helpers** - Built-in guard clauses and validation utilities
-- 📝 **Rich Context** - Structured exception reasons with detailed information
+- **Standardized Exceptions** - Common exception types for typical scenarios
+- **Hierarchical Structure** - All exceptions inherit from `FrameworkException`
+- **Validation Helpers** - Built-in guard clauses and validation utilities
+- **Rich Context** - Structured exception reasons with detailed information
 
 ## Installation
 
@@ -100,12 +100,6 @@ catch (AccessDeniedException ex)
 }
 ```
 
-## Best Practices
-
-- Always inherit from `FrameworkException` for consistency
-- Provide meaningful messages with context
-- Use appropriate exception types
-- Use guard clauses early (fail fast)
 
 ## License
 

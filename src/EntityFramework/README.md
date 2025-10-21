@@ -8,11 +8,11 @@ Provides base classes, interceptors, converters, and utilities for Entity Framew
 
 ## Key Features
 
-- 🔄 **Automatic Auditing** - Auto-populate CreatedAt/UpdatedAt timestamps
-- 🗑️ **Soft Delete Filters** - Global query filters for soft-deleted entities
-- 🆔 **Strong-Typed ID Converters** - Value converters for EntityId types
-- 🔧 **Migration Helpers** - Simplified migration management
-- 📊 **Query Extensions** - Enhanced LINQ operations
+- **Automatic Auditing** - Auto-populate CreatedAt/UpdatedAt timestamps
+- **Soft Delete Filters** - Global query filters for soft-deleted entities
+- **Strong-Typed ID Converters** - Value converters for EntityId types
+- **Migration Helpers** - Simplified migration management
+- **Query Extensions** - Enhanced LINQ operations
 
 ## Installation
 
@@ -116,13 +116,6 @@ public class UserRepository
 }
 ```
 
-## Best Practices
-
-- Use interceptors for cross-cutting concerns (auditing, soft delete)
-- Configure query filters globally for consistent behavior
-- Use strong-typed IDs to prevent ID mix-ups at compile time
-- Implement proper indexes for query performance
-- Use AsNoTracking for read-only queries
 
 ## License
 

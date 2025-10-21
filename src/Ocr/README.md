@@ -8,10 +8,10 @@ Simple interface for performing OCR operations on images using the Tesseract eng
 
 ## Key Features
 
-- 📝 **Text Extraction** - Extract text from images using Tesseract
-- 🎯 **Region-Based OCR** - Read text from specific image regions
-- 🌐 **Multi-Language Support** - Support for multiple languages via tessdata
-- 🔧 **Easy Integration** - Simple dependency injection setup
+- **Text Extraction** - Extract text from images using Tesseract
+- **Region-Based OCR** - Read text from specific image regions
+- **Multi-Language Support** - Support for multiple languages via tessdata
+- **Easy Integration** - Simple dependency injection setup
 
 ## Installation
 
@@ -79,12 +79,6 @@ public class Rectangle
 }
 ```
 
-## Best Practices
-
-- Use high-resolution images (300+ DPI)
-- Pre-process images for better quality
-- Use region-based extraction for specific fields
-- Validate extracted text with business logic
 
 ## Troubleshooting
 

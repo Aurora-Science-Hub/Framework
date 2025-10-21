@@ -8,10 +8,10 @@ Extends the Composition framework with ASP.NET Core-specific functionality, prov
 
 ## Key Features
 
-- 🌐 **Web Application Modules** - Extend composition framework for web apps
-- 📋 **Problem Details** - RFC 7807 compliant error responses
-- 🛡️ **Security Utilities** - Authentication and authorization helpers
-- 🔀 **Routing Extensions** - Simplified endpoint configuration
+- **Web Application Modules** - Extend composition framework for web apps
+- **Problem Details** - RFC 7807 compliant error responses
+- **Security Utilities** - Authentication and authorization helpers
+- **Routing Extensions** - Simplified endpoint configuration
 
 ## Installation
 
@@ -107,13 +107,6 @@ public class UserModuleOptions : ApplicationModuleOptionsBase
 }
 ```
 
-## Best Practices
-
-- Organize by feature with one module per business domain
-- Use Problem Details for standardized error responses
-- Configure middleware in correct order (auth before authz)
-- Handle exceptions globally with middleware
-- Version your APIs with separate modules
 
 ## License
 

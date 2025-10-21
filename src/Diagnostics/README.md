@@ -8,10 +8,10 @@ Provides essential diagnostic capabilities for monitoring application health, pa
 
 ## Key Features
 
-- 🏥 **Health Check Extensions** - Simplified health check registration
-- 🔗 **Connection String Parser** - Safe parsing of database connection strings
-- 📊 **Application Descriptor** - Automatic application information tracking (version, instance ID, uptime)
-- 🎯 **Custom Health Checks** - Easy creation of custom health checks
+- **Health Check Extensions** - Simplified health check registration
+- **Connection String Parser** - Safe parsing of database connection strings
+- **Application Descriptor** - Automatic application information tracking (version, instance ID, uptime)
+- **Custom Health Checks** - Easy creation of custom health checks
 
 ## Installation
 
@@ -131,15 +131,6 @@ public record ApplicationInformation(
 );
 ```
 
-## Best Practices
-
-- Use `AddApplicationDescriptor<Program>()` to enable application tracking
-- Use separate endpoints: `/health/live` for liveness, `/health/ready` for readiness
-- Expose `/info` endpoint for application information
-- Add meaningful tags to group related checks
-- Don't include passwords in diagnostics
-- Set appropriate timeouts for health checks
-- Monitor health check failures
 
 ## Kubernetes Integration
 

@@ -8,10 +8,10 @@ Provides extension methods for Microsoft's `HybridCache` to simplify common cach
 
 ## Key Features
 
-- 🚀 **Simplified API** - Easy-to-use extension methods for HybridCache
-- 📦 **Type-Safe Operations** - Generic methods with strong typing
-- 🔄 **JSON Serialization** - Automatic serialization/deserialization
-- ⚡ **Async/Await** - Fully asynchronous operations
+- **Simplified API** - Easy-to-use extension methods for HybridCache
+- **Type-Safe Operations** - Generic methods with strong typing
+- **JSON Serialization** - Automatic serialization/deserialization
+- **Async/Await** - Fully asynchronous operations
 
 ## Installation
 
@@ -71,12 +71,6 @@ public class ProductService
 }
 ```
 
-## Best Practices
-
-- Use appropriate key prefixes (`user:123`, `product:456`)
-- Set reasonable expiration times
-- Always have a fallback to retrieve data
-- Use CancellationToken for better resource management
 
 ## License
 

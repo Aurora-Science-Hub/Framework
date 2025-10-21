@@ -8,10 +8,10 @@ Provides integration with ClickHouse, a high-performance columnar database for a
 
 ## Key Features
 
-- 🚀 **ClickHouse Integration** - Connection and query support
-- 🔄 **Migration Support** - Database schema migration management
-- ⚙️ **Configuration** - Type-safe ClickHouse configuration
-- 📊 **OLAP Optimized** - Designed for analytical workloads
+- **ClickHouse Integration** - Connection and query support
+- **Migration Support** - Database schema migration management
+- **Configuration** - Type-safe ClickHouse configuration
+- **OLAP Optimized** - Designed for analytical workloads
 
 ## Installation
 
@@ -99,13 +99,6 @@ var migrationRunner = scope.ServiceProvider.GetRequiredService<IClickHouseMigrat
 await migrationRunner.RunMigrationsAsync();
 ```
 
-## Best Practices
-
-- Use MergeTree engine for most use cases
-- Partition data by date for time-series workloads
-- Batch inserts for better performance
-- Use materialized views for pre-aggregation
-- Set appropriate ORDER BY based on query patterns
 
 ## License
 

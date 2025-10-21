@@ -8,11 +8,11 @@ Provides essential interfaces and abstractions for domain-driven design (DDD), i
 
 ## Key Features
 
-- 🆔 **Strong Typed Identifiers** - Type-safe entity IDs with value object semantics
-- 📝 **Auditing Support** - Built-in created/updated timestamp tracking
-- 🗑️ **Soft Deletion** - Mark entities as deleted without physical removal
-- 🎯 **Specification Pattern** - Composable query specifications
-- 🔒 **Type Safety** - Strongly typed interfaces prevent common errors
+- **Strong Typed Identifiers** - Type-safe entity IDs with value object semantics
+- **Auditing Support** - Built-in created/updated timestamp tracking
+- **Soft Deletion** - Mark entities as deleted without physical removal
+- **Specification Pattern** - Composable query specifications
+- **Type Safety** - Strongly typed interfaces prevent common errors
 
 ## Installation
 
@@ -119,12 +119,6 @@ public class User : IEntity<UserId>, IAuditable, ISoftDeletable
 }
 ```
 
-## Best Practices
-
-- Always use strong typed IDs to prevent accidental ID mix-ups
-- Implement IAuditable to track entity changes automatically
-- Use ISoftDeletable to preserve data integrity
-- Create reusable specifications for composable query logic
 
 ## License
 
