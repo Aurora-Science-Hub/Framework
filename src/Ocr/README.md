@@ -23,7 +23,7 @@ dotnet add package AuroraScienceHub.Framework.Ocr
 
 ### Tesseract Installation
 
-- **Linux**: `sudo apt update && apt-get install libleptonica-dev libtesseract-dev`
+- **Linux**: `sudo apt update && sudo apt install libleptonica-dev libtesseract-dev`
 - **macOS**: `brew install leptonica tesseract`
 - **Windows**: Download from [Tesseract at UB Mannheim](https://github.com/UB-Mannheim/tesseract/wiki) or `choco install tesseract`
 
