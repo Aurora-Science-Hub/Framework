@@ -8,11 +8,11 @@ Build applications using a modular architecture pattern. Organize dependency inj
 
 ## Key Features
 
-- 🧩 **Modular Architecture** - Organize services into logical, reusable modules
-- 🔒 **Single Registration Guarantee** - Ensures each module's services are registered only once
-- 🎯 **Assembly Discovery** - Automatically tracks assemblies associated with modules
-- 🔧 **Configuration Support** - Built-in IConfiguration integration
-- 🛠️ **Extension Methods** - Helpful utilities for service registration
+- **Modular Architecture** - Organize services into logical, reusable modules
+- **Single Registration Guarantee** - Ensures each module's services are registered only once
+- **Assembly Discovery** - Automatically tracks assemblies associated with modules
+- **Configuration Support** - Built-in IConfiguration integration
+- **Extension Methods** - Helpful utilities for service registration
 
 ## Installation
 
