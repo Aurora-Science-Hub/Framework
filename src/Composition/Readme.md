@@ -42,11 +42,12 @@ graph TD
     SM2 -->|Registers Services| Services
     SM3 -->|Registers Services| Services
 
-    style AppModule fill:#e1f5ff
-    style SM1 fill:#fff4e1
-    style SM2 fill:#fff4e1
-    style SM3 fill:#fff4e1
-    style Services fill:#f0e1ff
+    style App fill:#2563eb
+    style AppModule fill:#7c3aed
+    style SM1 fill:#dc2626
+    style SM2 fill:#ea580c
+    style SM3 fill:#059669
+    style Services fill:#475569
 ```
 
 **Key Concepts:**
