@@ -12,14 +12,29 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Aurora-Science-Hub/Framework/blob/main/LICENSE)
 
 <a href="#getting-started">Getting Started</a> •
+<a href="#available-packages">Available Packages</a> •
 <a href="#architecture">Architecture</a> •
 <a href="#development">Development</a> •
 <a href="#code-style">Code Style</a> •
 <a href="#testing">Testing</a> •
 <a href="#licence">Licence</a> •
-<a href="#contributing">Contributing</a> •
+<a href="#contributing">Contributing</a>
 
 </div>
+
+
+## Getting Started
+
+All packages are distributed via NuGet and target **.NET 9.0**. Install individual packages as needed:
+
+```bash
+dotnet add package AuroraScienceHub.Framework.Composition
+dotnet add package AuroraScienceHub.Framework.AspNetCore
+dotnet add package AuroraScienceHub.Framework.EntityFramework
+# ... other packages
+```
+
+Each package includes its own README with detailed usage instructions and examples.
 
 ## Available Packages
 
@@ -59,19 +74,6 @@
 ### Serialization
 
 - **[Json](src/Json/)** - JSON serialization extensions and converters
-
-## Getting Started
-
-All packages are distributed via NuGet and target **.NET 9.0**. Install individual packages as needed:
-
-```bash
-dotnet add package AuroraScienceHub.Framework.Composition
-dotnet add package AuroraScienceHub.Framework.AspNetCore
-dotnet add package AuroraScienceHub.Framework.EntityFramework
-# ... other packages
-```
-
-Each package includes its own README with detailed usage instructions and examples.
 
 ## Architecture
 
