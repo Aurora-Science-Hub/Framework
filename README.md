@@ -10,8 +10,8 @@
 [![](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
 [![](https://img.shields.io/badge/C%23-13.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
 [![](https://img.shields.io/github/license/aurorasciencehub/framework)](https://github.com/Aurora-Science-Hub/Framework/blob/main/LICENSE.md)
-[![NuGet](https://img.shields.io/nuget/v/aurorasciencehub.svg)](https://www.nuget.org/packages/AuroraScienceHub/)
-[![Downloads](https://img.shields.io/nuget/dt/aurorasciencehub.svg)](https://www.nuget.org/packages/AuroraScienceHub/)
+[![NuGet()](https://www.nuget.org/packages/AuroraScienceHub/)
+[![Downloads]()](https://www.nuget.org/profiles/AuroraScienceHub)
 [![Stars](https://img.shields.io/github/stars/dotnet/AuroraScienceHub?color=brightgreen)](https://github.com/Aurora-Science-Hub/Framework/stargazers)
 </div>
 
