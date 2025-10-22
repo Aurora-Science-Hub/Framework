@@ -6,7 +6,7 @@ A comprehensive collection of reusable infrastructure packages for building mode
 
 [![](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
 [![](https://img.shields.io/badge/C%23-13.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
-[![](https://img.shields.io/github/license/aurorasciencehub/framework)](LICENSE)
+[![](https://img.shields.io/github/license/aurorasciencehub/framework)](https://github.com/Aurora-Science-Hub/Framework/LICENSE)
 
 </div>
 
