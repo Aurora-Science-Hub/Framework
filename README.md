@@ -11,7 +11,6 @@
 [![](https://img.shields.io/badge/C%23-13.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Aurora-Science-Hub/Framework/blob/main/LICENSE)
 
-<a href="#getting-started">Getting Started</a> •
 <a href="#available-packages">Available Packages</a> •
 <a href="#architecture">Architecture</a> •
 <a href="#development">Development</a> •
