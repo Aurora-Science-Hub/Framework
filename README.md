@@ -9,7 +9,7 @@
 
 [![](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
 [![](https://img.shields.io/badge/C%23-13.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
-[![](https://img.shields.io/github/license/Aurora-Science-Hub/Framework)](https://github.com/Aurora-Science-Hub/Framework/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Aurora-Science-Hub/Framework/blob/main/LICENSE)
 </div>
 
 ## Available Packages
