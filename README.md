@@ -1,12 +1,15 @@
+<h1 align="center">
+    <br>
+    Aurora Science Hub Framework
+    <br>
+</h1>
 <div align="center">
+    A comprehensive collection of reusable infrastructure packages for building modern .NET 9 applications.
+    <br>
 
-# Aurora Science Hub Framework
-
-A comprehensive collection of reusable infrastructure packages for building modern .NET 9 applications. This repository contains production-ready NuGet packages that provide common functionality, best practices, and architectural patterns for Aurora Science Hub applications.
-
-[![](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
-[![](https://img.shields.io/badge/C%23-13.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
-[![](https://img.shields.io/github/license/aurorasciencehub/framework)](https://github.com/Aurora-Science-Hub/Framework/blob/main/LICENSE)
+    [![](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
+    [![](https://img.shields.io/badge/C%23-13.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
+    [![](https://img.shields.io/github/license/aurorasciencehub/framework)](https://github.com/Aurora-Science-Hub/Framework/blob/main/LICENSE)
 
 </div>
 
