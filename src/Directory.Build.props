@@ -12,7 +12,6 @@
     <PackageProjectUrl>https://github.com/Aurora-Science-Hub/Framework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Aurora-Science-Hub/Framework.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Framework; DDD; AspNet; EF; Http; Ocr; Json; Exceptions; Diagnostics; Cache; HealthChecks;</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <!-- <PackageIcon>GeopackIcon.png</PackageIcon> -->

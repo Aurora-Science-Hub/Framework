@@ -6,25 +6,11 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package info">
-    <Authors>Aleksei Ermilov;Alexander Nikolaev;Aurora Science Hub</Authors>
     <PackageDescription>
-      EF Core extensions with auditing, soft deletes, and migrations.
+      Entity Framework Core extensions for PostgreSQL database provider.
     </PackageDescription>
-    <PackageProjectUrl>https://github.com/Aurora-Science-Hub/Framework</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Aurora-Science-Hub/Framework.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>ef-core; ef-core-extensions; audit; migrations; soft-delete</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <!-- <PackageIcon>FrameworkIcon.png</PackageIcon> -->
-    <!-- <PackageReleaseNotes>See the GitHub releases page for detailed changelog: https://github.com/Aurora-Science-Hub/Framework/releases</PackageReleaseNotes> -->
-    <Copyright>Copyright 2024-$([System.DateTime]::Now.ToString(yyyy)) Aleksei Ermilov, Alexander Nikolaev, Aurora Science Hub</Copyright>
+    <PackageTags>EF; EntityFramework; PostgreSQL</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup Label="Package files">
-    <!-- <None Include="..\FrameworkIcon.png" Pack="true" Visible="false" PackagePath="" /> -->
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
