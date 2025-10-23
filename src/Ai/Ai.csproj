@@ -5,6 +5,27 @@
       <PackageId>AuroraScienceHub.Framework.Ai</PackageId>
     </PropertyGroup>
 
+    <PropertyGroup Label="Package info">
+      <Authors>Aleksei Ermilov;Alexander Nikolaev;Aurora Science Hub</Authors>
+      <PackageDescription>
+        OpenAI GPT and DeepL translation service integrations.
+      </PackageDescription>
+      <PackageProjectUrl>https://github.com/Aurora-Science-Hub/Framework</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/Aurora-Science-Hub/Framework.git</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+      <PackageTags>ai; deepl; openai; gpt</PackageTags>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
+      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+      <!-- <PackageIcon>FrameworkIcon.png</PackageIcon> -->
+      <!-- <PackageReleaseNotes>See the GitHub releases page for detailed changelog: https://github.com/Aurora-Science-Hub/Framework/releases</PackageReleaseNotes> -->
+      <Copyright>Copyright 2024-$([System.DateTime]::Now.ToString(yyyy)) Aleksei Ermilov, Alexander Nikolaev, Aurora Science Hub</Copyright>
+    </PropertyGroup>
+
+    <ItemGroup Label="Package files">
+      <!-- <None Include="..\FrameworkIcon.png" Pack="true" Visible="false" PackagePath="" /> -->
+      <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    </ItemGroup>
+
     <ItemGroup>
       <PackageReference Include="ChatGptNet" />
       <PackageReference Include="DeepL.net" />
