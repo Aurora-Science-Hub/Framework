@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      JSON serialization extensions and converters.
+      JSON serialization extensions and custom converters for System.Text.Json with support for advanced scenarios.
     </PackageDescription>
-    <PackageTags>json; json-serialization; json-extensions; json-serialization-extensions; json-converters</PackageTags>
+    <PackageTags>json;serialization;system-text-json;converters;json-converters;deserialization</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

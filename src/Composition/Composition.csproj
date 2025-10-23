@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Modular architecture framework with service and application modules.
+      Modular application architecture framework enabling composable service and application modules with dependency injection integration.
     </PackageDescription>
-    <PackageTags>modular-architecture; modular-architecture-framework</PackageTags>
+    <PackageTags>modular-architecture;modularity;composition;dependency-injection;service-modules;architecture;patterns</PackageTags>
   </PropertyGroup>
 
 </Project>

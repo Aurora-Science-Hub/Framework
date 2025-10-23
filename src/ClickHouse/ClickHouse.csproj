@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Clickhouse database integration.
+      ClickHouse database integration with Dapper support for high-performance columnar database operations and analytics.
     </PackageDescription>
-    <PackageTags>clickhouse; clickhouse-database; database-integration</PackageTags>
+    <PackageTags>clickhouse;database;analytics;olap;columnar-database;dapper;data-access</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

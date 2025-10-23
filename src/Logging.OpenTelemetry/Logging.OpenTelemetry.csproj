@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      OpenTelemetry integration for distributed tracing.
+      OpenTelemetry integration for distributed tracing, metrics, and observability with configuration and diagnostics support.
     </PackageDescription>
-    <PackageTags>open-telemetry; distributed-tracing; open-telemetry-integration; tracing</PackageTags>
+    <PackageTags>opentelemetry;otel;distributed-tracing;tracing;observability;telemetry;metrics;logging</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

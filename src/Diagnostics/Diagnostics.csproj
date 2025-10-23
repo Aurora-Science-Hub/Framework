@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Health checks, application descriptors, and monitoring utilities.
+      Diagnostics and monitoring utilities with health checks for PostgreSQL, SQLite, application descriptors, and metrics integration.
     </PackageDescription>
-    <PackageTags>health-check; monitoring</PackageTags>
+    <PackageTags>diagnostics;healthchecks;health-checks;monitoring;observability;metrics;postgresql;sqlite</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

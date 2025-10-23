@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Entity Framework Core extensions and utilities.
+      Entity Framework Core extensions including custom converters, interceptors, migrations utilities, and storage patterns for DDD entities.
     </PackageDescription>
-    <PackageTags>EF; EntityFramework</PackageTags>
+    <PackageTags>entity-framework;ef-core;efcore;orm;database;data-access;converters;interceptors;migrations</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

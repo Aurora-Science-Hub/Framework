@@ -7,10 +7,10 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Hybrid cache extensions and utilities.
+      Caching extensions and utilities for Microsoft.Extensions.Caching with hybrid cache support and JSON serialization.
     </PackageDescription>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>hybrid-cache; cache-extensions; cache-utilities</PackageTags>
+    <PackageTags>caching;cache;hybrid-cache;distributed-cache;memory-cache;performance</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

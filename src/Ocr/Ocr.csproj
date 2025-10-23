@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Optical Character Recognition utilities.
+      Optical Character Recognition (OCR) utilities using Tesseract for text extraction from images and documents.
     </PackageDescription>
-    <PackageTags>image-recognition; recognition-utilities; characer-recognition</PackageTags>
+    <PackageTags>ocr;optical-character-recognition;tesseract;image-processing;text-extraction;character-recognition</PackageTags>
   </PropertyGroup>
 
     <ItemGroup>

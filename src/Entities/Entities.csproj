@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Domain entity interfaces, strong-typed IDs, and DDD patterns.
+      Domain-driven design building blocks including entity interfaces, strongly-typed identifiers, specifications pattern, and auditing support.
     </PackageDescription>
-    <PackageTags>entity; domain-entity; strong-type; ddd; ddd-patterns</PackageTags>
+    <PackageTags>ddd;domain-driven-design;entities;strongly-typed-ids;specifications;repository-pattern;auditing</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

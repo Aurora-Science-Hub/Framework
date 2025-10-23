@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      ASP.NET Core extensions, problem details, security, and routing.
+      ASP.NET Core extensions for composition, diagnostics, problem details (RFC 7807), security utilities, and routing enhancements.
     </PackageDescription>
-    <PackageTags>aspnetcore; extensions; problem-details; routing; security</PackageTags>
+    <PackageTags>aspnetcore;aspnet;web;api;problem-details;rfc7807;routing;security;middleware;healthchecks</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Type-safe configuration loading with validation.
+      Type-safe configuration loading with validation support for JSON, environment variables, and command-line arguments.
     </PackageDescription>
-    <PackageTags>configuration; type-safe; type-safe-configuration; validation</PackageTags>
+    <PackageTags>configuration;settings;options;type-safe;validation;json;environment-variables;dotnet-configuration</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Common exception types and error handling patterns.
+      Common exception types for framework operations including entity not found, access denied, and base framework exception classes.
     </PackageDescription>
-    <PackageTags>exceptions; error-handling; error-handling-patterns</PackageTags>
+    <PackageTags>exceptions;error-handling;errors;framework-exceptions;validation</PackageTags>
   </PropertyGroup>
 
 </Project>

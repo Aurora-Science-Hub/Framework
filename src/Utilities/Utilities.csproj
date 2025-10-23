@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      General-purpose utility classes and extension methods.
+      General-purpose utility classes, extension methods, and helper functions for common programming tasks.
     </PackageDescription>
-    <PackageTags>utilities; extensions</PackageTags>
+    <PackageTags>utilities;helpers;extensions;extension-methods;common;shared;toolkit</PackageTags>
   </PropertyGroup>
 
 </Project>

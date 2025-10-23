@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      HTTP client utilities and extensions.
+      HTTP client utilities and extensions with JSON serialization support for simplified REST API communication.
     </PackageDescription>
-    <PackageTags>http; http-client; http-client-utilities; http-client-extensions</PackageTags>
+    <PackageTags>http;httpclient;rest;api-client;json;web-client;networking</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
