@@ -4,11 +4,11 @@
     <AssemblyName>AuroraScienceHub.Framework.Json</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.Json</PackageId>
   </PropertyGroup>
-    JSON serialization extensions and converters.
+
   <PropertyGroup Label="Package info">
     <Authors>Aleksei Ermilov;Alexander Nikolaev;Aurora Science Hub</Authors>
     <PackageDescription>
-
+      JSON serialization extensions and converters.
     </PackageDescription>
     <PackageProjectUrl>https://github.com/Aurora-Science-Hub/Framework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Aurora-Science-Hub/Framework.git</RepositoryUrl>

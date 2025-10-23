@@ -4,11 +4,11 @@
     <AssemblyName>AuroraScienceHub.Framework.Http</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.Http</PackageId>
   </PropertyGroup>
-    HTTP client utilities and extensions.
+
   <PropertyGroup Label="Package info">
     <Authors>Aleksei Ermilov;Alexander Nikolaev;Aurora Science Hub</Authors>
     <PackageDescription>
-
+      HTTP client utilities and extensions.
     </PackageDescription>
     <PackageProjectUrl>https://github.com/Aurora-Science-Hub/Framework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Aurora-Science-Hub/Framework.git</RepositoryUrl>
