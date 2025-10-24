@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\docs\logo\Fw_icon.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="..\..\docs\logo\Fw_icon.png" Pack="true" Visible="false" PackagePath="" />
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
