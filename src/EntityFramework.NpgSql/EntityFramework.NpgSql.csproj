@@ -5,6 +5,13 @@
     <PackageId>AuroraScienceHub.Framework.EntityFramework.NpgSql</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      Entity Framework Core extensions for PostgreSQL with NetTopologySuite spatial support, naming conventions, and database factory patterns.
+    </PackageDescription>
+    <PackageTags>entity-framework;ef-core;efcore;postgresql;npgsql;spatial;postgis;nettopologysuite;database</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\Diagnostics\Diagnostics.csproj" />

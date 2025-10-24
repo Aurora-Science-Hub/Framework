@@ -5,6 +5,13 @@
       <PackageId>AuroraScienceHub.Framework.Ai</PackageId>
     </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      AI service integrations including OpenAI GPT for chat completions and DeepL for professional translation services.
+    </PackageDescription>
+    <PackageTags>ai;artificial-intelligence;openai;gpt;chatgpt;deepl;translation;machine-translation;llm</PackageTags>
+  </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="ChatGptNet" />
       <PackageReference Include="DeepL.net" />

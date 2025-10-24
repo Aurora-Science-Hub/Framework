@@ -5,6 +5,13 @@
     <PackageId>AuroraScienceHub.Framework.Json</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      JSON serialization extensions and custom converters for System.Text.Json with support for advanced scenarios.
+    </PackageDescription>
+    <PackageTags>json;serialization;system-text-json;converters;json-converters;deserialization</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>

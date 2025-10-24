@@ -5,6 +5,13 @@
     <PackageId>AuroraScienceHub.Framework.Configuration</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      Type-safe configuration loading with validation support for JSON, environment variables, and command-line arguments.
+    </PackageDescription>
+    <PackageTags>configuration;settings;options;type-safe;validation;json;environment-variables;dotnet-configuration</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="App.Metrics.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />

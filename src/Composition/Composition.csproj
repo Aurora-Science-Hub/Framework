@@ -5,4 +5,11 @@
     <PackageId>AuroraScienceHub.Framework.Composition</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      Modular application architecture framework enabling composable service and application modules with dependency injection integration.
+    </PackageDescription>
+    <PackageTags>modular-architecture;modularity;composition;dependency-injection;service-modules;architecture;patterns</PackageTags>
+  </PropertyGroup>
+
 </Project>

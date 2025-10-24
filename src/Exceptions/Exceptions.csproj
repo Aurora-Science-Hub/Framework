@@ -5,4 +5,11 @@
     <PackageId>AuroraScienceHub.Framework.Exceptions</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      Common exception types for framework operations including entity not found, access denied, and base framework exception classes.
+    </PackageDescription>
+    <PackageTags>exceptions;error-handling;errors;framework-exceptions;validation</PackageTags>
+  </PropertyGroup>
+
 </Project>

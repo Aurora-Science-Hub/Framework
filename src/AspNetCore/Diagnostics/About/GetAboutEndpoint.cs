@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Routing;
 
 namespace AuroraScienceHub.Framework.AspNetCore.Diagnostics.About;
 
+/// <summary>
+/// Endpoint to get application information such as application name, version, environment, etc.
+/// </summary>
 internal sealed class GetAboutEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder builder)

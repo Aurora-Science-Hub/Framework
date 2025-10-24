@@ -5,10 +5,13 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AuroraScienceHub.Framework.AspNetCore.Diagnostics;
 
+/// <summary>
+/// <see cref="IServiceCollection"/> extensions for adding diagnostic services and endpoints
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Add diagnostic services
+    /// Add diagnostic services and endpoints
     /// </summary>
     public static void AddDiagnosticEndpoints<THostMarker>(this IServiceCollection services)
     {

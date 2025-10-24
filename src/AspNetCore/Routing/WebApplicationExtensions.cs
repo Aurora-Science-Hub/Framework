@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AuroraScienceHub.Framework.AspNetCore.Routing;
 
+/// <summary>
+/// <see cref="WebApplication"/> extensions for mapping endpoints
+/// </summary>
 public static class WebApplicationExtensions
 {
     /// <summary>

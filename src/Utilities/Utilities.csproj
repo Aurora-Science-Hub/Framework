@@ -5,4 +5,11 @@
     <PackageId>AuroraScienceHub.Framework.Utilities</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      General-purpose utility classes, extension methods, and helper functions for common programming tasks.
+    </PackageDescription>
+    <PackageTags>utilities;helpers;extensions;extension-methods;common;shared;toolkit</PackageTags>
+  </PropertyGroup>
+
 </Project>

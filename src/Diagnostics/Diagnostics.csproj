@@ -5,6 +5,13 @@
     <PackageId>AuroraScienceHub.Framework.Diagnostics</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      Diagnostics and monitoring utilities with health checks for PostgreSQL, SQLite, application descriptors, and metrics integration.
+    </PackageDescription>
+    <PackageTags>diagnostics;healthchecks;health-checks;monitoring;observability;metrics;postgresql;sqlite</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="App.Metrics.Abstractions" />
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" />

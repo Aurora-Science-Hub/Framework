@@ -5,6 +5,13 @@
     <PackageId>AuroraScienceHub.Framework.Http</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      HTTP client utilities and extensions with JSON serialization support for simplified REST API communication.
+    </PackageDescription>
+    <PackageTags>http;httpclient;rest;api-client;json;web-client;networking</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Net.Http.Json" />
   </ItemGroup>

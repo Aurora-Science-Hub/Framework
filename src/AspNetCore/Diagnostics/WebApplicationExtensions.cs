@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AuroraScienceHub.Framework.AspNetCore.Diagnostics;
 
+/// <summary>
+/// <see cref="WebApplication"/> extensions for mapping diagnostic endpoints
+/// </summary>
 public static class WebApplicationExtensions
 {
     /// <summary>

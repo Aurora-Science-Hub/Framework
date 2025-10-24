@@ -5,6 +5,13 @@
     <PackageId>AuroraScienceHub.Framework.AspNetCore</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      ASP.NET Core extensions for composition, diagnostics, problem details (RFC 7807), security utilities, and routing enhancements.
+    </PackageDescription>
+    <PackageTags>aspnetcore;aspnet;web;api;problem-details;rfc7807;routing;security;middleware;healthchecks</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>

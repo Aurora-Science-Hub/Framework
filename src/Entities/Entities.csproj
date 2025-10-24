@@ -5,6 +5,13 @@
     <PackageId>AuroraScienceHub.Framework.Entities</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      Domain-driven design building blocks including entity interfaces, strongly-typed identifiers, specifications pattern, and auditing support.
+    </PackageDescription>
+    <PackageTags>ddd;domain-driven-design;entities;strongly-typed-ids;specifications;repository-pattern;auditing</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
