@@ -14,7 +14,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <!-- <PackageIcon>GeopackIcon.png</PackageIcon> -->
+    <PackageIcon>Fw_icon.png</PackageIcon>
     <Copyright>Copyright 2024-$([System.DateTime]::Now.ToString(yyyy)) Aurora Science Hub</Copyright>
   </PropertyGroup>
 
@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\docs\logo\Fw_icon.png" Pack="true" Visible="false" PackagePath="" />
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
