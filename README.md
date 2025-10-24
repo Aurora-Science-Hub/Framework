@@ -2,7 +2,7 @@
     <br>
 <img src="docs/logo/Fw.png" style="width:400px;"/>
 
-    Aurora Science Hub Framework
+Aurora Science Hub Framework
     <br>
 </h1>
 <div align="center">
