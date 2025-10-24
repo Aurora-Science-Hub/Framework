@@ -1,5 +1,7 @@
 <h1 align="center">
     <br>
+<img src="docs/logo/Fw.png" style="width:400px;"/>
+
     Aurora Science Hub Framework
     <br>
 </h1>
