@@ -1,8 +1,12 @@
 <h1 align="center">
     <br>
-<img src="docs/logo/Fw.png" style="width:400px;"/>
-
-Aurora Science Hub Framework
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/logo/Fw_white.png">
+      <source media="(prefers-color-scheme: light)" srcset="docs/logo/Fw_black.png">
+      <img src="docs/logo/logo-black.png" style="width:400px;">
+    </picture>
+    <br>
+    Aurora Science Hub Framework
     <br>
 </h1>
 <div align="center">
