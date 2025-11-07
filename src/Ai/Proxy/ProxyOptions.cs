@@ -1,4 +1,4 @@
-namespace Ai.Proxy;
+namespace AuroraScienceHub.Framework.Ai.Proxy;
 
 /// <summary>
 /// Proxy options

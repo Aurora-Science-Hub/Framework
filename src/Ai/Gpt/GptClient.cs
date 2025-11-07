@@ -1,26 +1,24 @@
-using ChatGptNet;
-using ChatGptNet.Models;
+using OpenAI.Chat;
 
-namespace Ai.Gpt;
+namespace AuroraScienceHub.Framework.Ai.Gpt;
 
 internal sealed class GptClient : IGptClient
 {
-    private readonly IChatGptClient _chatGptClient;
+    private readonly ChatClient _chatGptClient;
 
-    public GptClient(IChatGptClient chatGptClient)
+    public GptClient(ChatClient chatGptClient)
     {
         _chatGptClient = chatGptClient;
     }
 
+    public ChatClient Chat => _chatGptClient;
+
     public async Task<string?> AskAsync(string message, CancellationToken cancellationToken)
     {
-        var response = await _chatGptClient.AskAsync(message,
-            parameters: new ChatGptParameters
-            {
-                ResponseFormat = ChatGptResponseFormat.Text,
-            },
+        var response = await _chatGptClient.CompleteChatAsync(
+            messages: [message],
             cancellationToken: cancellationToken);
 
-        return response.Choices?.FirstOrDefault()?.Message?.Content;
+        return response.Value.Content[0].Text;
     }
 }

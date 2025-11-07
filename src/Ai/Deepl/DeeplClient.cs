@@ -1,6 +1,6 @@
 using DeepL;
 
-namespace Ai.Deepl;
+namespace AuroraScienceHub.Framework.Ai.Deepl;
 
 internal sealed class DeeplClient : IDeeplClient
 {

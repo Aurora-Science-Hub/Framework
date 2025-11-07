@@ -1,4 +1,4 @@
-namespace Ai.Gpt;
+namespace AuroraScienceHub.Framework.Ai.Gpt;
 
 /// <summary>
 /// Options for the ChatGpt client.
@@ -21,6 +21,11 @@ public sealed class GptOptions
     public string? Model { get; init; }
 
     /// <summary>
+    /// Custom endpoint URI. If not set, the default OpenAI endpoint will be used.
+    /// </summary>
+    public Uri? Endpoint { get; init; }
+
+    /// <summary>
     /// Gets or sets the maximum number of messages to use for chat completion (default: 10).
     /// </summary>
     public int MessageLimit { get; init; } = 10;
@@ -39,4 +44,19 @@ public sealed class GptOptions
     /// Use a proxy
     /// </summary>
     public bool UseProxy { get; init; } = false;
+
+    /// <summary>
+    /// Gets the  API key, throwing an exception if it is not set.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"></exception>
+    public string RequiredApiKey => ApiKey
+                                      ?? throw new ArgumentNullException(nameof(ApiKey), "API key is required.");
+
+    /// <summary>
+    /// Gets the model, throwing an exception if it is not set.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public string RequiredModel => Model
+                                      ?? throw new ArgumentNullException(nameof(Model), "Model is required.");
 }
