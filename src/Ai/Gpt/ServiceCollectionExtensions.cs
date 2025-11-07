@@ -4,6 +4,7 @@ using System.Net;
 using AuroraScienceHub.Framework.Ai.Proxy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Chat;
 
@@ -21,39 +22,44 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddGptClient(this IServiceCollection services, IConfiguration configuration)
     {
-        var proxyOptions = configuration.GetSection(ProxyOptions.OptionKey)
-            .Get<ProxyOptions>() ?? new ProxyOptions();
-        var gptOptions = configuration.GetSection(GptOptions.OptionKey)
-            .Get<GptOptions>() ?? throw new InvalidOperationException("GPT options are not configured.");
-
-        services.AddOptions<GptOptions>()
-            .BindConfiguration(GptOptions.OptionKey);
-
-        services.AddOptions<ProxyOptions>()
-            .BindConfiguration(ProxyOptions.OptionKey);
-
-        services.ConfigureHttpClient(gptOptions, proxyOptions);
-        services.ConfigureGptClient(gptOptions);
+        services.AddOptions();
+        services.ConfigureHttpClient();
+        services.ConfigureGptClient();
 
         services.AddTransient<IGptClient, GptClient>();
 
         return services;
     }
 
-    private static IServiceCollection ConfigureHttpClient(
-        this IServiceCollection services,
-        GptOptions gptOptions,
-        ProxyOptions proxyOptions)
+    private static IServiceCollection AddOptions(this IServiceCollection services)
     {
-        if (gptOptions.UseProxy == false)
-        {
-            services.AddHttpClient(GptClientHttpClientName);
-            return services;
-        }
+        services.AddOptions<GptOptions>()
+            .BindConfiguration(GptOptions.OptionKey);
 
+        services.AddOptions<ProxyOptions>()
+            .BindConfiguration(ProxyOptions.OptionKey);
+
+        return services;
+    }
+
+    private static void ConfigureHttpClient(this IServiceCollection services)
+    {
         services.AddHttpClient(GptClientHttpClientName)
-            .ConfigurePrimaryHttpMessageHandler(_ =>
+            .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
             {
+                var gptOptions = serviceProvider
+                    .GetRequiredService<IOptions<GptOptions>>()
+                    .Value;
+
+                if (gptOptions.UseProxy == false)
+                {
+                    return new HttpClientHandler();
+                }
+
+                var proxyOptions = serviceProvider
+                    .GetRequiredService<IOptions<ProxyOptions>>()
+                    .Value;
+
                 var handler = new HttpClientHandler
                 {
                     Proxy = new WebProxy
@@ -70,18 +76,18 @@ public static class ServiceCollectionExtensions
                     HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
                 return handler;
             });
-
-        return services;
     }
 
-    private static IServiceCollection ConfigureGptClient(
-        this IServiceCollection services,
-        GptOptions gptOptions)
+    private static void ConfigureGptClient(this IServiceCollection services)
     {
         services.AddSingleton<ChatClient>(serviceProvider =>
         {
-            var httpClient = serviceProvider.GetRequiredService<IHttpClientFactory>()
-                .CreateClient(GptClientHttpClientName);
+            var gptOptions = serviceProvider
+                .GetRequiredService<IOptions<GptOptions>>()
+                .Value;
+
+            var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+            var httpClient = httpClientFactory.CreateClient(GptClientHttpClientName);
 
             var client = new ChatClient(
                 model: gptOptions.RequiredModel,
@@ -93,7 +99,5 @@ public static class ServiceCollectionExtensions
 
             return client;
         });
-
-        return services;
     }
 }
