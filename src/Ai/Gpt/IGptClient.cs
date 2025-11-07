@@ -15,5 +15,5 @@ public interface IGptClient
     /// <summary>
     /// Ask a question asynchronously
     /// </summary>
-    Task<string?> AskAsync(string message, CancellationToken cancellationToken);
+    Task<string?> AskAsync(string message, CancellationToken cancellationToken = default);
 }

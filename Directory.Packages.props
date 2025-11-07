@@ -39,6 +39,7 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Hybrid" Version="9.2.0-preview.1.25105.6" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
