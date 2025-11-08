@@ -1,11 +1,11 @@
 using System.Net;
-using Ai.Proxy;
+using AuroraScienceHub.Framework.Ai.Proxy;
 using AuroraScienceHub.Framework.Utilities.System;
 using DeepL;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Ai.Deepl;
+namespace AuroraScienceHub.Framework.Ai.Deepl;
 
 public static class ServiceCollectionExtensions
 {

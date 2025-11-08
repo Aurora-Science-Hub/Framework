@@ -1,4 +1,4 @@
-namespace Ai.Deepl;
+namespace AuroraScienceHub.Framework.Ai.Deepl;
 
 /// <summary>
 /// DeepL client

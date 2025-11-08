@@ -13,8 +13,8 @@
   </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="ChatGptNet" />
       <PackageReference Include="DeepL.net" />
+      <PackageReference Include="OpenAI" />
     </ItemGroup>
 
     <ItemGroup>
