@@ -94,7 +94,8 @@ public static class ServiceCollectionExtensions
                 credential: new ApiKeyCredential(gptOptions.RequiredApiKey),
                 options: new OpenAIClientOptions()
                 {
-                    Endpoint = gptOptions.Endpoint, Transport = new HttpClientPipelineTransport(httpClient),
+                    Endpoint = gptOptions.Endpoint,
+                    Transport = new HttpClientPipelineTransport(httpClient),
                 });
 
             return client;
