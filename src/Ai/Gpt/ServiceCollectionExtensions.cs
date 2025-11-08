@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Add GPT client
     /// </summary>
-    public static IServiceCollection AddGptClient(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddGptClient(this IServiceCollection services)
     {
         services.AddOptions();
         services.ConfigureHttpClient();
