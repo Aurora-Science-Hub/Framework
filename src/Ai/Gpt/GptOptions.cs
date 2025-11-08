@@ -46,7 +46,7 @@ public sealed class GptOptions
     public bool UseProxy { get; init; } = false;
 
     /// <summary>
-    /// Gets the  API key, throwing an exception if it is not set.
+    /// Gets the API key, throwing an exception if it is not set.
     /// </summary>
     /// <exception cref="ArgumentNullException"></exception>
     public string RequiredApiKey => ApiKey
