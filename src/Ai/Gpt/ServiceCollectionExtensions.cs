@@ -72,8 +72,7 @@ public static class ServiceCollectionExtensions
                             password: proxyOptions.Password),
                     },
                 };
-                handler.ServerCertificateCustomValidationCallback =
-                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+
                 return handler;
             });
     }
