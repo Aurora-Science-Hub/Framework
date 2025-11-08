@@ -19,6 +19,10 @@ internal sealed class GptClient : IGptClient
             messages: [message],
             cancellationToken: cancellationToken);
 
-        return response.Value.Content[0].Text;
+        if (response.Value.Content != null && response.Value.Content.Count > 0)
+        {
+            return response.Value.Content[0].Text;
+        }
+        return null;
     }
 }
