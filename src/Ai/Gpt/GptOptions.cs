@@ -55,7 +55,6 @@ public sealed class GptOptions
     /// <summary>
     /// Gets the model, throwing an exception if it is not set.
     /// </summary>
-    /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public string RequiredModel => Model
                                       ?? throw new ArgumentNullException(nameof(Model), "Model is required.");
