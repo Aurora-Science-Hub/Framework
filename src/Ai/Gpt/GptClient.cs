@@ -35,7 +35,7 @@ internal sealed class GptClient : IGptClient
         {
             new SystemChatMessage(systemMessage),
             new SystemChatMessage("Your response must be in valid JSON format."),
-            prompt,
+            new UserChatMessage(prompt),
         };
 
         var gptResponse = await _chatGptClient.CompleteChatAsync(
@@ -46,7 +46,13 @@ internal sealed class GptClient : IGptClient
         var responseJson = string.Empty;
         if (gptResponse.Value.Content is { Count: > 0 })
         {
+            // remove potential ```json code block markers
             responseJson = gptResponse.Value.Content[0].Text?.Trim('`');
+
+            if (responseJson != null && responseJson.StartsWith("json", StringComparison.OrdinalIgnoreCase))
+            {
+                responseJson = responseJson[4..].Trim();
+            }
         }
 
         if (string.IsNullOrWhiteSpace(responseJson))

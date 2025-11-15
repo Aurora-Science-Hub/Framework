@@ -88,10 +88,10 @@ public sealed class EnumerableExtensionsTests
         // Act
         var result = Source().WhereNotNull();
 
-        // Assert - не должно быть вызовов до перечисления
+        // Assert - should not be called before enumerationя
         callCount.ShouldBe(0);
 
-        // Act - перечисляем
+        // Act - enumerate
         var materialized = result.ToArray();
 
         // Assert
