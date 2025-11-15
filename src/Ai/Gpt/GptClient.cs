@@ -1,3 +1,4 @@
+using AuroraScienceHub.Framework.Json;
 using OpenAI.Chat;
 
 namespace AuroraScienceHub.Framework.Ai.Gpt;
@@ -11,8 +12,6 @@ internal sealed class GptClient : IGptClient
         _chatGptClient = chatGptClient;
     }
 
-    public ChatClient Chat => _chatGptClient;
-
     public async Task<string?> AskAsync(string message, CancellationToken cancellationToken)
     {
         var response = await _chatGptClient.CompleteChatAsync(
@@ -24,5 +23,45 @@ internal sealed class GptClient : IGptClient
             return response.Value.Content[0].Text;
         }
         return null;
+    }
+
+    public async Task<TResult> RequestAndDeserializeAsync<TResult>(
+        string systemMessage,
+        string prompt,
+        CancellationToken cancellationToken)
+        where TResult : class
+    {
+        var messages = new List<ChatMessage>
+        {
+            new SystemChatMessage(systemMessage),
+            new SystemChatMessage("Your response must be in valid JSON format."),
+            new UserChatMessage(prompt),
+        };
+
+        var gptResponse = await _chatGptClient.CompleteChatAsync(
+                messages: messages,
+                cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+
+        var responseJson = string.Empty;
+        if (gptResponse.Value.Content is { Count: > 0 })
+        {
+            // remove potential ```json code block markers
+            responseJson = gptResponse.Value.Content[0].Text?.Trim('`');
+
+            if (responseJson != null && responseJson.StartsWith("json", StringComparison.OrdinalIgnoreCase))
+            {
+                responseJson = responseJson[4..].Trim();
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(responseJson))
+        {
+            throw new InvalidOperationException("GPT response is empty");
+        }
+
+        var summaryResults = DefaultJsonSerializer.Deserialize<TResult>(responseJson)
+                             ?? throw new InvalidOperationException("Failed to deserialize GPT response");
+        return summaryResults;
     }
 }
