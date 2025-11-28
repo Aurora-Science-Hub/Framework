@@ -74,7 +74,13 @@ public static class ServiceCollectionExtensions
                 };
 
                 return handler;
-            });
+            })
+            .AddStandardResilienceHandler(
+                options =>
+                {
+                    options.Retry.MaxRetryAttempts = 0;
+                    options.CircuitBreaker.SamplingDuration = TimeSpan.Zero;
+                });
     }
 
     private static void ConfigureGptClient(this IServiceCollection services)
