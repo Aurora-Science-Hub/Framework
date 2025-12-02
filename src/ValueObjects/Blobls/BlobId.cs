@@ -1,5 +1,6 @@
 ﻿using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace AuroraScienceHub.Framework.ValueObjects.Blobls;
 
@@ -17,7 +18,14 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     {
         BucketName = bucketName;
         ObjectId = objectId;
-        Value = $"{Prefix}{Delimiter}{BucketName}{Delimiter}{ObjectId}";
+
+        var sb = new StringBuilder(capacity: Prefix.Length + 1 + BucketName.Length + 1 + ObjectId.Length);
+        sb.Append(Prefix)
+            .Append(Delimiter)
+            .Append(BucketName)
+            .Append(Delimiter)
+            .Append(ObjectId);
+        Value = sb.ToString();
     }
 
     /// <summary>
@@ -75,7 +83,7 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
             return true;
         }
 
-        return Value.AsSpan().SequenceEqual(other.Value.AsSpan());
+        return Value == other.Value;
     }
 
     /// <inheritdoc/>
@@ -156,14 +164,12 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         }
 
         // Find first and second delimiters after prefix
-        int firstDelimiterIndex = Prefix.Length + 1; // "blob_"
-        int secondDelimiterIndex = text.Slice(firstDelimiterIndex).IndexOf(Delimiter);
-
-        if (secondDelimiterIndex == -1)
+        int firstDelimiterIndex = PrefixWithDelimiter.Length; // 5
+        int secondDelimiterIndex = text.Slice(firstDelimiterIndex).IndexOf('_'); // char быстрее string
+        if (secondDelimiterIndex < 0)
         {
             return false;
         }
-
         secondDelimiterIndex += firstDelimiterIndex;
 
         int objectIdStart = secondDelimiterIndex + 1;
