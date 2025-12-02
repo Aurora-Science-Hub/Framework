@@ -59,6 +59,9 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         return new BlobId(bucketName, Base64Url.EncodeToString(uniqueId.ToByteArray()));
     }
 
+    /// <inheritdoc/>
+    public override string ToString() => Value;
+
     #region Equatable Members
 
     /// <inheritdoc/>
@@ -74,14 +77,14 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
             return true;
         }
 
-        return Value == other.Value;
+        return Value.AsSpan().SequenceEqual(other.Value.AsSpan());
     }
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => Equals(obj as BlobId);
 
     /// <inheritdoc/>
-    public override int GetHashCode() => Value.GetHashCode();
+    public override int GetHashCode() => HashCode.Combine(BucketName, ObjectId);
 
     /// <summary>
     /// Equality operator for <see cref="BlobId"/>
@@ -179,7 +182,6 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
             return false;
         }
 
-        // Check bucket name validity
         if (!IsValidBucketName(bucketSpan))
         {
             return false;
@@ -205,11 +207,6 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         }
 
         // Should respect S3 rules with only lowercase letters, numbers, dots. Excluding hyphens.
-        if (!s_bucketNameRegex.IsMatch(bucketName))
-        {
-            return false;
-        }
-
-        return true;
+        return s_bucketNameRegex.IsMatch(bucketName);
     }
 }
