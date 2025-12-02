@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AuroraScienceHub.Framework.ValueObjects</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.ValueObjects</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      TODO
+    </PackageDescription>
+    <PackageTags>TODO</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="README.md" />
+  </ItemGroup>
+
+</Project>
