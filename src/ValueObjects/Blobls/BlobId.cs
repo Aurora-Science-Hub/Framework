@@ -9,14 +9,15 @@ namespace AuroraScienceHub.Framework.ValueObjects.Blobls;
 /// </summary>
 public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
 {
-
     private const string Delimiter = "_";
     private const string Prefix = "blob";
     private const string PrefixWithDelimiter = Prefix + Delimiter;
 
+    private readonly int _hashCode;
+
     private BlobId(string bucketName, string objectId)
     {
-        BucketName = bucketName;
+        BucketName = string.IsInterned(bucketName) ?? string.Intern(bucketName);
         ObjectId = objectId;
 
         var sb = new StringBuilder(capacity: Prefix.Length + 1 + BucketName.Length + 1 + ObjectId.Length);
@@ -26,6 +27,8 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
             .Append(Delimiter)
             .Append(ObjectId);
         Value = sb.ToString();
+
+        _hashCode = HashCode.Combine(BucketName, ObjectId);
     }
 
     /// <summary>
@@ -90,7 +93,7 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     public override bool Equals(object? obj) => Equals(obj as BlobId);
 
     /// <inheritdoc/>
-    public override int GetHashCode() => HashCode.Combine(BucketName, ObjectId);
+    public override int GetHashCode() => _hashCode;
 
     /// <summary>
     /// Equality operator for <see cref="BlobId"/>
