@@ -1,6 +1,5 @@
 ﻿using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
 
 namespace AuroraScienceHub.Framework.ValueObjects.Blobls;
 
@@ -9,7 +8,6 @@ namespace AuroraScienceHub.Framework.ValueObjects.Blobls;
 /// </summary>
 public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
 {
-    private static readonly Regex s_bucketNameRegex = new(@"^[a-z0-9][a-z0-9\.]*[a-z0-9]$", RegexOptions.Compiled);
 
     private const string Delimiter = "_";
     private const string Prefix = "blob";
@@ -48,7 +46,7 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     /// </summary>
     public static BlobId New(string bucketName)
     {
-        if (!IsValidBucketName(bucketName))
+        if (!BucketNamingConvention.IsValid(bucketName, Delimiter))
         {
             throw new ArgumentException(
                 $"Invalid bucket name. Must comply with S3 naming rules and not contain '{Delimiter}'",
@@ -182,31 +180,12 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
             return false;
         }
 
-        if (!IsValidBucketName(bucketSpan))
+        if (!BucketNamingConvention.IsValid(bucketSpan, Delimiter))
         {
             return false;
         }
 
         result = new BlobId(bucketSpan.ToString(), objectSpan.ToString());
         return true;
-    }
-
-    private static bool IsValidBucketName(ReadOnlySpan<char> bucketName)
-    {
-        // AWS S3 rules: 3-63 chars, lowercase, numbers, dots, hyphens
-        // MinIO is less restrictive but let's follow S3 rules for compatibility.
-        // https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
-        if (bucketName.Length is < 3 or > 63)
-        {
-            return false;
-        }
-
-        if (bucketName.Contains(Delimiter.AsSpan(), StringComparison.Ordinal))
-        {
-            return false;
-        }
-
-        // Should respect S3 rules with only lowercase letters, numbers, dots. Excluding hyphens.
-        return s_bucketNameRegex.IsMatch(bucketName);
     }
 }
