@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace AuroraScienceHub.Framework.ValueObjects.Blobls;
+namespace AuroraScienceHub.Framework.ValueObjects.Blobs;
 
 /// <summary>
 /// Validates bucket names according to AWS S3 naming rules

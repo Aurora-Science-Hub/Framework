@@ -1,4 +1,4 @@
-using AuroraScienceHub.Framework.ValueObjects.Blobls;
+using AuroraScienceHub.Framework.ValueObjects.Blobs;
 using Shouldly;
 
 namespace AuroraScienceHub.Framework.UnitTests.ValueObjects;

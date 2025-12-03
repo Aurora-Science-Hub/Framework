@@ -1,7 +1,7 @@
 ﻿using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
 
-namespace AuroraScienceHub.Framework.ValueObjects.Blobls;
+namespace AuroraScienceHub.Framework.ValueObjects.Blobs;
 
 /// <summary>
 /// MinIO (S3) Blob Identifier
