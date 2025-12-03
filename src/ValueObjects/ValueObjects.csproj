@@ -12,8 +12,4 @@
     <PackageTags>TODO</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="README.md" />
-  </ItemGroup>
-
 </Project>
