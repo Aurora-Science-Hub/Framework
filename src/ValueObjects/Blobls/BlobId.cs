@@ -1,34 +1,23 @@
 ﻿using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace AuroraScienceHub.Framework.ValueObjects.Blobls;
 
 /// <summary>
-/// Идентификатор блоба
+/// MinIO (S3) Blob Identifier
 /// </summary>
 public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
 {
     private const string Delimiter = "_";
-    private const string Prefix = "blob";
+    private const string Prefix = "blb";
     private const string PrefixWithDelimiter = Prefix + Delimiter;
 
-    private readonly int _hashCode;
 
     private BlobId(string bucketName, string objectId)
     {
-        BucketName = string.IsInterned(bucketName) ?? string.Intern(bucketName);
+        BucketName = bucketName;
         ObjectId = objectId;
-
-        var sb = new StringBuilder(capacity: Prefix.Length + 1 + BucketName.Length + 1 + ObjectId.Length);
-        sb.Append(Prefix)
-            .Append(Delimiter)
-            .Append(BucketName)
-            .Append(Delimiter)
-            .Append(ObjectId);
-        Value = sb.ToString();
-
-        _hashCode = HashCode.Combine(BucketName, ObjectId);
+        Value = $"{Prefix}{Delimiter}{BucketName}{Delimiter}{ObjectId}";
     }
 
     /// <summary>
@@ -53,7 +42,7 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     public string ObjectId { get; }
 
     /// <summary>
-    /// Create a new BlobId
+    /// Creates a new BlobId
     /// </summary>
     public static BlobId New(string bucketName)
     {
@@ -86,14 +75,14 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
             return true;
         }
 
-        return Value == other.Value;
+        return BucketName == other.BucketName && ObjectId == other.ObjectId;
     }
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => Equals(obj as BlobId);
 
     /// <inheritdoc/>
-    public override int GetHashCode() => _hashCode;
+    public override int GetHashCode() => HashCode.Combine(BucketName, ObjectId);
 
     /// <summary>
     /// Equality operator for <see cref="BlobId"/>
@@ -107,6 +96,8 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
 
     #endregion Equatable Members
 
+    #region Parsable Members
+
     /// <summary>
     /// Parse <see cref="String"/> into <see cref="BlobId"/>
     /// </summary>
@@ -118,7 +109,8 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     public static BlobId Parse(string? text, IFormatProvider? provider)
         => TryParse(text, provider, out BlobId? blobId)
             ? blobId
-            : throw new FormatException($"Wrong format of identifier for entity «{nameof(blobId)}»: {text}");
+            : throw new FormatException(
+                $"Wrong format of identifier for entity `{nameof(BlobId)}`: {text}");
 
     /// <summary>
     /// Try to parse <see cref="String"/> into <see cref="BlobId"/>
@@ -143,7 +135,8 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     public static BlobId Parse(ReadOnlySpan<char> text, IFormatProvider? provider)
         => TryParse(text, provider, out BlobId? blobId)
             ? blobId
-            : throw new FormatException($"Wrong format of identifier for entity «{nameof(blobId)}»: {text.ToString()}");
+            : throw new FormatException(
+                $"Wrong format of identifier for entity `{nameof(BlobId)}`: {text.ToString()}");
 
     /// <summary>
     /// Try to parse <see cref="ReadOnlySpan{Char}"/> into <see cref="BlobId"/> using format provider
@@ -167,15 +160,16 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         }
 
         // Find first and second delimiters after prefix
-        int firstDelimiterIndex = PrefixWithDelimiter.Length; // 5
-        int secondDelimiterIndex = text.Slice(firstDelimiterIndex).IndexOf('_'); // char быстрее string
+        var firstDelimiterIndex = PrefixWithDelimiter.Length; // 5
+        var secondDelimiterIndex = text.Slice(firstDelimiterIndex).IndexOf(Delimiter);
         if (secondDelimiterIndex < 0)
         {
             return false;
         }
+
         secondDelimiterIndex += firstDelimiterIndex;
 
-        int objectIdStart = secondDelimiterIndex + 1;
+        var objectIdStart = secondDelimiterIndex + 1;
         if (objectIdStart >= text.Length)
         {
             return false;
@@ -197,4 +191,6 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         result = new BlobId(bucketSpan.ToString(), objectSpan.ToString());
         return true;
     }
+
+    #endregion
 }

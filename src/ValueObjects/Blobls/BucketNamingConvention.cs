@@ -13,7 +13,7 @@ internal sealed partial class BucketNamingConvention
     /// <summary>
     /// Validates bucket name according to S3 naming convention:
     /// - 3-63 characters
-    /// - Only lowercase letters, numbers, and dots
+    /// - Only lowercase letters, numbers, dots and hyphens
     /// - Must start and end with lowercase letter or number
     /// - Cannot contain specified delimiter
     /// </summary>
@@ -31,11 +31,11 @@ internal sealed partial class BucketNamingConvention
             return false;
         }
 
-        // Should respect S3 rules: only lowercase letters, numbers, dots
+        // Should respect S3 rules: only lowercase letters, numbers, dots and hyphens
         // Must start and end with lowercase letter or number
         return BucketNameRegex().IsMatch(bucketName);
     }
 
-    [GeneratedRegex(@"^[a-z0-9][a-z0-9\.]*[a-z0-9]$", RegexOptions.Compiled)]
+    [GeneratedRegex(@"^[a-z0-9][a-z0-9\-\.]*[a-z0-9]$", RegexOptions.Compiled)]
     private static partial Regex BucketNameRegex();
 }
