@@ -22,24 +22,6 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     /// </summary>
     public const int MaxLength = 255;
 
-    /// <summary>
-    /// Length of Base64Url encoded GUID (22 characters)
-    /// </summary>
-    public const int ObjectIdLength = 22;
-
-    /// <summary>
-    /// Maximum length of file extension (without dot)
-    /// </summary>
-    public const int MaxExtensionLength = 10;
-
-    /// <summary>
-    /// Maximum length of name prefix
-    /// </summary>
-    /// <remarks>
-    /// Calculated as: MaxLength - "blb_" (4) - MaxBucketLength (63) - "_" (1) - "/" (1) - ObjectIdLength (22) - "." (1) - MaxExtensionLength (10) = 153
-    /// </remarks>
-    public const int MaxNamePrefixLength = 153;
-
     private BlobId(
         string bucketName,
         string objectId,
@@ -134,8 +116,8 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         return new BlobId(
             bucketName,
             objectId,
-            NormalizePrefix(namePrefix),
-            NormalizeExtension(extension));
+            NamePrefixNamingConvention.Normalize(namePrefix),
+            ExtensionNamingConvention.Normalize(extension));
     }
 
     private static void ValidateBucketName(string bucketName)
@@ -153,17 +135,10 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         if (string.IsNullOrWhiteSpace(prefix))
             return;
 
-        if (prefix.Contains(Delimiter))
+        if (!NamePrefixNamingConvention.IsValid(prefix, Delimiter))
         {
             throw new ArgumentException(
-                $"Prefix cannot contain '{Delimiter}'",
-                nameof(prefix));
-        }
-
-        if (prefix.Length > MaxNamePrefixLength)
-        {
-            throw new ArgumentException(
-                $"Prefix length cannot exceed {MaxNamePrefixLength} characters",
+                $"Invalid prefix. Cannot contain '{Delimiter}' and must not exceed {NamePrefixNamingConvention.MaxLength} characters",
                 nameof(prefix));
         }
     }
@@ -173,42 +148,14 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         if (string.IsNullOrWhiteSpace(extension))
             return;
 
-        if (extension.Contains(Delimiter) || extension.Contains(PathSeparator))
+        if (!ExtensionNamingConvention.IsValid(extension, Delimiter))
         {
             throw new ArgumentException(
-                "Extension cannot contain special characters",
-                nameof(extension));
-        }
-
-        // Normalize for length check (remove leading dot if present)
-        var normalized = extension.TrimStart(ExtensionSeparator);
-        if (normalized.Length > MaxExtensionLength)
-        {
-            throw new ArgumentException(
-                $"Extension length cannot exceed {MaxExtensionLength} characters",
+                $"Invalid extension. Cannot contain special characters and must not exceed {ExtensionNamingConvention.MaxLength} characters",
                 nameof(extension));
         }
     }
 
-    private static string? NormalizePrefix(string? prefix)
-    {
-        if (string.IsNullOrWhiteSpace(prefix))
-        {
-            return null;
-        }
-
-        return prefix.Trim().Trim(PathSeparator);
-    }
-
-    private static string? NormalizeExtension(string? extension)
-    {
-        if (string.IsNullOrWhiteSpace(extension))
-        {
-            return null;
-        }
-
-        return extension.TrimStart(ExtensionSeparator).ToLowerInvariant();
-    }
 
     /// <inheritdoc/>
     public override string ToString() => Value;
