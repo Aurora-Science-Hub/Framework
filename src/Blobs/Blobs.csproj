@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AuroraScienceHub.Framework.Blobs</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.Blobs</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      TODO
+    </PackageDescription>
+    <PackageTags>TODO</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ValueObjects\ValueObjects.csproj" />
+  </ItemGroup>
+
+</Project>
