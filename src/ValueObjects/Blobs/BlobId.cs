@@ -12,7 +12,6 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     private const string Prefix = "blb";
     private const string PrefixWithDelimiter = Prefix + Delimiter;
 
-
     private BlobId(string bucketName, string objectId)
     {
         BucketName = bucketName;
@@ -136,7 +135,7 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         => TryParse(text, provider, out BlobId? blobId)
             ? blobId
             : throw new FormatException(
-                $"Wrong format of identifier for entity `{nameof(BlobId)}`: {text.ToString()}");
+                $"Wrong format of identifier for entity `{nameof(BlobId)}`: {text}");
 
     /// <summary>
     /// Try to parse <see cref="ReadOnlySpan{Char}"/> into <see cref="BlobId"/> using format provider
@@ -160,7 +159,7 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         }
 
         // Find first and second delimiters after prefix
-        var firstDelimiterIndex = PrefixWithDelimiter.Length; // 5
+        var firstDelimiterIndex = PrefixWithDelimiter.Length; // 4
         var secondDelimiterIndex = text.Slice(firstDelimiterIndex).IndexOf(Delimiter);
         if (secondDelimiterIndex < 0)
         {
