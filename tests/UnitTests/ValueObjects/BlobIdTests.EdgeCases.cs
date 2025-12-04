@@ -21,6 +21,39 @@ public sealed partial class BlobIdTests
         parsed.ObjectId.ShouldBe(original.ObjectId);
     }
 
+    [Fact(DisplayName = "Round-trip: Create with extension → Parse preserves extension")]
+    public void RoundTrip_WithExtension_PreservesExtension()
+    {
+        // Arrange
+        var original = BlobId.New("test-bucket", "pdf");
+
+        // Act
+        var parsed = BlobId.Parse(original.ToString());
+
+        // Assert
+        parsed.Value.ShouldBe(original.Value);
+        parsed.Extension.ShouldBe(original.Extension);
+        parsed.ObjectId.ShouldBe(original.ObjectId);
+    }
+
+    [Fact(DisplayName = "Round-trip: Create with prefix and extension → Parse preserves all")]
+    public void RoundTrip_WithPrefixAndExtension_PreservesAll()
+    {
+        // Arrange
+        var original = BlobId.New("uploads", "users/photos", "jpg");
+
+        // Act
+        var parsed = BlobId.Parse(original.ToString());
+
+        // Assert
+        parsed.Value.ShouldBe(original.Value);
+        parsed.BucketName.ShouldBe(original.BucketName);
+        parsed.ObjectId.ShouldBe(original.ObjectId);
+        parsed.NamePrefix.ShouldBe(original.NamePrefix);
+        parsed.Extension.ShouldBe(original.Extension);
+        parsed.ObjectKey.ShouldBe(original.ObjectKey);
+    }
+
     [Fact(DisplayName = "Round-trip: Parse → ToString → Parse preserves value")]
     public void RoundTrip_ParseToStringParse_PreservesValue()
     {

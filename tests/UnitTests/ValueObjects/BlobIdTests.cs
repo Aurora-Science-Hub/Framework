@@ -70,5 +70,115 @@ public sealed partial class BlobIdTests
         // Assert
         blobId1.ObjectId.ShouldNotBe(blobId2.ObjectId);
     }
+
+    [Fact(DisplayName = "New: Creates BlobId with extension")]
+    public void New_WithExtension_CreatesBlobIdWithExtension()
+    {
+        // Arrange
+        var bucketName = "test-bucket";
+        var extension = "pdf";
+
+        // Act
+        var blobId = BlobId.New(bucketName, extension);
+
+        // Assert
+        blobId.ShouldNotBeNull();
+        blobId.BucketName.ShouldBe(bucketName);
+        blobId.Extension.ShouldBe(extension);
+        blobId.NamePrefix.ShouldBeNull();
+        blobId.ObjectKey.ShouldEndWith($".{extension}");
+        blobId.Value.ShouldContain($".{extension}");
+    }
+
+    [Theory(DisplayName = "New: Normalizes extension correctly")]
+    [InlineData(".pdf", "pdf")]
+    [InlineData("PDF", "pdf")]
+    [InlineData(".JPG", "jpg")]
+    [InlineData("png", "png")]
+    public void New_WithExtension_NormalizesExtension(string input, string expected)
+    {
+        // Act
+        var blobId = BlobId.New("test-bucket", input);
+
+        // Assert
+        blobId.Extension.ShouldBe(expected);
+    }
+
+    [Fact(DisplayName = "New: Creates BlobId with prefix and extension")]
+    public void New_WithPrefixAndExtension_CreatesBlobId()
+    {
+        // Arrange
+        var bucketName = "uploads";
+        var prefix = "users/2024/photos";
+        var extension = "jpg";
+
+        // Act
+        var blobId = BlobId.New(bucketName, prefix, extension);
+
+        // Assert
+        blobId.ShouldNotBeNull();
+        blobId.BucketName.ShouldBe(bucketName);
+        blobId.NamePrefix.ShouldBe(prefix);
+        blobId.Extension.ShouldBe(extension);
+        blobId.ObjectKey.ShouldStartWith($"{prefix}/");
+        blobId.ObjectKey.ShouldEndWith($".{extension}");
+    }
+
+    [Theory(DisplayName = "New: Normalizes prefix correctly")]
+    [InlineData("/users/photos/", "users/photos")]
+    [InlineData("  users/photos  ", "users/photos")]
+    [InlineData("users", "users")]
+    public void New_WithPrefix_NormalizesPrefix(string input, string expected)
+    {
+        // Act
+        var blobId = BlobId.New("test-bucket", input, null);
+
+        // Assert
+        blobId.NamePrefix.ShouldBe(expected);
+    }
+
+    [Theory(DisplayName = "New: Throws ArgumentException for invalid extension")]
+    [InlineData("pdf_doc")] // Contains delimiter
+    [InlineData("pdf/doc")] // Contains path separator
+    public void New_WithInvalidExtension_ThrowsArgumentException(string extension)
+    {
+        // Act & Assert
+        Should.Throw<ArgumentException>(() => BlobId.New("test-bucket", extension));
+    }
+
+    [Theory(DisplayName = "New: Throws ArgumentException for invalid prefix")]
+    [InlineData("users_photos")] // Contains delimiter
+    public void New_WithInvalidPrefix_ThrowsArgumentException(string prefix)
+    {
+        // Act & Assert
+        Should.Throw<ArgumentException>(() => BlobId.New("test-bucket", prefix, "jpg"));
+    }
+
+    [Fact(DisplayName = "New: Creates BlobId with null extension and prefix")]
+    public void New_WithNullExtensionAndPrefix_CreatesBlobId()
+    {
+        // Act
+        var blobId = BlobId.New("test-bucket", null, null);
+
+        // Assert
+        blobId.NamePrefix.ShouldBeNull();
+        blobId.Extension.ShouldBeNull();
+        blobId.ObjectKey.ShouldBe(blobId.ObjectId);
+    }
+
+    [Fact(DisplayName = "ObjectKey: Returns correct format with prefix and extension")]
+    public void ObjectKey_WithPrefixAndExtension_ReturnsCorrectFormat()
+    {
+        // Arrange
+        var blobId = BlobId.New("bucket", "folder/subfolder", "txt");
+
+        // Act
+        var objectKey = blobId.ObjectKey;
+
+        // Assert
+        objectKey.ShouldStartWith("folder/subfolder/");
+        objectKey.ShouldEndWith(".txt");
+        objectKey.ShouldContain(blobId.ObjectId);
+    }
 }
 

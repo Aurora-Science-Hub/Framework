@@ -27,6 +27,9 @@ public sealed partial class BlobIdTests
     [InlineData("blb_my.bucket_xyz789")]
     [InlineData("blb_abc_test")]
     [InlineData("blb_my-test-bucket_id123")]
+    [InlineData("blb_bucket_abc123.pdf")]
+    [InlineData("blb_bucket_folder/abc123")]
+    [InlineData("blb_bucket_folder/subfolder/abc123.jpg")]
     public void Parse_WithValidFormats_ReturnsBlobId(string text)
     {
         // Act
@@ -35,6 +38,55 @@ public sealed partial class BlobIdTests
         // Assert
         parsed.ShouldNotBeNull();
         parsed.Value.ShouldBe(text);
+    }
+
+    [Fact(DisplayName = "Parse: Correctly parses BlobId with extension")]
+    public void Parse_WithExtension_ParsesCorrectly()
+    {
+        // Arrange
+        var text = "blb_test-bucket_abc123.pdf";
+
+        // Act
+        var parsed = BlobId.Parse(text);
+
+        // Assert
+        parsed.BucketName.ShouldBe("test-bucket");
+        parsed.ObjectId.ShouldBe("abc123");
+        parsed.Extension.ShouldBe("pdf");
+        parsed.NamePrefix.ShouldBeNull();
+    }
+
+    [Fact(DisplayName = "Parse: Correctly parses BlobId with prefix")]
+    public void Parse_WithPrefix_ParsesCorrectly()
+    {
+        // Arrange
+        var text = "blb_test-bucket_users/photos/abc123";
+
+        // Act
+        var parsed = BlobId.Parse(text);
+
+        // Assert
+        parsed.BucketName.ShouldBe("test-bucket");
+        parsed.ObjectId.ShouldBe("abc123");
+        parsed.NamePrefix.ShouldBe("users/photos");
+        parsed.Extension.ShouldBeNull();
+    }
+
+    [Fact(DisplayName = "Parse: Correctly parses BlobId with prefix and extension")]
+    public void Parse_WithPrefixAndExtension_ParsesCorrectly()
+    {
+        // Arrange
+        var text = "blb_uploads_users/2024/photos/abc123.jpg";
+
+        // Act
+        var parsed = BlobId.Parse(text);
+
+        // Assert
+        parsed.BucketName.ShouldBe("uploads");
+        parsed.ObjectId.ShouldBe("abc123");
+        parsed.NamePrefix.ShouldBe("users/2024/photos");
+        parsed.Extension.ShouldBe("jpg");
+        parsed.ObjectKey.ShouldBe("users/2024/photos/abc123.jpg");
     }
 
     [Theory(DisplayName = "Parse: Throws FormatException for invalid strings")]

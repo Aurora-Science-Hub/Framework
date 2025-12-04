@@ -12,7 +12,7 @@ public sealed class BlobIdValueConverter : ValueConverter<BlobId, string>
         : base(
             input => input.Value,
             output => BlobId.Parse(output),
-            new ConverterMappingHints(size: 255))
+            new ConverterMappingHints(size: BlobId.MaxLength))
     {
     }
 }
