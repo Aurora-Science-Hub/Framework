@@ -1,4 +1,3 @@
-// filepath: /Users/Alex/Source/SWeather/SWeather-framework/src/EntityFramework/Converters/ValueObjects/NullableBlobIdValueConverter.cs
 using AuroraScienceHub.Framework.ValueObjects.Blobs;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 

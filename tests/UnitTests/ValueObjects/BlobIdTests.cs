@@ -175,5 +175,61 @@ public sealed partial class BlobIdTests
         objectKey.ShouldStartWith("folder/subfolder/");
         objectKey.ShouldEndWith(".txt");
     }
+
+    [Fact(DisplayName = "FileName: Returns file name with extension when prefix exists")]
+    public void FileName_WithPrefix_ReturnsFileName()
+    {
+        // Arrange
+        var blobId = BlobId.New("bucket", "users/photos", "jpg");
+
+        // Act
+        var fileName = blobId.FileName;
+
+        // Assert
+        fileName.ShouldNotContain("/");
+        fileName.ShouldEndWith(".jpg");
+    }
+
+    [Fact(DisplayName = "FileName: Returns ObjectKey when no prefix")]
+    public void FileName_WithoutPrefix_ReturnsObjectKey()
+    {
+        // Arrange
+        var blobId = BlobId.New("bucket", "pdf");
+
+        // Act
+        var fileName = blobId.FileName;
+
+        // Assert
+        fileName.ShouldBe(blobId.ObjectKey);
+        fileName.ShouldEndWith(".pdf");
+    }
+
+    [Fact(DisplayName = "FileName: Returns ObjectKey when no prefix and no extension")]
+    public void FileName_WithoutPrefixAndExtension_ReturnsObjectKey()
+    {
+        // Arrange
+        var blobId = BlobId.New("bucket");
+
+        // Act
+        var fileName = blobId.FileName;
+
+        // Assert
+        fileName.ShouldBe(blobId.ObjectKey);
+        fileName.ShouldNotContain("/");
+        fileName.ShouldNotContain(".");
+    }
+
+    [Fact(DisplayName = "FileName: Parsed BlobId extracts FileName correctly")]
+    public void FileName_ParsedBlobId_ExtractsCorrectly()
+    {
+        // Arrange
+        var text = "blb_bucket_users/2024/photos/abc123.jpg";
+
+        // Act
+        var blobId = BlobId.Parse(text);
+
+        // Assert
+        blobId.FileName.ShouldBe("abc123.jpg");
+    }
 }
 

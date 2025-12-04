@@ -50,6 +50,24 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     /// </remarks>
     public string ObjectKey { get; }
 
+    /// <summary>
+    /// File name extracted from ObjectKey (last segment after '/')
+    /// </summary>
+    /// <example>
+    /// For ObjectKey "users/photos/abc123.jpg" returns "abc123.jpg"
+    /// For ObjectKey "abc123.jpg" returns "abc123.jpg"
+    /// </example>
+    public string FileName
+    {
+        get
+        {
+            var lastSlashIndex = ObjectKey.LastIndexOf(PathSeparator);
+            return lastSlashIndex >= 0
+                ? ObjectKey[(lastSlashIndex + 1)..]
+                : ObjectKey;
+        }
+    }
+
     private static string BuildObjectKey(string uniqueId, string? namePrefix, string? extension)
     {
         var normalizedPrefix = NamePrefixNamingConvention.Normalize(namePrefix);
