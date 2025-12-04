@@ -22,17 +22,10 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     /// </summary>
     public const int MaxLength = 255;
 
-    private BlobId(
-        string bucketName,
-        string objectId,
-        string? namePrefix,
-        string? extension)
+    private BlobId(string bucketName, string objectKey)
     {
         BucketName = bucketName;
-        ObjectId = objectId;
-        NamePrefix = namePrefix;
-        Extension = extension;
-        ObjectKey = BuildObjectKey(objectId, namePrefix, extension);
+        ObjectKey = objectKey;
         Value = $"{Prefix}{Delimiter}{BucketName}{Delimiter}{ObjectKey}";
     }
 
@@ -42,7 +35,7 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     public string Value { get; }
 
     /// <summary>
-    /// Blob's bucket name
+    /// S3 bucket name
     /// </summary>
     /// <remarks>
     /// https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
@@ -50,43 +43,25 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
     public string BucketName { get; }
 
     /// <summary>
-    /// Blob's unique object identifier (base64url encoded GUID)
+    /// S3 object key (full path including prefix and extension)
     /// </summary>
     /// <remarks>
     /// https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html
     /// </remarks>
-    public string ObjectId { get; }
-
-    /// <summary>
-    /// Optional path prefix (folder structure)
-    /// </summary>
-    public string? NamePrefix { get; }
-
-    /// <summary>
-    /// Optional file extension (without dot)
-    /// </summary>
-    public string? Extension { get; }
-
-    /// <summary>
-    /// Full object key for S3: [prefix/]objectId[.extension]
-    /// </summary>
     public string ObjectKey { get; }
 
-    private static string BuildObjectKey(string objectId, string? namePrefix, string? extension)
+    private static string BuildObjectKey(string uniqueId, string? namePrefix, string? extension)
     {
-        var result = objectId;
+        var normalizedPrefix = NamePrefixNamingConvention.Normalize(namePrefix);
+        var normalizedExtension = ExtensionNamingConvention.Normalize(extension);
 
-        if (!string.IsNullOrEmpty(extension))
+        return (normalizedPrefix, normalizedExtension) switch
         {
-            result = $"{result}{ExtensionSeparator}{extension}";
-        }
-
-        if (!string.IsNullOrEmpty(namePrefix))
-        {
-            result = $"{namePrefix}{PathSeparator}{result}";
-        }
-
-        return result;
+            (null, null) => uniqueId,
+            (null, _) => $"{uniqueId}{ExtensionSeparator}{normalizedExtension}",
+            (_, null) => $"{normalizedPrefix}{PathSeparator}{uniqueId}",
+            _ => $"{normalizedPrefix}{PathSeparator}{uniqueId}{ExtensionSeparator}{normalizedExtension}"
+        };
     }
 
     /// <summary>
@@ -110,14 +85,10 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
         ValidateNamePrefix(namePrefix);
         ValidateExtension(extension);
 
-        var uniqueId = Guid.CreateVersion7();
-        var objectId = Base64Url.EncodeToString(uniqueId.ToByteArray());
+        var uniqueId = Base64Url.EncodeToString(Guid.CreateVersion7().ToByteArray());
+        var objectKey = BuildObjectKey(uniqueId, namePrefix, extension);
 
-        return new BlobId(
-            bucketName,
-            objectId,
-            NamePrefixNamingConvention.Normalize(namePrefix),
-            ExtensionNamingConvention.Normalize(extension));
+        return new BlobId(bucketName, objectKey);
     }
 
     private static void ValidateBucketName(string bucketName)
@@ -269,14 +240,14 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
 
         secondDelimiterIndex += firstDelimiterIndex;
 
-        var objectIdStart = secondDelimiterIndex + 1;
-        if (objectIdStart >= text.Length)
+        var objectKeyStart = secondDelimiterIndex + 1;
+        if (objectKeyStart >= text.Length)
         {
             return false;
         }
 
         ReadOnlySpan<char> bucketSpan = text.Slice(firstDelimiterIndex, secondDelimiterIndex - firstDelimiterIndex);
-        ReadOnlySpan<char> objectKeySpan = text.Slice(objectIdStart);
+        ReadOnlySpan<char> objectKeySpan = text.Slice(objectKeyStart);
 
         if (bucketSpan.IsEmpty || objectKeySpan.IsEmpty)
         {
@@ -288,41 +259,7 @@ public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
             return false;
         }
 
-        // Parse object key: [prefix/]objectId[.extension]
-        string? namePrefix = null;
-        string objectId;
-        string? extension = null;
-
-        var lastSlash = objectKeySpan.LastIndexOf(PathSeparator);
-        ReadOnlySpan<char> filePartSpan;
-
-        if (lastSlash >= 0)
-        {
-            namePrefix = objectKeySpan.Slice(0, lastSlash).ToString();
-            filePartSpan = objectKeySpan.Slice(lastSlash + 1);
-        }
-        else
-        {
-            filePartSpan = objectKeySpan;
-        }
-
-        var dotIndex = filePartSpan.LastIndexOf(ExtensionSeparator);
-        if (dotIndex >= 0)
-        {
-            objectId = filePartSpan.Slice(0, dotIndex).ToString();
-            extension = filePartSpan.Slice(dotIndex + 1).ToString();
-        }
-        else
-        {
-            objectId = filePartSpan.ToString();
-        }
-
-        if (string.IsNullOrEmpty(objectId))
-        {
-            return false;
-        }
-
-        result = new BlobId(bucketSpan.ToString(), objectId, namePrefix, extension);
+        result = new BlobId(bucketSpan.ToString(), objectKeySpan.ToString());
         return true;
     }
 

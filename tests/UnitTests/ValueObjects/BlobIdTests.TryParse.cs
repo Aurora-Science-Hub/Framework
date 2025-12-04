@@ -19,7 +19,7 @@ public sealed partial class BlobIdTests
         result.ShouldBeTrue();
         parsed.ShouldNotBeNull();
         parsed.BucketName.ShouldBe(original.BucketName);
-        parsed.ObjectId.ShouldBe(original.ObjectId);
+        parsed.ObjectKey.ShouldBe(original.ObjectKey);
     }
 
     [Theory(DisplayName = "TryParse (String): Returns false for invalid strings")]
@@ -63,7 +63,7 @@ public sealed partial class BlobIdTests
         result.ShouldBeTrue();
         parsed.ShouldNotBeNull();
         parsed.BucketName.ShouldBe(original.BucketName);
-        parsed.ObjectId.ShouldBe(original.ObjectId);
+        parsed.ObjectKey.ShouldBe(original.ObjectKey);
     }
 
     [Fact(DisplayName = "TryParse (Span): Returns false for empty span")]

@@ -18,7 +18,7 @@ public sealed partial class BlobIdTests
         // Assert
         parsed.Value.ShouldBe(original.Value);
         parsed.BucketName.ShouldBe(original.BucketName);
-        parsed.ObjectId.ShouldBe(original.ObjectId);
+        parsed.ObjectKey.ShouldBe(original.ObjectKey);
     }
 
     [Fact(DisplayName = "Round-trip: Create with extension → Parse preserves extension")]
@@ -32,8 +32,8 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.Value.ShouldBe(original.Value);
-        parsed.Extension.ShouldBe(original.Extension);
-        parsed.ObjectId.ShouldBe(original.ObjectId);
+        parsed.ObjectKey.ShouldBe(original.ObjectKey);
+        parsed.ObjectKey.ShouldEndWith(".pdf");
     }
 
     [Fact(DisplayName = "Round-trip: Create with prefix and extension → Parse preserves all")]
@@ -48,9 +48,6 @@ public sealed partial class BlobIdTests
         // Assert
         parsed.Value.ShouldBe(original.Value);
         parsed.BucketName.ShouldBe(original.BucketName);
-        parsed.ObjectId.ShouldBe(original.ObjectId);
-        parsed.NamePrefix.ShouldBe(original.NamePrefix);
-        parsed.Extension.ShouldBe(original.Extension);
         parsed.ObjectKey.ShouldBe(original.ObjectKey);
     }
 
@@ -67,7 +64,7 @@ public sealed partial class BlobIdTests
         // Assert
         secondParse.Value.ShouldBe(firstParse.Value);
         secondParse.BucketName.ShouldBe(firstParse.BucketName);
-        secondParse.ObjectId.ShouldBe(firstParse.ObjectId);
+        secondParse.ObjectKey.ShouldBe(firstParse.ObjectKey);
     }
 
     [Fact(DisplayName = "Edge case: Parses minimum valid bucket name (3 chars)")]
@@ -81,7 +78,7 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.BucketName.ShouldBe("abc");
-        parsed.ObjectId.ShouldBe("xyz");
+        parsed.ObjectKey.ShouldBe("xyz");
     }
 
     [Fact(DisplayName = "Edge case: Parses maximum valid bucket name (63 chars)")]
@@ -96,7 +93,7 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.BucketName.ShouldBe(bucketName);
-        parsed.ObjectId.ShouldBe("xyz");
+        parsed.ObjectKey.ShouldBe("xyz");
     }
 
     [Fact(DisplayName = "Edge case: Parses bucket name containing dots")]
@@ -110,7 +107,7 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.BucketName.ShouldBe("my.test.bucket");
-        parsed.ObjectId.ShouldBe("xyz123");
+        parsed.ObjectKey.ShouldBe("xyz123");
     }
 
     [Fact(DisplayName = "Edge case: Parses bucket name containing hyphens")]
@@ -124,7 +121,7 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.BucketName.ShouldBe("my-test-bucket");
-        parsed.ObjectId.ShouldBe("xyz123");
+        parsed.ObjectKey.ShouldBe("xyz123");
     }
 
     [Fact(DisplayName = "Edge case: Parses bucket name with dots and hyphens")]
@@ -138,22 +135,22 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.BucketName.ShouldBe("my-test.bucket-2024");
-        parsed.ObjectId.ShouldBe("xyz123");
+        parsed.ObjectKey.ShouldBe("xyz123");
     }
 
-    [Fact(DisplayName = "Edge case: Parses long ObjectId (100 chars)")]
-    public void Parse_WithLongObjectId_Works()
+    [Fact(DisplayName = "Edge case: Parses long ObjectKey (100 chars)")]
+    public void Parse_WithLongObjectKey_Works()
     {
         // Arrange
-        var longObjectId = new string('x', 100);
-        var text = $"blb_test-bucket_{longObjectId}";
+        var longObjectKey = new string('x', 100);
+        var text = $"blb_test-bucket_{longObjectKey}";
 
         // Act
         var parsed = BlobId.Parse(text);
 
         // Assert
         parsed.BucketName.ShouldBe("test-bucket");
-        parsed.ObjectId.ShouldBe(longObjectId);
+        parsed.ObjectKey.ShouldBe(longObjectKey);
     }
 
     [Fact(DisplayName = "Edge case: Rejects bucket name too long (64 chars)")]

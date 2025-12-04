@@ -18,7 +18,7 @@ public sealed partial class BlobIdTests
         // Assert
         parsed.ShouldNotBeNull();
         parsed.BucketName.ShouldBe(original.BucketName);
-        parsed.ObjectId.ShouldBe(original.ObjectId);
+        parsed.ObjectKey.ShouldBe(original.ObjectKey);
         parsed.Value.ShouldBe(original.Value);
     }
 
@@ -51,9 +51,8 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.BucketName.ShouldBe("test-bucket");
-        parsed.ObjectId.ShouldBe("abc123");
-        parsed.Extension.ShouldBe("pdf");
-        parsed.NamePrefix.ShouldBeNull();
+        parsed.ObjectKey.ShouldBe("abc123.pdf");
+        parsed.ObjectKey.ShouldEndWith(".pdf");
     }
 
     [Fact(DisplayName = "Parse: Correctly parses BlobId with prefix")]
@@ -67,9 +66,8 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.BucketName.ShouldBe("test-bucket");
-        parsed.ObjectId.ShouldBe("abc123");
-        parsed.NamePrefix.ShouldBe("users/photos");
-        parsed.Extension.ShouldBeNull();
+        parsed.ObjectKey.ShouldBe("users/photos/abc123");
+        parsed.ObjectKey.ShouldStartWith("users/photos/");
     }
 
     [Fact(DisplayName = "Parse: Correctly parses BlobId with prefix and extension")]
@@ -83,18 +81,17 @@ public sealed partial class BlobIdTests
 
         // Assert
         parsed.BucketName.ShouldBe("uploads");
-        parsed.ObjectId.ShouldBe("abc123");
-        parsed.NamePrefix.ShouldBe("users/2024/photos");
-        parsed.Extension.ShouldBe("jpg");
         parsed.ObjectKey.ShouldBe("users/2024/photos/abc123.jpg");
+        parsed.ObjectKey.ShouldStartWith("users/2024/photos/");
+        parsed.ObjectKey.ShouldEndWith(".jpg");
     }
 
     [Theory(DisplayName = "Parse: Throws FormatException for invalid strings")]
     [InlineData("")] // Empty string
     [InlineData("test-bucket_abc123")] // Missing prefix
-    [InlineData("blb_test-bucket")] // Missing object ID
+    [InlineData("blb_test-bucket")] // Missing object key
     [InlineData("blb__abc123")] // Empty bucket name
-    [InlineData("blb_test-bucket_")] // Empty object ID
+    [InlineData("blb_test-bucket_")] // Empty object key
     [InlineData("invalid_format")] // Wrong format
     [InlineData("blb_")] // Only prefix
     [InlineData("blb_TestBucket_abc")] // Invalid bucket name (uppercase)
@@ -126,7 +123,7 @@ public sealed partial class BlobIdTests
         // Assert
         parsed.ShouldNotBeNull();
         parsed.BucketName.ShouldBe(original.BucketName);
-        parsed.ObjectId.ShouldBe(original.ObjectId);
+        parsed.ObjectKey.ShouldBe(original.ObjectKey);
     }
 
     [Theory(DisplayName = "Parse (Span): Throws FormatException for invalid spans")]
