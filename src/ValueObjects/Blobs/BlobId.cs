@@ -11,8 +11,8 @@ namespace AuroraScienceHub.Framework.ValueObjects.Blobs;
 /// </remarks>
 public sealed class BlobId : IEquatable<BlobId>, ISpanParsable<BlobId>
 {
-    private const string Delimiter = "_";
     private const string Prefix = "blb";
+    private const string Delimiter = "_";
     private const string PrefixWithDelimiter = Prefix + Delimiter;
     private const char PathSeparator = '/';
     private const char ExtensionSeparator = '.';

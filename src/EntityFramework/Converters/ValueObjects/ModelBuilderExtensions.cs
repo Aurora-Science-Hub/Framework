@@ -1,6 +1,6 @@
+using System.Reflection;
 using AuroraScienceHub.Framework.ValueObjects.Blobs;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace AuroraScienceHub.Framework.EntityFramework.Converters.ValueObjects;
 
@@ -9,11 +9,6 @@ namespace AuroraScienceHub.Framework.EntityFramework.Converters.ValueObjects;
 /// </summary>
 public static class ModelBuilderExtensions
 {
-    private static readonly Dictionary<Type, (Type NonNullable, Type Nullable)> s_converters = new()
-    {
-        { typeof(BlobId), (typeof(BlobIdValueConverter), typeof(NullableBlobIdValueConverter)) },
-    };
-
     /// <summary>
     /// Applies value object converters for all registered value object types.
     /// Supports both nullable and non-nullable value object properties.
@@ -24,20 +19,20 @@ public static class ModelBuilderExtensions
         {
             foreach (var property in entityType.GetProperties())
             {
-                var propertyType = property.ClrType;
-
-                // For reference types, check if the property is nullable via NullabilityInfoContext
-                if (s_converters.TryGetValue(propertyType, out var converterTypes))
+                if (property.ClrType != typeof(BlobId))
                 {
-                    var isNullable = IsNullableReferenceType(entityType.ClrType, property.Name);
-                    var converterType = isNullable ? converterTypes.Nullable : converterTypes.NonNullable;
-                    property.SetValueConverter(converterType);
+                    continue;
                 }
+
+                var isNullable = IsNullableProperty(entityType.ClrType, property.Name);
+                property.SetValueConverter(isNullable
+                    ? typeof(NullableBlobIdValueConverter)
+                    : typeof(BlobIdValueConverter));
             }
         }
     }
 
-    private static bool IsNullableReferenceType(Type entityType, string propertyName)
+    private static bool IsNullableProperty(Type entityType, string propertyName)
     {
         var propertyInfo = entityType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         if (propertyInfo == null)
@@ -45,10 +40,7 @@ public static class ModelBuilderExtensions
             return false;
         }
 
-        var nullabilityContext = new NullabilityInfoContext();
-        var nullabilityInfo = nullabilityContext.Create(propertyInfo);
-
-        return nullabilityInfo.WriteState == NullabilityState.Nullable
-            || nullabilityInfo.ReadState == NullabilityState.Nullable;
+        var nullabilityInfo = new NullabilityInfoContext().Create(propertyInfo);
+        return nullabilityInfo.ReadState == NullabilityState.Nullable;
     }
 }
