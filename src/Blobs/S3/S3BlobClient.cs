@@ -31,6 +31,28 @@ internal sealed class S3BlobClient : IBlobClient
         CancellationToken cancellationToken = default)
         => AddFileAsync(_options.RequiredBucket, fileName, uploadStream, contentType, metadata, cancellationToken);
 
+    public Task<BlobId> AddFileAsync(
+        string fileName,
+        byte[] data,
+        string? contentType = null,
+        IReadOnlyDictionary<string, string>? metadata = null,
+        CancellationToken cancellationToken = default)
+        => AddFileAsync(_options.RequiredBucket, fileName, data, contentType, metadata, cancellationToken);
+
+    public Task<BlobId> AddFileAsync(
+        string bucket,
+        string fileName,
+        byte[] data,
+        string? contentType = null,
+        IReadOnlyDictionary<string, string>? metadata = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        var stream = new MemoryStream(data, writable: false);
+        return AddFileAsync(bucket, fileName, stream, contentType, metadata, cancellationToken);
+    }
+
     public async Task<BlobId> AddFileAsync(
         string bucket,
         string fileName,

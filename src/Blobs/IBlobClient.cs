@@ -71,6 +71,63 @@ public interface IBlobClient
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Uploads a file from a byte array to the specified bucket.
+    /// </summary>
+    /// <param name="bucket">The name of the bucket where the file will be stored.</param>
+    /// <param name="fileName">
+    /// The original file name. The file extension will be extracted and used in the blob identifier.
+    /// This name is also stored in the blob metadata for future reference.
+    /// </param>
+    /// <param name="data">The byte array containing the file data to upload.</param>
+    /// <param name="contentType">
+    /// The MIME type of the file (e.g., "image/jpeg", "application/pdf").
+    /// If not specified, defaults to "application/octet-stream".
+    /// </param>
+    /// <param name="metadata">
+    /// Optional user-defined metadata to associate with the blob as key-value pairs.
+    /// These will be stored as S3 object metadata and can be retrieved later.
+    /// </param>
+    /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+    /// <returns>A <see cref="BlobId"/> that uniquely identifies the uploaded blob.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="bucket"/> or <paramref name="fileName"/> is null or whitespace.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="data"/> is null.</exception>
+    Task<BlobId> AddFileAsync(
+        string bucket,
+        string fileName,
+        byte[] data,
+        string? contentType = null,
+        IReadOnlyDictionary<string, string>? metadata = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Uploads a file from a byte array to the default bucket configured in the storage options.
+    /// </summary>
+    /// <param name="fileName">
+    /// The original file name. The file extension will be extracted and used in the blob identifier.
+    /// This name is also stored in the blob metadata for future reference.
+    /// </param>
+    /// <param name="data">The byte array containing the file data to upload.</param>
+    /// <param name="contentType">
+    /// The MIME type of the file (e.g., "image/jpeg", "application/pdf").
+    /// If not specified, defaults to "application/octet-stream".
+    /// </param>
+    /// <param name="metadata">
+    /// Optional user-defined metadata to associate with the blob as key-value pairs.
+    /// These will be stored as S3 object metadata and can be retrieved later.
+    /// </param>
+    /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+    /// <returns>A <see cref="BlobId"/> that uniquely identifies the uploaded blob.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="fileName"/> is null or whitespace.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="data"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the default bucket is not configured.</exception>
+    Task<BlobId> AddFileAsync(
+        string fileName,
+        byte[] data,
+        string? contentType = null,
+        IReadOnlyDictionary<string, string>? metadata = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Downloads a blob and loads its entire content into memory as a byte array.
     /// </summary>
     /// <param name="blobId">The unique identifier of the blob to retrieve.</param>
