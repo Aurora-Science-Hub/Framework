@@ -31,5 +31,10 @@ public sealed record BlobMetadata
     /// The ETag of the blob (usually MD5 hash)
     /// </summary>
     public string? ETag { get; init; }
+
+    /// <summary>
+    /// Custom user-defined metadata associated with the blob
+    /// </summary>
+    public IReadOnlyDictionary<string, string>? Metadata { get; init; }
 }
 

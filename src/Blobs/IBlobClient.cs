@@ -12,12 +12,14 @@ public interface IBlobClient
         string fileName,
         Stream uploadStream,
         string? contentType = null,
+        IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default);
 
     Task<BlobId> AddFileAsync(
         string fileName,
         Stream uploadStream,
         string? contentType = null,
+        IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default);
 
     Task<(BlobMetadata Metadata, byte[] Content)> GetAsync(
