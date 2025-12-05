@@ -7,30 +7,41 @@ namespace AuroraScienceHub.Framework.Blobs;
 /// </summary>
 public interface IBlobClient
 {
-    public Task<BlobId> AddFileAsync(
+    Task<BlobId> AddFileAsync(
         string bucket,
         string fileName,
         Stream uploadStream,
+        string? contentType = null,
         CancellationToken cancellationToken = default);
 
-    public Task<BlobId> AddFileAsync(
+    Task<BlobId> AddFileAsync(
         string fileName,
         Stream uploadStream,
+        string? contentType = null,
         CancellationToken cancellationToken = default);
 
-    public Task<(BlobMetadata, byte[])> GetAsync(
+    Task<(BlobMetadata Metadata, byte[] Content)> GetAsync(
         BlobId blobId,
-        CancellationToken
-            cancellationToken = default);
+        CancellationToken cancellationToken = default);
 
-    public Task<BlobMetadata> ReadToStreamAsync(
+    Task<(BlobMetadata Metadata, Stream Content)> GetStreamAsync(
+        BlobId blobId,
+        CancellationToken cancellationToken = default);
+
+    Task<BlobMetadata> ReadToStreamAsync(
         BlobId blobId,
         Stream outputStream,
         CancellationToken cancellationToken = default);
 
-    public Task<BlobMetadata> GetMetadataAsync(BlobId blobId, CancellationToken cancellationToken = default);
+    Task<BlobMetadata> GetMetadataAsync(
+        BlobId blobId,
+        CancellationToken cancellationToken = default);
 
-    public Task<bool> IsExistsAsync(
+    Task<bool> ExistsAsync(
+        BlobId blobId,
+        CancellationToken cancellationToken = default);
+
+    Task DeleteAsync(
         BlobId blobId,
         CancellationToken cancellationToken = default);
 }
