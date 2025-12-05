@@ -1,4 +1,4 @@
-﻿using System.Buffers.Text;
+using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
 
 namespace AuroraScienceHub.Framework.ValueObjects.Blobs;

@@ -1,4 +1,4 @@
-﻿using Amazon.S3;
+using Amazon.S3;
 using AuroraScienceHub.Framework.Blobs.S3;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

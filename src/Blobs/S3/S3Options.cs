@@ -1,4 +1,4 @@
-﻿namespace AuroraScienceHub.Framework.Blobs.S3;
+namespace AuroraScienceHub.Framework.Blobs.S3;
 
 /// <summary>
 /// S3 storage options

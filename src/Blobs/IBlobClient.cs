@@ -1,4 +1,4 @@
-﻿using AuroraScienceHub.Framework.ValueObjects.Blobs;
+using AuroraScienceHub.Framework.ValueObjects.Blobs;
 
 namespace AuroraScienceHub.Framework.Blobs;
 

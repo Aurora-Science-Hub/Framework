@@ -1,4 +1,4 @@
-﻿using Amazon.S3;
+using Amazon.S3;
 using Amazon.S3.Model;
 using AuroraScienceHub.Framework.ValueObjects.Blobs;
 using Microsoft.Extensions.Logging;
@@ -325,7 +325,9 @@ internal sealed class S3BlobClient : IBlobClient
         foreach (var key in metadataCollection.Keys)
         {
             if (key.Equals(OriginalFileNameMetadataKey, StringComparison.OrdinalIgnoreCase))
-            {continue;}
+            {
+                continue;
+            }
 
             result[key] = metadataCollection[key];
         }
