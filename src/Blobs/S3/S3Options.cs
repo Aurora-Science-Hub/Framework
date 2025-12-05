@@ -31,6 +31,11 @@ public sealed class S3Options
     public string? SecretKey { get; set; }
 
     /// <summary>
+    /// Use HTTPS for S3 connections (default: false)
+    /// </summary>
+    public bool UseHttps { get; set; } = false;
+
+    /// <summary>
     /// Default bucket for storage
     /// </summary>
     public string RequiredBucket

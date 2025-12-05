@@ -33,6 +33,11 @@ public sealed record BlobMetadata
     public string? ETag { get; init; }
 
     /// <summary>
+    /// Original file name provided during upload
+    /// </summary>
+    public string? OriginalFileName { get; init; }
+
+    /// <summary>
     /// Custom user-defined metadata associated with the blob
     /// </summary>
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
