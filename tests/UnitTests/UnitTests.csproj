@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Blobs\Blobs.csproj" />
     <ProjectReference Include="..\..\src\Diagnostics\Diagnostics.csproj" />
     <ProjectReference Include="..\..\src\Http\Http.csproj" />
     <ProjectReference Include="..\..\src\ValueObjects\ValueObjects.csproj" />

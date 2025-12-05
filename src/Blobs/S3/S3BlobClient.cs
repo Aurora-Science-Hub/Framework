@@ -1,21 +1,25 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using AuroraScienceHub.Framework.ValueObjects.Blobs;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace AuroraScienceHub.Framework.Blobs.S3;
 
 internal sealed class S3BlobClient : IBlobClient
 {
-    private const string OriginalFileNameMetadataKey = "x-amz-meta-original-filename";
+    // AWS SDK automatically adds "x-amz-meta-" prefix, so we use just the key name
+    private const string OriginalFileNameMetadataKey = "original-filename";
 
     private readonly IAmazonS3 _s3Client;
     private readonly S3Options _options;
+    private readonly ILogger<S3BlobClient> _logger;
 
-    public S3BlobClient(IAmazonS3 s3Client, IOptions<S3Options> options)
+    public S3BlobClient(IAmazonS3 s3Client, IOptions<S3Options> options, ILogger<S3BlobClient> logger)
     {
         _s3Client = s3Client;
         _options = options.Value;
+        _logger = logger;
     }
 
     public Task<BlobId> AddFileAsync(
@@ -41,12 +45,19 @@ internal sealed class S3BlobClient : IBlobClient
         var extension = Path.GetExtension(fileName).TrimStart('.');
         var blobId = BlobId.New(bucket, string.IsNullOrEmpty(extension) ? null : extension);
 
+        // Auto-detect content type if not provided
+        var resolvedContentType = contentType ?? ContentTypeResolver.ResolveFromFileName(fileName);
+
+        _logger.LogDebug(
+            "Uploading file {FileName} to bucket {Bucket} with key {ObjectKey} and content type {ContentType}",
+            fileName, blobId.BucketName, blobId.ObjectKey, resolvedContentType);
+
         var request = new PutObjectRequest
         {
             BucketName = blobId.BucketName,
             Key = blobId.ObjectKey,
             InputStream = uploadStream,
-            ContentType = contentType ?? ContentTypes.Application.OctetStream
+            ContentType = resolvedContentType
         };
 
         request.Metadata[OriginalFileNameMetadataKey] = fileName;
@@ -59,7 +70,21 @@ internal sealed class S3BlobClient : IBlobClient
             }
         }
 
-        await _s3Client.PutObjectAsync(request, cancellationToken);
+        try
+        {
+            await _s3Client.PutObjectAsync(request, cancellationToken);
+
+            _logger.LogInformation(
+                "Successfully uploaded file {FileName} to {BlobId}",
+                fileName, blobId);
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to upload file {FileName} to bucket {Bucket}: {ErrorCode} - {ErrorMessage}",
+                fileName, blobId.BucketName, ex.ErrorCode, ex.Message);
+            throw;
+        }
 
         return blobId;
     }
@@ -68,31 +93,63 @@ internal sealed class S3BlobClient : IBlobClient
         BlobId blobId,
         CancellationToken cancellationToken = default)
     {
-        using var response = await _s3Client.GetObjectAsync(
-            blobId.BucketName,
-            blobId.ObjectKey,
-            cancellationToken);
+        _logger.LogDebug("Downloading blob {BlobId} into memory", blobId);
 
-        using var memoryStream = new MemoryStream();
-        await response.ResponseStream.CopyToAsync(memoryStream, cancellationToken);
+        try
+        {
+            using var response = await _s3Client.GetObjectAsync(
+                blobId.BucketName,
+                blobId.ObjectKey,
+                cancellationToken);
 
-        var metadata = CreateBlobMetadata(blobId, response);
+            using var memoryStream = new MemoryStream();
+            await response.ResponseStream.CopyToAsync(memoryStream, cancellationToken);
 
-        return (metadata, memoryStream.ToArray());
+            var metadata = CreateBlobMetadata(blobId, response);
+
+            _logger.LogInformation(
+                "Successfully downloaded blob {BlobId}, size: {Size} bytes",
+                blobId, metadata.Size);
+
+            return (metadata, memoryStream.ToArray());
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to download blob {BlobId}: {ErrorCode} - {ErrorMessage}",
+                blobId, ex.ErrorCode, ex.Message);
+            throw;
+        }
     }
 
     public async Task<(BlobMetadata Metadata, Stream Content)> GetStreamAsync(
         BlobId blobId,
         CancellationToken cancellationToken = default)
     {
-        var response = await _s3Client.GetObjectAsync(
-            blobId.BucketName,
-            blobId.ObjectKey,
-            cancellationToken);
+        _logger.LogDebug("Opening stream for blob {BlobId}", blobId);
 
-        var metadata = CreateBlobMetadata(blobId, response);
+        try
+        {
+            var response = await _s3Client.GetObjectAsync(
+                blobId.BucketName,
+                blobId.ObjectKey,
+                cancellationToken);
 
-        return (metadata, new S3ResponseStream(response));
+            var metadata = CreateBlobMetadata(blobId, response);
+
+            _logger.LogInformation(
+                "Successfully opened stream for blob {BlobId}, size: {Size} bytes",
+                blobId, metadata.Size);
+
+            return (metadata, new S3ResponseStream(response));
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to open stream for blob {BlobId}: {ErrorCode} - {ErrorMessage}",
+                blobId, ex.ErrorCode, ex.Message);
+            throw;
+        }
     }
 
     public async Task<BlobMetadata> ReadToStreamAsync(
@@ -100,43 +157,98 @@ internal sealed class S3BlobClient : IBlobClient
         Stream outputStream,
         CancellationToken cancellationToken = default)
     {
-        using var response = await _s3Client.GetObjectAsync(
-            blobId.BucketName,
-            blobId.ObjectKey,
-            cancellationToken);
+        _logger.LogDebug("Reading blob {BlobId} to output stream", blobId);
 
-        await response.ResponseStream.CopyToAsync(outputStream, cancellationToken);
+        try
+        {
+            using var response = await _s3Client.GetObjectAsync(
+                blobId.BucketName,
+                blobId.ObjectKey,
+                cancellationToken);
 
-        return CreateBlobMetadata(blobId, response);
+            await response.ResponseStream.CopyToAsync(outputStream, cancellationToken);
+
+            var metadata = CreateBlobMetadata(blobId, response);
+
+            _logger.LogInformation(
+                "Successfully read blob {BlobId} to output stream, size: {Size} bytes",
+                blobId, metadata.Size);
+
+            return metadata;
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to read blob {BlobId} to output stream: {ErrorCode} - {ErrorMessage}",
+                blobId, ex.ErrorCode, ex.Message);
+            throw;
+        }
     }
 
     public async Task<BlobMetadata> GetMetadataAsync(
         BlobId blobId,
         CancellationToken cancellationToken = default)
     {
-        var response = await _s3Client.GetObjectMetadataAsync(
-            blobId.BucketName,
-            blobId.ObjectKey,
-            cancellationToken);
+        _logger.LogDebug("Retrieving metadata for blob {BlobId}", blobId);
 
-        return CreateBlobMetadata(blobId, response);
+        try
+        {
+            var response = await _s3Client.GetObjectMetadataAsync(
+                blobId.BucketName,
+                blobId.ObjectKey,
+                cancellationToken);
+
+            var metadata = CreateBlobMetadata(blobId, response);
+
+            _logger.LogDebug(
+                "Successfully retrieved metadata for blob {BlobId}, size: {Size} bytes",
+                blobId, metadata.Size);
+
+            return metadata;
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to retrieve metadata for blob {BlobId}: {ErrorCode} - {ErrorMessage}",
+                blobId, ex.ErrorCode, ex.Message);
+            throw;
+        }
     }
 
     public async Task<bool> ExistsAsync(
         BlobId blobId,
         CancellationToken cancellationToken = default)
     {
+        _logger.LogDebug("Checking existence of blob {BlobId}", blobId);
+
         try
         {
             await _s3Client.GetObjectMetadataAsync(
                 blobId.BucketName,
                 blobId.ObjectKey,
                 cancellationToken);
+
+            _logger.LogDebug("Blob {BlobId} exists", blobId);
             return true;
         }
         catch (AmazonS3Exception ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
+            _logger.LogDebug("Blob {BlobId} does not exist", blobId);
             return false;
+        }
+        catch (AmazonS3Exception ex) when (ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+        {
+            _logger.LogWarning(
+                "Access denied when checking existence of blob {BlobId}: {ErrorMessage}",
+                blobId, ex.Message);
+            throw;
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError(ex,
+                "Error checking existence of blob {BlobId}: {ErrorCode} - {ErrorMessage}",
+                blobId, ex.ErrorCode, ex.Message);
+            throw;
         }
     }
 
@@ -144,10 +256,33 @@ internal sealed class S3BlobClient : IBlobClient
         BlobId blobId,
         CancellationToken cancellationToken = default)
     {
-        await _s3Client.DeleteObjectAsync(
-            blobId.BucketName,
-            blobId.ObjectKey,
-            cancellationToken);
+        _logger.LogDebug("Deleting blob {BlobId}", blobId);
+
+        try
+        {
+            // Check if blob exists before attempting deletion
+            var exists = await ExistsAsync(blobId, cancellationToken);
+
+            if (!exists)
+            {
+                _logger.LogWarning("Attempted to delete non-existent blob {BlobId}", blobId);
+                return;
+            }
+
+            await _s3Client.DeleteObjectAsync(
+                blobId.BucketName,
+                blobId.ObjectKey,
+                cancellationToken);
+
+            _logger.LogInformation("Successfully deleted blob {BlobId}", blobId);
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError(ex,
+                "Failed to delete blob {BlobId}: {ErrorCode} - {ErrorMessage}",
+                blobId, ex.ErrorCode, ex.Message);
+            throw;
+        }
     }
 
     private static BlobMetadata CreateBlobMetadata(BlobId blobId, GetObjectResponse response)
@@ -196,77 +331,5 @@ internal sealed class S3BlobClient : IBlobClient
         }
 
         return result.Count > 0 ? result : null;
-    }
-
-    private sealed class S3ResponseStream : Stream
-    {
-        private readonly GetObjectResponse _response;
-        private readonly Stream _innerStream;
-        private bool _disposed;
-
-        public S3ResponseStream(GetObjectResponse response)
-        {
-            _response = response ?? throw new ArgumentNullException(nameof(response));
-            _innerStream = response.ResponseStream ?? throw new ArgumentException("Response stream is null", nameof(response));
-        }
-
-        public override bool CanRead => _innerStream.CanRead;
-        public override bool CanSeek => _innerStream.CanSeek;
-        public override bool CanWrite => _innerStream.CanWrite;
-        public override long Length => _innerStream.Length;
-
-        public override long Position
-        {
-            get => _innerStream.Position;
-            set => _innerStream.Position = value;
-        }
-
-        public override void Flush() => _innerStream.Flush();
-        public override int Read(byte[] buffer, int offset, int count) => _innerStream.Read(buffer, offset, count);
-        public override long Seek(long offset, SeekOrigin origin) => _innerStream.Seek(offset, origin);
-        public override void SetLength(long value) => _innerStream.SetLength(value);
-        public override void Write(byte[] buffer, int offset, int count) => _innerStream.Write(buffer, offset, count);
-
-        public override Task FlushAsync(CancellationToken cancellationToken) => _innerStream.FlushAsync(cancellationToken);
-        public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-            => _innerStream.ReadAsync(buffer, offset, count, cancellationToken);
-        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-            => _innerStream.ReadAsync(buffer, cancellationToken);
-        public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-            => _innerStream.WriteAsync(buffer, offset, count, cancellationToken);
-        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
-            => _innerStream.WriteAsync(buffer, cancellationToken);
-
-        protected override void Dispose(bool disposing)
-        {
-            if (_disposed)
-            {
-                base.Dispose(disposing);
-                return;
-            }
-
-            if (disposing)
-            {
-                _innerStream.Dispose();
-                _response.Dispose();
-            }
-
-            _disposed = true;
-            base.Dispose(disposing);
-        }
-
-        public override async ValueTask DisposeAsync()
-        {
-            if (_disposed)
-            {
-                await base.DisposeAsync();
-                return;
-            }
-
-            await _innerStream.DisposeAsync().ConfigureAwait(false);
-            _response.Dispose();
-            _disposed = true;
-            await base.DisposeAsync().ConfigureAwait(false);
-        }
     }
 }
