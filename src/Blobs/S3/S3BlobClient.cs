@@ -34,6 +34,10 @@ internal sealed class S3BlobClient : IBlobClient
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(bucket);
+        ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
+        ArgumentNullException.ThrowIfNull(uploadStream);
+
         var extension = Path.GetExtension(fileName).TrimStart('.');
         var blobId = BlobId.New(bucket, string.IsNullOrEmpty(extension) ? null : extension);
 
@@ -64,7 +68,7 @@ internal sealed class S3BlobClient : IBlobClient
         BlobId blobId,
         CancellationToken cancellationToken = default)
     {
-        var response = await _s3Client.GetObjectAsync(
+        using var response = await _s3Client.GetObjectAsync(
             blobId.BucketName,
             blobId.ObjectKey,
             cancellationToken);
@@ -118,16 +122,7 @@ internal sealed class S3BlobClient : IBlobClient
             blobId.ObjectKey,
             cancellationToken);
 
-        return new BlobMetadata
-        {
-            Id = blobId,
-            Size = response.ContentLength,
-            ContentType = response.Headers.ContentType,
-            LastModified = response.LastModified,
-            ETag = response.ETag,
-            OriginalFileName = ExtractOriginalFileName(response.Metadata),
-            Metadata = ExtractMetadata(response.Metadata)
-        };
+        return CreateBlobMetadata(blobId, response);
     }
 
     public async Task<bool> ExistsAsync(
@@ -170,6 +165,18 @@ internal sealed class S3BlobClient : IBlobClient
             Metadata = ExtractMetadata(response.Metadata)
         };
 
+    private static BlobMetadata CreateBlobMetadata(BlobId blobId, GetObjectMetadataResponse response)
+        => new()
+        {
+            Id = blobId,
+            Size = response.ContentLength,
+            ContentType = response.Headers.ContentType,
+            LastModified = response.LastModified,
+            ETag = response.ETag,
+            OriginalFileName = ExtractOriginalFileName(response.Metadata),
+            Metadata = ExtractMetadata(response.Metadata)
+        };
+
     private static string? ExtractOriginalFileName(MetadataCollection metadataCollection)
         => metadataCollection.Keys.Contains(OriginalFileNameMetadataKey)
             ? metadataCollection[OriginalFileNameMetadataKey]
@@ -178,14 +185,19 @@ internal sealed class S3BlobClient : IBlobClient
     private static IReadOnlyDictionary<string, string>? ExtractMetadata(MetadataCollection metadataCollection)
     {
         if (metadataCollection.Count == 0)
+        {
             return null;
+        }
 
         var result = new Dictionary<string, string>(metadataCollection.Count);
         foreach (var key in metadataCollection.Keys)
         {
+            if (key.Equals(OriginalFileNameMetadataKey, StringComparison.OrdinalIgnoreCase))
+            {continue;}
+
             result[key] = metadataCollection[key];
         }
 
-        return result;
+        return result.Count > 0 ? result : null;
     }
 }
