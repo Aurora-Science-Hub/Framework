@@ -74,14 +74,11 @@ internal sealed class S3BlobClient : IBlobClient
         {
             await _s3Client.PutObjectAsync(request, cancellationToken);
 
-            _logger.LogInformation(
-                "Successfully uploaded file {FileName} to {BlobId}",
-                fileName, blobId);
+            _logger.LogInformation("Successfully uploaded file {FileName} to {BlobId}", fileName, blobId);
         }
         catch (AmazonS3Exception ex)
         {
-            _logger.LogError(ex,
-                "Failed to upload file {FileName} to bucket {Bucket}: {ErrorCode} - {ErrorMessage}",
+            _logger.LogError(ex, "Failed to upload file {FileName} to bucket {Bucket}: {ErrorCode} - {ErrorMessage}",
                 fileName, blobId.BucketName, ex.ErrorCode, ex.Message);
             throw;
         }

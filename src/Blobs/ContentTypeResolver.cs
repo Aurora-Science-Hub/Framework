@@ -101,25 +101,6 @@ internal static class ContentTypeResolver
     /// The MIME content type corresponding to the file extension.
     /// Returns "application/octet-stream" if the file name is null, empty, has no extension, or the extension is not recognized.
     /// </returns>
-    /// <remarks>
-    /// <para>
-    /// This method performs case-insensitive matching of file extensions against a predefined mapping of MIME types.
-    /// It handles various file categories:
-    /// </para>
-    /// <list type="bullet">
-    /// <item><description>Documents (PDF, JSON, XML, HTML, CSV, etc.)</description></item>
-    /// <item><description>Images (JPEG, PNG, GIF, WebP, SVG, BMP, TIFF, ICO)</description></item>
-    /// <item><description>Audio (MP3, WAV, OGG, FLAC, AAC, M4A)</description></item>
-    /// <item><description>Video (MP4, WebM, AVI, MOV, WMV, FLV, MKV, M4V)</description></item>
-    /// <item><description>Archives (ZIP, RAR, 7Z, TAR, GZ)</description></item>
-    /// <item><description>Microsoft Office documents (DOC, DOCX, XLS, XLSX, PPT, PPTX)</description></item>
-    /// <item><description>OpenDocument formats (ODT, ODS, ODP)</description></item>
-    /// <item><description>Fonts (WOFF, WOFF2, TTF, OTF, EOT)</description></item>
-    /// </list>
-    /// <para>
-    /// Example: <c>ResolveFromFileName("photo.jpg")</c> returns "image/jpeg".
-    /// </para>
-    /// </remarks>
     public static string ResolveFromFileName(string fileName)
     {
         if (string.IsNullOrWhiteSpace(fileName))

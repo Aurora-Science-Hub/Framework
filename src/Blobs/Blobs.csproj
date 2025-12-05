@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      TODO
+      Unified blob storage abstraction with S3-compatible storage support (MinIO, AWS S3).
     </PackageDescription>
-    <PackageTags>TODO</PackageTags>
+    <PackageTags>blobs;s3;minio;storage;aws</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

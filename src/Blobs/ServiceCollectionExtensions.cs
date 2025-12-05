@@ -6,14 +6,14 @@ using Microsoft.Extensions.Options;
 namespace AuroraScienceHub.Framework.Blobs;
 
 /// <summary>
-/// Регистрация сервисов
+/// Extensions for registering S3 blob storage services
 /// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Добавить сервисы блобов Minio
+    /// Adds S3 blob storage services to the service collection.
     /// </summary>
-    public static IServiceCollection AddMinioBlobs(this IServiceCollection services)
+    public static IServiceCollection AddS3Blobs(this IServiceCollection services)
     {
         services.AddOptions<S3Options>().BindConfiguration(S3Options.SectionKey);
 
