@@ -49,13 +49,13 @@ internal sealed class S3BlobClient : IBlobClient
             ContentType = contentType ?? ContentTypes.Application.OctetStream
         };
 
-        request.Metadata.Add(OriginalFileNameMetadataKey, fileName);
+        request.Metadata[OriginalFileNameMetadataKey] = fileName;
 
         if (metadata is not null)
         {
             foreach (var (key, value) in metadata)
             {
-                request.Metadata.Add(key, value);
+                request.Metadata[key] = value;
             }
         }
 
