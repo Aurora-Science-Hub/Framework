@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using AuroraScienceHub.Framework.ValueObjects.Blobs;
 
 namespace AuroraScienceHub.Framework.Blobs;
@@ -40,6 +41,6 @@ public sealed record BlobMetadata
     /// <summary>
     /// Custom user-defined metadata associated with the blob
     /// </summary>
-    public IReadOnlyDictionary<string, string>? Metadata { get; init; }
+    public IReadOnlyDictionary<string, string> Metadata { get; init; } = ImmutableDictionary<string, string>.Empty;
 }
 

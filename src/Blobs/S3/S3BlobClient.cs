@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Amazon.S3;
 using Amazon.S3.Model;
 using AuroraScienceHub.Framework.ValueObjects.Blobs;
@@ -315,11 +316,11 @@ internal sealed class S3BlobClient : IBlobClient
             ? metadataCollection[OriginalFileNameMetadataKey]
             : null;
 
-    private static IReadOnlyDictionary<string, string>? ExtractMetadata(MetadataCollection metadataCollection)
+    private static IReadOnlyDictionary<string, string> ExtractMetadata(MetadataCollection metadataCollection)
     {
         if (metadataCollection.Count == 0)
         {
-            return null;
+            return ImmutableDictionary<string, string>.Empty;
         }
 
         var result = new Dictionary<string, string>(metadataCollection.Count);
@@ -333,6 +334,6 @@ internal sealed class S3BlobClient : IBlobClient
             result[key] = metadataCollection[key];
         }
 
-        return result.Count > 0 ? result : null;
+        return result.Count > 0 ? result : ImmutableDictionary<string, string>.Empty;
     }
 }
