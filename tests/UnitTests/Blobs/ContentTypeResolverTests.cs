@@ -3,6 +3,9 @@ using Shouldly;
 
 namespace AuroraScienceHub.Framework.UnitTests.Blobs;
 
+/// <summary>
+/// Unit tests for <see cref="ContentTypeResolver"/>
+/// </summary>
 public class ContentTypeResolverTests
 {
     [Theory]

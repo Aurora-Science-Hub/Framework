@@ -91,7 +91,7 @@ internal static class ContentTypeResolver
             [".ttf"] = ContentTypes.Font.TrueType,
             [".otf"] = ContentTypes.Font.OpenType,
             [".eot"] = ContentTypes.Application.MsFontObject,
-        }.ToFrozenDictionary();
+        }.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Resolves the MIME content type from a file name based on its extension.
