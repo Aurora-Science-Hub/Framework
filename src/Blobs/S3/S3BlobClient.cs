@@ -39,7 +39,7 @@ internal sealed class S3BlobClient : IBlobClient
         CancellationToken cancellationToken = default)
         => AddFileAsync(_options.RequiredBucket, fileName, data, contentType, metadata, cancellationToken);
 
-    public Task<BlobId> AddFileAsync(
+    public async Task<BlobId> AddFileAsync(
         string bucket,
         string fileName,
         byte[] data,
@@ -49,8 +49,8 @@ internal sealed class S3BlobClient : IBlobClient
     {
         ArgumentNullException.ThrowIfNull(data);
 
-        var stream = new MemoryStream(data, writable: false);
-        return AddFileAsync(bucket, fileName, stream, contentType, metadata, cancellationToken);
+        await using var stream = new MemoryStream(data, writable: false);
+        return await AddFileAsync(bucket, fileName, stream, contentType, metadata, cancellationToken);
     }
 
     public async Task<BlobId> AddFileAsync(
