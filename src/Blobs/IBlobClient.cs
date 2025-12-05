@@ -99,12 +99,17 @@ public interface IBlobClient
     /// <param name="blobId">The unique identifier of the blob to retrieve.</param>
     /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
     /// <returns>
-    /// A tuple containing the blob's metadata and a <see cref="Stream"/> for reading the content.
+    /// A <see cref="BlobContent"/> containing the blob's metadata and a <see cref="Stream"/> for reading the content.
+    /// The returned object must be disposed to release resources.
     /// </returns>
     /// <remarks>
     /// <para>
-    /// The returned stream must be disposed by the caller to release resources properly.
-    /// The stream wraps the underlying S3 response and will dispose it when the stream is disposed.
+    /// The returned <see cref="BlobContent"/> must be disposed by the caller to release resources properly.
+    /// Use <c>await using</c> for automatic disposal:
+    /// <code>
+    /// await using var content = await blobClient.GetStreamAsync(blobId);
+    /// await content.Stream.CopyToAsync(outputStream);
+    /// </code>
     /// </para>
     /// <para>
     /// This method is recommended for large files as it allows streaming the content without loading it entirely into memory.
@@ -114,7 +119,7 @@ public interface IBlobClient
     /// </para>
     /// </remarks>
     /// <exception cref="Amazon.S3.AmazonS3Exception">Thrown when the blob does not exist or access is denied.</exception>
-    Task<(BlobMetadata Metadata, Stream Content)> GetStreamAsync(
+    Task<BlobContent> GetStreamAsync(
         BlobId blobId,
         CancellationToken cancellationToken = default);
 

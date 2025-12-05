@@ -122,7 +122,7 @@ internal sealed class S3BlobClient : IBlobClient
         }
     }
 
-    public async Task<(BlobMetadata Metadata, Stream Content)> GetStreamAsync(
+    public async Task<BlobContent> GetStreamAsync(
         BlobId blobId,
         CancellationToken cancellationToken = default)
     {
@@ -141,7 +141,11 @@ internal sealed class S3BlobClient : IBlobClient
                 "Successfully opened stream for blob {BlobId}, size: {Size} bytes",
                 blobId, metadata.Size);
 
-            return (metadata, new S3ResponseStream(response));
+            return new BlobContent
+            {
+                Metadata = metadata,
+                Stream = new S3ResponseStream(response)
+            };
         }
         catch (AmazonS3Exception ex)
         {
