@@ -20,6 +20,9 @@ public interface IBlobClient
     /// This name is also stored in the blob metadata for future reference.
     /// </param>
     /// <param name="uploadStream">The stream containing the file data to upload.</param>
+    /// <param name="namePrefix">
+    /// Optional prefix for organizing blobs in a folder-like structure (e.g., "users/photos").
+    /// </param>
     /// <param name="contentType">
     /// The MIME type of the file (e.g., "image/jpeg", "application/pdf").
     /// If not specified, defaults to "application/octet-stream".
@@ -38,6 +41,7 @@ public interface IBlobClient
         string bucket,
         string fileName,
         Stream uploadStream,
+        string? namePrefix = null,
         string? contentType = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default);
@@ -50,6 +54,9 @@ public interface IBlobClient
     /// This name is also stored in the blob metadata for future reference.
     /// </param>
     /// <param name="uploadStream">The stream containing the file data to upload.</param>
+    /// <param name="namePrefix">
+    /// Optional prefix for organizing blobs in a folder-like structure (e.g., "users/photos").
+    /// </param>
     /// <param name="contentType">
     /// The MIME type of the file (e.g., "image/jpeg", "application/pdf").
     /// If not specified, defaults to "application/octet-stream".
@@ -66,6 +73,7 @@ public interface IBlobClient
     Task<BlobId> AddFileAsync(
         string fileName,
         Stream uploadStream,
+        string? namePrefix = null,
         string? contentType = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default);
@@ -79,6 +87,9 @@ public interface IBlobClient
     /// This name is also stored in the blob metadata for future reference.
     /// </param>
     /// <param name="data">The byte array containing the file data to upload.</param>
+    /// <param name="namePrefix">
+    /// Optional prefix for organizing blobs in a folder-like structure (e.g., "users/photos").
+    /// </param>
     /// <param name="contentType">
     /// The MIME type of the file (e.g., "image/jpeg", "application/pdf").
     /// If not specified, defaults to "application/octet-stream".
@@ -95,6 +106,7 @@ public interface IBlobClient
         string bucket,
         string fileName,
         byte[] data,
+        string? namePrefix = null,
         string? contentType = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default);
@@ -107,6 +119,9 @@ public interface IBlobClient
     /// This name is also stored in the blob metadata for future reference.
     /// </param>
     /// <param name="data">The byte array containing the file data to upload.</param>
+    /// <param name="namePrefix">
+    /// Optional prefix for organizing blobs in a folder-like structure (e.g., "users/photos").
+    /// </param>
     /// <param name="contentType">
     /// The MIME type of the file (e.g., "image/jpeg", "application/pdf").
     /// If not specified, defaults to "application/octet-stream".
@@ -123,6 +138,7 @@ public interface IBlobClient
     Task<BlobId> AddFileAsync(
         string fileName,
         byte[] data,
+        string? namePrefix = null,
         string? contentType = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default);

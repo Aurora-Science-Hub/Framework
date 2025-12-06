@@ -26,23 +26,26 @@ internal sealed class S3BlobClient : IBlobClient
     public Task<BlobId> AddFileAsync(
         string fileName,
         Stream uploadStream,
+        string? namePrefix = null,
         string? contentType = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default)
-        => AddFileAsync(_options.RequiredBucket, fileName, uploadStream, contentType, metadata, cancellationToken);
+        => AddFileAsync(_options.RequiredBucket, fileName, uploadStream, namePrefix, contentType, metadata, cancellationToken);
 
     public Task<BlobId> AddFileAsync(
         string fileName,
         byte[] data,
+        string? namePrefix = null,
         string? contentType = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default)
-        => AddFileAsync(_options.RequiredBucket, fileName, data, contentType, metadata, cancellationToken);
+        => AddFileAsync(_options.RequiredBucket, fileName, data, namePrefix, contentType, metadata, cancellationToken);
 
     public async Task<BlobId> AddFileAsync(
         string bucket,
         string fileName,
         byte[] data,
+        string? namePrefix = null,
         string? contentType = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default)
@@ -50,13 +53,14 @@ internal sealed class S3BlobClient : IBlobClient
         ArgumentNullException.ThrowIfNull(data);
 
         await using var stream = new MemoryStream(data, writable: false);
-        return await AddFileAsync(bucket, fileName, stream, contentType, metadata, cancellationToken);
+        return await AddFileAsync(bucket, fileName, stream, namePrefix, contentType, metadata, cancellationToken);
     }
 
     public async Task<BlobId> AddFileAsync(
         string bucket,
         string fileName,
         Stream uploadStream,
+        string? namePrefix = null,
         string? contentType = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         CancellationToken cancellationToken = default)
@@ -66,7 +70,7 @@ internal sealed class S3BlobClient : IBlobClient
         ArgumentNullException.ThrowIfNull(uploadStream);
 
         var extension = Path.GetExtension(fileName).TrimStart('.');
-        var blobId = BlobId.New(bucket, string.IsNullOrEmpty(extension) ? null : extension);
+        var blobId = BlobId.New(bucket, namePrefix, string.IsNullOrEmpty(extension) ? null : extension);
 
         // Auto-detect content type if not provided
         var resolvedContentType = contentType ?? ContentTypeResolver.ResolveFromFileName(fileName);
