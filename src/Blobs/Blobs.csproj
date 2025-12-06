@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AuroraScienceHub.Framework.Blobs</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.Blobs</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      Unified blob storage abstraction with S3-compatible storage support (MinIO, AWS S3).
+    </PackageDescription>
+    <PackageTags>blobs;s3;minio;storage;aws</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ValueObjects\ValueObjects.csproj" />
+  </ItemGroup>
+
+</Project>
