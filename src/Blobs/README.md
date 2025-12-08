@@ -27,7 +27,7 @@ dotnet add package AuroraScienceHub.Framework.Blobs
 ```json
 {
   "S3": {
-    "ServiceUrl": "http://localhost:9000",
+    "ServerUrl": "http://localhost:9000",
     "AccessKey": "minioadmin",
     "SecretKey": "minioadmin",
     "Bucket": "default-bucket",
