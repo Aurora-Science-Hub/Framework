@@ -18,7 +18,7 @@ public sealed class S3Options
     /// <summary>
     /// S3 Endpoint URL
     /// </summary>
-    public string? ServiceUrl { get; set; }
+    public string? ServerUrl { get; set; }
 
     /// <summary>
     /// Access key (login)
@@ -44,8 +44,8 @@ public sealed class S3Options
     /// <summary>
     /// S3 Endpoint URL
     /// </summary>
-    public string RequiredServiceUrl
-        => ServiceUrl ?? throw new InvalidOperationException($"Configuration value «{nameof(ServiceUrl)}» is not set");
+    public string RequiredServerUrl
+        => ServerUrl ?? throw new InvalidOperationException($"Configuration value «{nameof(ServerUrl)}» is not set");
 
     /// <summary>
     /// Access key (login)

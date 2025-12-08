@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
             var options = sp.GetRequiredService<IOptions<S3Options>>().Value;
             var config = new AmazonS3Config
             {
-                ServiceURL = options.RequiredServiceUrl,
+                ServiceURL = options.RequiredServerUrl,
                 ForcePathStyle = true,
                 UseHttp = !options.UseHttps
             };
