@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AuroraScienceHub.Framework.Json;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;
@@ -98,6 +99,7 @@ public static class HybridCacheExtensions
         this HybridCache cache,
         string key,
         ILogger logger,
+        JsonSerializerOptions? jsonSerializerOptions = null,
         CancellationToken cancellationToken = default)
         where T : class?
     {
@@ -111,7 +113,10 @@ public static class HybridCacheExtensions
             }
 
             logger.LogDebug("Cache hit for {CacheKey}", key);
-            var result = DefaultJsonSerializer.Deserialize<T?>(cachedData);
+
+            T? result = jsonSerializerOptions is null
+                 ? DefaultJsonSerializer.Deserialize<T?>(cachedData)
+                 : JsonSerializer.Deserialize<T?>(cachedData, jsonSerializerOptions);
 
             return result ?? null;
         }
@@ -162,12 +167,16 @@ public static class HybridCacheExtensions
         ILogger logger,
         HybridCacheEntryOptions? cacheEntryOptions = null,
         IEnumerable<string>? tags = null,
+        JsonSerializerOptions? jsonSerializerOptions = null,
         CancellationToken cancellationToken = default)
         where TData : class
     {
         try
         {
-            var serializedData = DefaultJsonSerializer.Serialize(data);
+            var serializedData = jsonSerializerOptions is null
+                ? DefaultJsonSerializer.Serialize(data)
+                : JsonSerializer.Serialize(data, jsonSerializerOptions);
+
             await cache.SetAsync(
                     key,
                     serializedData,
