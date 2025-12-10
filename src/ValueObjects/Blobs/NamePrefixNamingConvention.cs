@@ -1,4 +1,3 @@
-// filepath: /Users/Alex/Source/SWeather/SWeather-framework/src/ValueObjects/Blobs/NamePrefixNamingConvention.cs
 namespace AuroraScienceHub.Framework.ValueObjects.Blobs;
 
 /// <summary>

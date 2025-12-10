@@ -288,15 +288,6 @@ internal sealed class S3BlobClient : IBlobClient
 
         try
         {
-            // Check if blob exists before attempting deletion
-            var exists = await ExistsAsync(blobId, cancellationToken);
-
-            if (!exists)
-            {
-                _logger.LogWarning("Attempted to delete non-existent blob {BlobId}", blobId);
-                return;
-            }
-
             await _s3Client.DeleteObjectAsync(
                 blobId.BucketName,
                 blobId.ObjectKey,

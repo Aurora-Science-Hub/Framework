@@ -114,11 +114,11 @@ public static class HybridCacheExtensions
 
             logger.LogDebug("Cache hit for {CacheKey}", key);
 
-            T? result = jsonSerializerOptions is null
+            var result = jsonSerializerOptions is null
                  ? DefaultJsonSerializer.Deserialize<T?>(cachedData)
                  : JsonSerializer.Deserialize<T?>(cachedData, jsonSerializerOptions);
 
-            return result ?? null;
+            return result;
         }
         catch (Exception ex)
         {
