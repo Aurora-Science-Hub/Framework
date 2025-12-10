@@ -12,7 +12,7 @@ public static class ModelConfigurationBuilderExtensions
     /// Applies value object converters for all registered value object types.
     /// Supports both nullable and non-nullable value object properties.
     /// </summary>
-    public static ModelConfigurationBuilder UseValueObjectsConvensions(this ModelConfigurationBuilder modelBuilder)
+    public static ModelConfigurationBuilder UseValueObjectsConventions(this ModelConfigurationBuilder modelBuilder)
     {
         UseBlobIdConvention(modelBuilder);
 
