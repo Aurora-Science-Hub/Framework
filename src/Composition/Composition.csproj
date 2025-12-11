@@ -12,4 +12,9 @@
     <PackageTags>modular-architecture;modularity;composition;dependency-injection;service-modules;architecture;patterns</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
 </Project>
