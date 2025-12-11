@@ -29,6 +29,18 @@ public static class GenericActivator
         return Expression.Lambda<Func<T>>(constructorExpression).Compile();
     }
 
+    /// <summary>
+    /// Build factory for type <typeparamref name="T"/>
+    /// </summary>
+    /// <param name="instanceType">Type of the instance</param>
+    /// <typeparam name="T">Return type</typeparam>
+    public static Func<T> BuildFactory<T>(Type instanceType)
+    {
+        var constructorExpression = Expression.New(instanceType);
+        var lambdaExpression = Expression.Lambda<Func<T>>(constructorExpression);
+        return lambdaExpression.Compile();
+    }
+
     private static class GenericFactoryCache<T>
     {
         public static readonly Func<T> CreateInstance = BuildConstructorExpression<T>();
