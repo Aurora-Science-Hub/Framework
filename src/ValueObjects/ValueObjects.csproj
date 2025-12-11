@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AuroraScienceHub.Framework.ValueObjects</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.ValueObjects</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package info">
+    <PackageDescription>
+      Value objects for blob storage operations, including support for MinIO and S3.
+    </PackageDescription>
+    <PackageTags>blob-storage;minio;s3;value-objects</PackageTags>
+  </PropertyGroup>
+
+</Project>

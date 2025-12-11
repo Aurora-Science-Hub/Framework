@@ -10,7 +10,10 @@ public sealed class IdentifierValueConverter<T> : ValueConverter<T, string>
     where T : IIdentifier<T>
 {
     public IdentifierValueConverter()
-        : base(input => input.Value, output => Parse(output))
+        : base(
+            input => input.Value,
+            output => Parse(output),
+            new ConverterMappingHints(size: 255))
     {
     }
 
