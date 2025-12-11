@@ -87,6 +87,7 @@ public static class ServiceCollectionExtensions
 
             var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
             var httpClient = httpClientFactory.CreateClient(GptClientHttpClientName);
+            httpClient.Timeout = gptOptions.Timeout;
 
             var client = new ChatClient(
                 model: gptOptions.RequiredModel,
