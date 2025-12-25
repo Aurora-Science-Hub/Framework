@@ -58,7 +58,7 @@ public abstract class BackgroundJobBase : BackgroundService
             }
             catch (Exception exception)
             {
-                Logger.LogInformation(exception, "Background {JobName} job failed", JobName);
+                Logger.LogError(exception, "Background {JobName} job failed", JobName);
             }
 
             // If the periodicity was set to InfiniteTimeSpan, then we stop the background service after the first task execution
