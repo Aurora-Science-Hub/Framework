@@ -9,7 +9,11 @@ public static class DateTimeRangeExtensions
     /// Enumerates all the minutes between the start and end date
     /// </summary>
     public static IEnumerable<DateTime> EnumerateMinutes(this DateTimeRange source)
-    {
-        return source.Start.EnumerateMinutesTo(source.End);
-    }
+        => source.Start.EnumerateMinutesTo(source.End);
+
+    /// <summary>
+    /// Enumerates all the hours between the start and end date
+    /// </summary>
+    public static IEnumerable<DateTime> EnumerateHours(this DateTimeRange source)
+        => source.Start.EnumerateHoursTo(source.End);
 }
