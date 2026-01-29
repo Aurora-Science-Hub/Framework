@@ -28,4 +28,27 @@ public sealed class DateTimeRangeExtensionsTests
             new DateTime(2021, 1, 1, 0, 2, 0)
         });
     }
+
+    [Fact]
+    public void EnumerateHours_ReturnsAllHours()
+    {
+        // Arrange
+        var start = new DateTime(2021, 1, 1, 0, 0, 0);
+        var end = new DateTime(2021, 1, 1, 5, 2, 0);
+        var range = new DateTimeRange(start, end);
+
+        // Act
+        var minutes = range.EnumerateHours().ToArray();
+
+        // Assert
+        minutes.ShouldBeEquivalentTo(new[]
+        {
+            new DateTime(2021, 1, 1, 0, 0, 0),
+            new DateTime(2021, 1, 1, 1, 1, 0),
+            new DateTime(2021, 1, 1, 2, 2, 0),
+            new DateTime(2021, 1, 1, 3, 2, 0),
+            new DateTime(2021, 1, 1, 4, 2, 0),
+            new DateTime(2021, 1, 1, 5, 2, 0)
+        });
+    }
 }
