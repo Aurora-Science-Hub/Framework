@@ -30,6 +30,17 @@ public sealed class DateTimeRangeExtensionsTests
     }
 
     [Fact]
+    public void EnumerateMinutes_ThrowsIf_StartGreaterThanEnd()
+    {
+        // Arrange
+        var start = new DateTime(2021, 1, 2, 2, 0, 0);
+        var end = new DateTime(2021, 1, 1, 0, 2, 0);
+
+        // Act & Assert
+        Should.Throw<ArgumentException>(() => new DateTimeRange(start, end).EnumerateMinutes());
+    }
+
+    [Fact]
     public void EnumerateHours_ReturnsAllHours()
     {
         // Arrange
@@ -50,5 +61,16 @@ public sealed class DateTimeRangeExtensionsTests
             new DateTime(2021, 1, 1, 4, 0, 0),
             new DateTime(2021, 1, 1, 5, 0, 0)
         });
+    }
+
+    [Fact]
+    public void EnumerateHours_ThrowsIf_StartGreaterThanEnd()
+    {
+        // Arrange
+        var start = new DateTime(2021, 1, 2, 2, 0, 0);
+        var end = new DateTime(2021, 1, 1, 0, 2, 0);
+
+        // Act & Assert
+        Should.Throw<ArgumentException>(() => new DateTimeRange(start, end).EnumerateHours());
     }
 }
