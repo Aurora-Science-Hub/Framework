@@ -38,10 +38,10 @@ public sealed class DateTimeRangeExtensionsTests
         var range = new DateTimeRange(start, end);
 
         // Act
-        var minutes = range.EnumerateHours().ToArray();
+        var hours = range.EnumerateHours().ToArray();
 
         // Assert
-        minutes.ShouldBeEquivalentTo(new[]
+        hours.ShouldBeEquivalentTo(new[]
         {
             new DateTime(2021, 1, 1, 0, 0, 0),
             new DateTime(2021, 1, 1, 1, 0, 0),
