@@ -10,11 +10,11 @@
     <br>
 </h1>
 <div align="center">
-    A comprehensive collection of reusable infrastructure packages for building modern .NET 9 applications.
+    A comprehensive collection of reusable infrastructure packages for building modern .NET 10 applications.
     <br><br>
 
-[![](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
-[![](https://img.shields.io/badge/C%23-13.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
+[![](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
+[![](https://img.shields.io/badge/C%23-14.0-239120)](https://learn.microsoft.com/en-us/dotnet/csharp/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Aurora-Science-Hub/Framework/blob/main/LICENSE)
 [![Build & test](https://github.com/Aurora-Science-Hub/Framework/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Aurora-Science-Hub/Framework/actions/workflows/dotnet.yml)
 
@@ -31,7 +31,7 @@
 
 ## Getting Started
 
-All packages are distributed via NuGet and target **.NET 9.0**. Install individual packages as needed:
+All packages are distributed via NuGet and target **.NET 10.0**. Install individual packages as needed:
 
 ```bash
 dotnet add package AuroraScienceHub.Framework.Composition
@@ -89,13 +89,13 @@ The framework follows these principles:
 - **Clean Architecture** - Clear separation of concerns with minimal coupling
 - **Domain-Driven Design** - Support for DDD patterns and practices
 - **Type Safety** - Strong typing with nullable reference types enabled
-- **Modern .NET** - Leverages latest .NET 9 features and patterns
+- **Modern .NET** - Leverages latest .NET 10 features and patterns
 
 ## Development
 
 ### Prerequisites
 
-- .NET 9.0 SDK or later
+- .NET 10.0 SDK or later
 - IDE with C# support (Rider, Visual Studio, VS Code)
 
 ### Building the Solution
