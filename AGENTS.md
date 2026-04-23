@@ -104,6 +104,11 @@ Refer to the individual `README.md` within each package directory for details.
 
 - .NET 10 SDK (see `global.json` for exact version)
 
+### Source of Truth
+
+- Treat `Directory.Build.props` and `global.json` as the authoritative source for SDK, target framework, nullable, warnings, and other build behavior.
+- If `README.md`, package docs, or GitHub Actions workflow files diverge from those settings, follow the build configuration and update the surrounding documentation or automation to match.
+
 ### Commands
 
 ```bash
@@ -167,6 +172,7 @@ Before completing any code change:
 - Use `IServiceCollection` extensions for DI registration
 - Mark public API surface intentionally — don't expose internals accidentally
 - Use XML documentation comments on all public types and members
+- Treat public APIs as versioned contracts for downstream consumers; prefer additive changes and explicitly evaluate source/binary compatibility before changing published APIs
 
 ### Dependencies
 
@@ -247,6 +253,7 @@ GitHub Actions workflow (`.github/workflows/dotnet.yml`):
 - ✅ Follow existing patterns in the codebase
 - ✅ Use XML doc comments on public API surface
 - ✅ Use `internal` and `sealed` modifiers by default; only expose what consumers need
+- ✅ Preserve public API compatibility for published packages unless a breaking change is explicitly requested
 - ✅ Validate changes compile with warnings-as-errors enabled
 - ✅ Use async/await for all I/O operations
 - ✅ Write tests for new functionality before or alongside implementation
@@ -263,6 +270,7 @@ GitHub Actions workflow (`.github/workflows/dotnet.yml`):
 - ❌ Leave empty catch blocks or swallow exceptions silently
 - ❌ Use `dynamic` or reflection where generics/interfaces suffice
 - ❌ Break public API contracts (this is a library — consumers depend on stability)
+- ❌ Rename, remove, or materially change behavior of published public APIs without explicit approval
 - ❌ Skip nullable annotations on public APIs
 
 ---
