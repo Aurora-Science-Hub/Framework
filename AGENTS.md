@@ -102,7 +102,7 @@ Refer to the individual `README.md` within each package directory for details.
 
 ### Prerequisites
 
-- .NET 10 SDK (see `global.json` for exact version)
+- .NET 10 SDK (see `global.json` for the required/minimum SDK version and roll-forward policy)
 
 ### Source of Truth
 
