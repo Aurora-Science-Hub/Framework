@@ -84,7 +84,7 @@ src/
 ├── <PackageName>/               # Each subfolder is a separate NuGet package
 │   └── <PackageName>.csproj     # Inherits shared props from Directory.Build.props
 tests/
-├── UnitTests/                   # xUnit v3 + AutoFixture + Shouldly
+├── UnitTests/                   # xUnit v3 + Moq + Shouldly
 
 Directory.Build.props            # Root build properties (TFM, lang, analyzers)
 Directory.Build.targets          # Build targets
