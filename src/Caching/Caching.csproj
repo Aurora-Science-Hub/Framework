@@ -9,7 +9,6 @@
     <PackageDescription>
       Caching extensions and utilities for Microsoft.Extensions.Caching with hybrid cache support and JSON serialization.
     </PackageDescription>
-    <RepositoryType>git</RepositoryType>
     <PackageTags>caching;cache;hybrid-cache;distributed-cache;memory-cache;performance</PackageTags>
   </PropertyGroup>
 

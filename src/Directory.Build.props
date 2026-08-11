@@ -8,14 +8,16 @@
 
   <PropertyGroup Label="Package info">
     <Authors>Aleksei Ermilov;Alexander Nikolaev;Aurora Science Hub</Authors>
+    <Copyright>Copyright 2024-$(CurrentYear) Aurora Science Hub</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/Aurora-Science-Hub/Framework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Aurora-Science-Hub/Framework.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>True</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIcon>Fw_icon.png</PackageIcon>
-    <Copyright>Copyright 2024-$([System.DateTime]::Now.ToString(yyyy)) Aurora Science Hub</Copyright>
+    <PackageTags>Framework;AuroraScienceHub;Science</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
