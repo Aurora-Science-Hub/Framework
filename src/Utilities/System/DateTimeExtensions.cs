@@ -33,7 +33,7 @@ public static class DateTimeExtensions
         if (value.Kind == DateTimeKind.Local)
         {
             throw new ArgumentException(
-                "TruncateToUtcMinute accepts only UTC or Unspecified DateTime; Local is rejected because the machine time zone is not trusted.",
+                "Only UTC or Unspecified DateTime is accepted; Local is rejected because the machine time zone is not trusted.",
                 nameof(value));
         }
 
