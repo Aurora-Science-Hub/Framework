@@ -83,6 +83,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 src/
 ├── <PackageName>/               # Each subfolder is a separate NuGet package
 │   └── <PackageName>.csproj     # Inherits shared props from Directory.Build.props
+└── Directory.Build.props        # Shared package metadata (IsPackable=True, authors, license, repo URLs)
 tests/
 ├── UnitTests/                   # xUnit v3 + Moq + Shouldly
 
@@ -154,6 +155,7 @@ Before completing any code change:
 - **Warnings as errors:** enabled (`TreatWarningsAsErrors`)
 - **Code style:** defined in `.editorconfig` (based on Azure SDK .NET guidelines)
 - **PDB:** embedded in assemblies
+- **SourceLink:** enabled for GitHub (`Microsoft.SourceLink.GitHub`); maps embedded PDBs to source
 
 ### Code Style
 
