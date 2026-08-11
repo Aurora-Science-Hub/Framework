@@ -9,6 +9,34 @@ namespace AuroraScienceHub.Framework.UnitTests.Utilities.System;
 public class DateTimeExtensionsTests
 {
     [Fact]
+    public void TruncateToUtcMinute_ClearsSecondsAndMilliseconds()
+    {
+        // Arrange
+        var value = new DateTime(2026, 8, 10, 18, 32, 2, 123, DateTimeKind.Utc);
+
+        // Act
+        var result = value.TruncateToUtcMinute();
+
+        // Assert
+        result.ShouldBe(new DateTime(2026, 8, 10, 18, 32, 0, DateTimeKind.Utc));
+    }
+
+    [Fact]
+    public void TruncateToUtcMinute_ConvertsLocalToUtc()
+    {
+        // Arrange
+        var value = new DateTime(2026, 8, 10, 21, 32, 2, DateTimeKind.Local);
+
+        // Act
+        var result = value.TruncateToUtcMinute();
+
+        // Assert
+        result.Kind.ShouldBe(DateTimeKind.Utc);
+        result.Second.ShouldBe(0);
+        result.Minute.ShouldBe(value.ToUniversalTime().Minute);
+    }
+
+    [Fact]
     public void EnumerateTo_WhenMinuteInterval_ReturnsCorrectSequence()
     {
         // Arrange
