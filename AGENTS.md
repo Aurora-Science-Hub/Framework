@@ -187,12 +187,9 @@ Before completing any code change:
 
 ## Package Versioning
 
-- Versioning is managed by **MinVer** based on git tags
-- Base version is defined in `Directory.Build.props` as `PackageBaseVersion`
-- Release versions are produced from semver git tags (e.g., `10.0.3`)
-- Pre-release versions are generated automatically on non-main branches
-
-**Do not** manually set `<Version>` or `<PackageVersion>` in project files.
+- The base version lives in **one place**: `Directory.Build.props` → `<PackageBaseVersion>10.0.6</PackageBaseVersion>`.
+- In CI the version is pinned via `-p:MinVerVersionOverride` (computed by the CI bash script from `PackageBaseVersion`): pre-release on non-`main` branches, stable on `main`/semver tags.
+- **To bump the version, change `PackageBaseVersion` in `Directory.Build.props` — nothing else.** Never set `<Version>` or `<PackageVersion>` in a `.csproj`.
 
 ---
 
