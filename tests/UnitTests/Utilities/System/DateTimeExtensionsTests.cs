@@ -8,6 +8,44 @@ namespace AuroraScienceHub.Framework.UnitTests.Utilities.System;
 /// </summary>
 public class DateTimeExtensionsTests
 {
+    [Fact(DisplayName = "TruncateToUtcMinute: clears seconds and milliseconds for UTC input")]
+    public void TruncateToUtcMinute_ClearsSecondsAndMilliseconds()
+    {
+        // Arrange
+        var value = new DateTime(2026, 8, 10, 18, 32, 2, 123, DateTimeKind.Utc);
+
+        // Act
+        var result = value.TruncateToUtcMinute();
+
+        // Assert
+        result.ShouldBe(new DateTime(2026, 8, 10, 18, 32, 0, DateTimeKind.Utc));
+    }
+
+    [Fact(DisplayName = "TruncateToUtcMinute: treats Unspecified as UTC and truncates")]
+    public void TruncateToUtcMinute_TreatsUnspecifiedAsUtc()
+    {
+        // Arrange
+        var value = new DateTime(2026, 8, 10, 18, 32, 45, 500, DateTimeKind.Unspecified);
+
+        // Act
+        var result = value.TruncateToUtcMinute();
+
+        // Assert
+        result.ShouldBe(new DateTime(2026, 8, 10, 18, 32, 0, DateTimeKind.Utc));
+    }
+
+    [Fact(DisplayName = "TruncateToUtcMinute: throws for Local DateTime")]
+    public void TruncateToUtcMinute_WhenLocal_ThrowsArgumentException()
+    {
+        // Arrange
+        var value = new DateTime(2026, 8, 10, 21, 32, 2, 123, DateTimeKind.Local);
+
+        // Act / Assert
+        var exception = Should.Throw<ArgumentException>(() => value.TruncateToUtcMinute());
+        exception.ParamName.ShouldBe("value");
+        exception.Message.ShouldContain("UTC or Unspecified");
+    }
+
     [Fact]
     public void EnumerateTo_WhenMinuteInterval_ReturnsCorrectSequence()
     {

@@ -21,6 +21,27 @@ public static class DateTimeExtensions
         };
 
     /// <summary>
+    /// Truncates a timestamp to the UTC minute (seconds and below cleared).
+    /// Accepts <see cref="DateTimeKind.Utc"/> and <see cref="DateTimeKind.Unspecified"/>
+    /// (Unspecified is treated as UTC). Throws for <see cref="DateTimeKind.Local"/> —
+    /// machine time zone must not be used for UTC minute normalization
+    /// </summary>
+    /// <param name="value">UTC or Unspecified timestamp</param>
+    /// <exception cref="ArgumentException">When <paramref name="value"/> has <see cref="DateTimeKind.Local"/></exception>
+    public static DateTime TruncateToUtcMinute(this DateTime value)
+    {
+        if (value.Kind == DateTimeKind.Local)
+        {
+            throw new ArgumentException(
+                "Only UTC or Unspecified DateTime is accepted; Local is rejected because the machine time zone is not trusted.",
+                nameof(value));
+        }
+
+        var utc = value.SetUtc();
+        return new DateTime(utc.Year, utc.Month, utc.Day, utc.Hour, utc.Minute, second: 0, DateTimeKind.Utc);
+    }
+
+    /// <summary>
     /// Enumerates all minutes between the start and end date
     /// </summary>
     public static IEnumerable<DateTime> EnumerateMinutesTo(this DateTime start, DateTime end)
