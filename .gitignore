@@ -354,3 +354,6 @@ MigrationBackup/
 
 # JetBrains IDEA files
 .idea/
+
+# Serena (AI agent workspace)
+.serena/
