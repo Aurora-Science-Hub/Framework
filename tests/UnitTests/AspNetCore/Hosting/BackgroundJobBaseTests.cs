@@ -111,7 +111,7 @@ public sealed class BackgroundJobBaseTests
     private static TestJob CreateJob(JobOptions jobOptions)
         => new(
             CreateLifetime(),
-            NullLogger<BackgroundJobBase>.Instance,
+            NullLogger<TestJob>.Instance,
             Options.Create<ApplicationModuleOptionsBase>(new DefaultApplicationModuleOptions
             {
                 ScheduledJobs = [jobOptions],
