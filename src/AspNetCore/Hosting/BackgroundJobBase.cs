@@ -43,29 +43,38 @@ public abstract class BackgroundJobBase : BackgroundService
 
         await RandomDelayAsync(stoppingToken).ConfigureAwait(false);
 
-        _timer = new PeriodicTimer(_options.Period ?? Timeout.InfiniteTimeSpan);
+        // Execute the job once right after the application starts, then keep executing it on every period.
+        await ExecuteOnceSafelyAsync(stoppingToken).ConfigureAwait(false);
+
+        var period = _options.Period;
+        if (period is null || period == Timeout.InfiniteTimeSpan)
+        {
+            // A job without a period runs once at application startup.
+            return;
+        }
+
+        _timer = new PeriodicTimer(period.Value);
 
         while (await _timer.WaitForNextTickAsync(stoppingToken)
                && !stoppingToken.IsCancellationRequested)
         {
-            try
-            {
-                Logger.LogInformation("Starting background job {JobName} (period: '{Period}')..", JobName, _options.Period);
+            await ExecuteOnceSafelyAsync(stoppingToken).ConfigureAwait(false);
+        }
+    }
 
-                await ExecuteOnceAsync(stoppingToken).ConfigureAwait(false);
+    private async Task ExecuteOnceSafelyAsync(CancellationToken stoppingToken)
+    {
+        try
+        {
+            Logger.LogInformation("Starting background job {JobName} (period: '{Period}')..", JobName, _options.Period);
 
-                Logger.LogInformation("Background job {JobName} completed successfully", JobName);
-            }
-            catch (Exception exception)
-            {
-                Logger.LogError(exception, "Background {JobName} job failed", JobName);
-            }
+            await ExecuteOnceAsync(stoppingToken).ConfigureAwait(false);
 
-            // If the periodicity was set to InfiniteTimeSpan, then we stop the background service after the first task execution
-            if (_timer.Period == Timeout.InfiniteTimeSpan)
-            {
-                return;
-            }
+            Logger.LogInformation("Background job {JobName} completed successfully", JobName);
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Background {JobName} job failed", JobName);
         }
     }
 
@@ -90,7 +99,10 @@ public abstract class BackgroundJobBase : BackgroundService
     public override void Dispose()
         => _timer?.Dispose();
 
-    private async Task RandomDelayAsync(CancellationToken cancellationToken)
+    /// <summary>
+    /// Delay applied before the first job execution to avoid all jobs starting at the same time
+    /// </summary>
+    protected virtual async Task RandomDelayAsync(CancellationToken cancellationToken)
     {
         const int minDelaySec = 5;
         const int maxDelaySec = 30;
