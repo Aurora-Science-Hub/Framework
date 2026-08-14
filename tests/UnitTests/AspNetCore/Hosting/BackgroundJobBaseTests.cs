@@ -120,17 +120,12 @@ public sealed class BackgroundJobBaseTests
     private static IHostApplicationLifetime CreateLifetime()
     {
         var lifetimeMock = new Mock<IHostApplicationLifetime>();
-        lifetimeMock.Setup(l => l.ApplicationStarted).Returns(CreateCanceledToken());
+        // A token that is already canceled but not backed by a CancellationTokenSource,
+        // so registering on it cannot throw ObjectDisposedException.
+        lifetimeMock.Setup(l => l.ApplicationStarted).Returns(new CancellationToken(canceled: true));
         lifetimeMock.Setup(l => l.ApplicationStopping).Returns(CancellationToken.None);
         lifetimeMock.Setup(l => l.ApplicationStopped).Returns(CancellationToken.None);
         return lifetimeMock.Object;
-    }
-
-    private static CancellationToken CreateCanceledToken()
-    {
-        using var cts = new CancellationTokenSource();
-        cts.Cancel();
-        return cts.Token;
     }
 
     private static async Task StopJobAsync(BackgroundJobBase job)
