@@ -16,7 +16,7 @@ public static class HttpClientExtensions
 {
     private const string RequiresUnreferencedCodeMessage =
         "JSON serialization and deserialization might require types that cannot be statically analyzed. " +
-        "Use the overload that takes a JsonTypeInfo or JsonSerializerContext, or make sure all of the required types are preserved.";
+        "Use the System.Net.Http.Json overloads that accept a JsonTypeInfo or JsonSerializerContext, or ensure all required types are preserved.";
 
     private const string RequiresDynamicCodeMessage =
         "JSON serialization and deserialization might require types that cannot be statically analyzed and might need runtime code generation. " +
