@@ -10,15 +10,15 @@ public sealed class ProxyOptions
     /// <summary>
     /// Proxy address
     /// </summary>
-    public Uri? Address { get; init; }
+    public Uri? Address { get; set; }
 
     /// <summary>
     /// User name
     /// </summary>
-    public string? UserName { get; init; }
+    public string? UserName { get; set; }
 
     /// <summary>
     /// Password
     /// </summary>
-    public string? Password { get; init; }
+    public string? Password { get; set; }
 }

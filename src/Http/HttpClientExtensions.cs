@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -13,8 +14,18 @@ namespace AuroraScienceHub.Framework.Http;
 /// </remarks>
 public static class HttpClientExtensions
 {
+    private const string RequiresUnreferencedCodeMessage =
+        "JSON serialization and deserialization might require types that cannot be statically analyzed. " +
+        "Use the overload that takes a JsonTypeInfo or JsonSerializerContext, or make sure all of the required types are preserved.";
+
+    private const string RequiresDynamicCodeMessage =
+        "JSON serialization and deserialization might require types that cannot be statically analyzed and might need runtime code generation. " +
+        "Use System.Text.Json source generation for native AOT applications.";
+
     private static readonly JsonSerializerOptions s_options = DefaultJsonSerializerOptions.Create();
 
+    [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+    [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<TResponse?> GetFromJsonOrDefaultAsync<TResponse>(
         this HttpClient client,
         Uri requestUri,
@@ -25,6 +36,8 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync<TResponse?>(cancellationToken).ConfigureAwait(false);
     }
 
+    [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+    [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<TResponse?> PostAsJsonAsync<TRequest, TResponse>(
         this HttpClient client,
         Uri requestUri,
@@ -36,6 +49,8 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync<TResponse?>(cancellationToken).ConfigureAwait(false);
     }
 
+    [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+    [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<T?> PostAsync<T>(
         this HttpClient client,
         Uri requestUri,
@@ -46,6 +61,8 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync<T?>(cancellationToken).ConfigureAwait(false);
     }
 
+    [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+    [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<TResponse?> ReadFromJsonOrDefaultAsync<TResponse>(
         this HttpResponseMessage response,
         CancellationToken cancellationToken = default)
@@ -62,6 +79,8 @@ public static class HttpClientExtensions
         return await response.Content.ReadFromJsonAsync<TResponse>(s_options, cancellationToken: cancellationToken);
     }
 
+    [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+    [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<TResponse?> PutAsJsonAsync<TRequest, TResponse>(
         this HttpClient client,
         Uri requestUri,
