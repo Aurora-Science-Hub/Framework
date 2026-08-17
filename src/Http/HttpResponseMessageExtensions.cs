@@ -1,5 +1,5 @@
 using System.Net.Mime;
-using AuroraScienceHub.Framework.Json;
+using System.Text.Json;
 
 namespace AuroraScienceHub.Framework.Http;
 
@@ -24,7 +24,7 @@ public static class HttpResponseMessageExtensions
         {
             var json = await response.Content.ReadAsStringAsync();
 
-            var problemDetails = DefaultJsonSerializer.Deserialize<ProblemDetails>(json);
+            var problemDetails = JsonSerializer.Deserialize(json, ProblemDetailsJsonContext.Default.ProblemDetails);
             if (problemDetails is not null)
             {
                 throw new ApiClientException(problemDetails);
