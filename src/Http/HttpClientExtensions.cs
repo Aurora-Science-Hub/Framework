@@ -8,10 +8,11 @@ using AuroraScienceHub.Framework.Json;
 namespace AuroraScienceHub.Framework.Http;
 
 /// <summary>
-/// Extension methods for <see cref="HttpClient"/> to simplify working with JSON serialization
+/// Extension methods for <see cref="HttpClient"/> and <see cref="HttpResponseMessage"/> to simplify working with JSON.
 /// </summary>
 /// <remarks>
-/// <see cref="DefaultJsonSerializer"/> is used for serialization and deserialization.
+/// Each method is provided as a source-generated <see cref="JsonTypeInfo{T}"/> overload (safe for trimming and NativeAOT)
+/// and as a reflection-based overload that uses <see cref="DefaultJsonSerializer"/> (requires opt-in for trimming/AOT).
 /// </remarks>
 public static class HttpClientExtensions
 {
@@ -25,10 +26,7 @@ public static class HttpClientExtensions
 
     private static readonly JsonSerializerOptions s_options = DefaultJsonSerializerOptions.Create();
 
-    // ---------------------------------------------------------------------------------
-    // AOT-safe overloads backed by source-generated JsonTypeInfo<T> metadata.
-    // ---------------------------------------------------------------------------------
-
+    /// <summary>Sends a GET request and deserializes the response body, returning <see langword="default"/> for an empty response.</summary>
     public static async Task<TResponse?> GetFromJsonOrDefaultAsync<TResponse>(
         this HttpClient client,
         Uri requestUri,
@@ -40,6 +38,7 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>Serializes the request body and sends it via POST, then deserializes the response body.</summary>
     public static async Task<TResponse?> PostAsJsonAsync<TRequest, TResponse>(
         this HttpClient client,
         Uri requestUri,
@@ -55,6 +54,7 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync(responseJsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>Sends a POST request without a body and deserializes the response body.</summary>
     public static async Task<T?> PostAsync<T>(
         this HttpClient client,
         Uri requestUri,
@@ -66,6 +66,7 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>Deserializes the response body, returning <see langword="default"/> for an empty response.</summary>
     public static async Task<TResponse?> ReadFromJsonOrDefaultAsync<TResponse>(
         this HttpResponseMessage response,
         JsonTypeInfo<TResponse> jsonTypeInfo,
@@ -83,6 +84,7 @@ public static class HttpClientExtensions
         return await response.Content.ReadFromJsonAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>Serializes the request body and sends it via PUT, then deserializes the response body.</summary>
     public static async Task<TResponse?> PutAsJsonAsync<TRequest, TResponse>(
         this HttpClient client,
         Uri requestUri,
@@ -98,11 +100,7 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync(responseJsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
-    // ---------------------------------------------------------------------------------
-    // Reflection-based overloads. They require runtime reflection and are therefore
-    // marked so that trimming/AOT consumers opt in explicitly.
-    // ---------------------------------------------------------------------------------
-
+    /// <summary>Sends a GET request and deserializes the response body, returning <see langword="default"/> for an empty response.</summary>
     [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
     [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<TResponse?> GetFromJsonOrDefaultAsync<TResponse>(
@@ -115,6 +113,7 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync<TResponse?>(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>Serializes the request body and sends it via POST, then deserializes the response body.</summary>
     [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
     [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<TResponse?> PostAsJsonAsync<TRequest, TResponse>(
@@ -128,6 +127,7 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync<TResponse?>(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>Sends a POST request without a body and deserializes the response body.</summary>
     [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
     [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<T?> PostAsync<T>(
@@ -140,6 +140,7 @@ public static class HttpClientExtensions
         return await response.ReadFromJsonOrDefaultAsync<T?>(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>Deserializes the response body, returning <see langword="default"/> for an empty response.</summary>
     [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
     [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<TResponse?> ReadFromJsonOrDefaultAsync<TResponse>(
@@ -158,6 +159,7 @@ public static class HttpClientExtensions
         return await response.Content.ReadFromJsonAsync<TResponse>(s_options, cancellationToken: cancellationToken);
     }
 
+    /// <summary>Serializes the request body and sends it via PUT, then deserializes the response body.</summary>
     [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
     [RequiresDynamicCode(RequiresDynamicCodeMessage)]
     public static async Task<TResponse?> PutAsJsonAsync<TRequest, TResponse>(
