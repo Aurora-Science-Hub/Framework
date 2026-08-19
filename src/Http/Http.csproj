@@ -3,6 +3,8 @@
   <PropertyGroup>
     <AssemblyName>AuroraScienceHub.Framework.Http</AssemblyName>
     <PackageId>AuroraScienceHub.Framework.Http</PackageId>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
   </PropertyGroup>
 
   <PropertyGroup Label="Package info">
