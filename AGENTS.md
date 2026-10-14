@@ -103,7 +103,7 @@ Refer to the individual `README.md` within each package directory for details.
 
 ### Prerequisites
 
-- .NET 10 SDK (see `global.json` for the required/minimum SDK version and roll-forward policy)
+- .NET 11 SDK (see `global.json` for the required/minimum SDK version and roll-forward policy); the .NET 10 runtime is also needed to run tests for the `net10.0` target
 
 ### Source of Truth
 
@@ -149,7 +149,7 @@ Before completing any code change:
 
 ### Project setting (inherited from `Directory.Build.props`)
 
-- **Target framework:** `net10.0`
+- **Target frameworks:** `net10.0;net11.0`
 - **Language version:** `latest`
 - **Nullable reference types:** enabled globally
 - **Warnings as errors:** enabled (`TreatWarningsAsErrors`)
