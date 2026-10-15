@@ -75,10 +75,6 @@
     <PackageVersion Include="System.CommandLine" Version="2.0.13" />
     <PackageVersion Include="Tesseract" Version="5.2.0" />
     <PackageVersion Include="xunit.v3" Version="4.0.2" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageVersion>
     <!-- Transient libraries with known vulnerabilities. See more: https://github.com/dotnet/sdk/issues/42651 -->
     <PackageVersion Include="Azure.Identity" Version="1.21.0" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.91.0" />
