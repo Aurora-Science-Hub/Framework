@@ -3,7 +3,6 @@
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
-    <!-- Tests run on the latest TFM only; libraries are multi-targeted and the net11.0 asset is picked -->
     <TargetFrameworks>net11.0</TargetFrameworks>
     <IsTestProject>true</IsTestProject>
     <NoWarn>$(NoWarn)</NoWarn>
