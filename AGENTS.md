@@ -103,7 +103,7 @@ Refer to the individual `README.md` within each package directory for details.
 
 ### Prerequisites
 
-- .NET 11 SDK (see `global.json` for the required/minimum SDK version and roll-forward policy); the .NET 10 runtime is also needed to run tests for the `net10.0` target
+- .NET 11 SDK (see `global.json` for the required/minimum SDK version and roll-forward policy)
 
 ### Source of Truth
 
