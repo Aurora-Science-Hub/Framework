@@ -77,14 +77,14 @@ jobs:
               run: dotnet nuget push ./artifacts/*.nupkg --source AuroraScienceHub --api-key $GH_API_KEY --skip-duplicate
 
             - name: NuGet login (OIDC to temporary API key)
-              if: ${{ github.ref_name == 'main' || github.ref_name == 'feature/nuget-trusted-publishing' }}
+              if: ${{ github.ref_name == 'main' }}
               id: nuget-login
               uses: NuGet/login@v1
               with:
                   user: ${{ secrets.NUGET_USER }}
 
             - name: Push to NuGet.org
-              if: ${{ github.ref_name == 'main' || github.ref_name == 'feature/nuget-trusted-publishing' }}
+              if: ${{ github.ref_name == 'main' }}
               env:
                   NUGET_URL: https://api.nuget.org/v3/index.json
                   NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
