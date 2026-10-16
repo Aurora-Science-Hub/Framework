@@ -14,6 +14,9 @@ env:
 jobs:
     build:
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            id-token: write # OIDC token for NuGet.org Trusted Publishing
         steps:
             - name: Checkout
               uses: actions/checkout@v7
@@ -73,9 +76,16 @@ jobs:
                   GH_API_KEY: ${{ secrets.GH_PACKAGES_NUGET_API_KEY }}
               run: dotnet nuget push ./artifacts/*.nupkg --source AuroraScienceHub --api-key $GH_API_KEY --skip-duplicate
 
+            - name: NuGet login (OIDC to temporary API key)
+              if: ${{ github.ref_name == 'main' }}
+              id: nuget-login
+              uses: NuGet/login@v1
+              with:
+                  user: ${{ secrets.NUGET_USER }}
+
             - name: Push to NuGet.org
               if: ${{ github.ref_name == 'main' }}
               env:
                   NUGET_URL: https://api.nuget.org/v3/index.json
-                  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+                  NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
               run: dotnet nuget push ./artifacts/*.nupkg --source $NUGET_URL --api-key $NUGET_API_KEY --skip-duplicate

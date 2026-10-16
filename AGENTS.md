@@ -239,7 +239,7 @@ GitHub Actions workflow (`.github/workflows/dotnet.yml`):
 
 | Trigger | Behavior |
 |---------|----------|
-| Push to `main` | Build → Test → Pack → Push to **NuGet.org** |
+| Push to `main` | Build → Test → Pack → Push to **NuGet.org** (Trusted Publishing via OIDC, no long-lived API key) |
 | Push to other branches | Build → Test → Pack → Push pre-release to **GitHub Packages** |
 | Semver tag (`*.*.*`) | Produces stable version packages |
 
