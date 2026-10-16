@@ -5,6 +5,11 @@
     <PackageId>AuroraScienceHub.Framework.AspNetCore</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <!-- MSB3277: on net10.0 the ASP.NET Core 10 reference pack has Microsoft.Extensions.* 10.0.0.0, while the packages are intentionally 11.x (a higher assembly version wins at runtime). -->
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
+  </PropertyGroup>
+
   <PropertyGroup Label="Package info">
     <PackageDescription>
       ASP.NET Core extensions for composition, diagnostics, problem details (RFC 7807), security utilities, and routing enhancements.

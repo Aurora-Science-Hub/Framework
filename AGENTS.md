@@ -103,7 +103,7 @@ Refer to the individual `README.md` within each package directory for details.
 
 ### Prerequisites
 
-- .NET 10 SDK (see `global.json` for the required/minimum SDK version and roll-forward policy)
+- .NET 11 SDK (see `global.json` for the required/minimum SDK version and roll-forward policy)
 
 ### Source of Truth
 
@@ -149,7 +149,7 @@ Before completing any code change:
 
 ### Project setting (inherited from `Directory.Build.props`)
 
-- **Target framework:** `net10.0`
+- **Target frameworks:** `net10.0;net11.0`
 - **Language version:** `latest`
 - **Nullable reference types:** enabled globally
 - **Warnings as errors:** enabled (`TreatWarningsAsErrors`)
@@ -187,7 +187,8 @@ Before completing any code change:
 
 ## Package Versioning
 
-- The base version lives in **one place**: `Directory.Build.props` → `<PackageBaseVersion>10.0.7</PackageBaseVersion>`.
+- The base version lives in **one place**: `Directory.Build.props` → `<PackageBaseVersion>11.0.0</PackageBaseVersion>`.
+- The major version matches the **highest supported .NET version** (e.g. `net10.0;net11.0` → `11.x.y`).
 - In CI the version is pinned via `-p:MinVerVersionOverride` (computed by the CI bash script from `PackageBaseVersion`): pre-release on non-`main` branches, stable on `main`/semver tags.
 - **To bump the version, change `PackageBaseVersion` in `Directory.Build.props` — nothing else.** Never set `<Version>` or `<PackageVersion>` in a `.csproj`.
 
