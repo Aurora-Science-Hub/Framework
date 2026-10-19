@@ -32,7 +32,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageBaseVersion>11.0.0</PackageBaseVersion>
+    <PackageBaseVersion>11.0.1</PackageBaseVersion>
     <MinVerTagPrefix></MinVerTagPrefix>
   </PropertyGroup>
 

@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Unified blob storage abstraction with S3-compatible storage support (MinIO, AWS S3).
+      Unified blob storage abstraction for S3-compatible object storage.
     </PackageDescription>
-    <PackageTags>blobs;s3;minio;storage;aws</PackageTags>
+    <PackageTags>blobs;s3;storage;aws</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

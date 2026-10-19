@@ -1,6 +1,6 @@
 # AuroraScienceHub.Framework.Blobs
 
-Unified blob storage abstraction with S3-compatible storage support (MinIO, AWS S3).
+Unified blob storage abstraction for S3-compatible object storage.
 
 ## Overview
 
@@ -8,7 +8,7 @@ Provides a clean interface for working with binary large objects (BLOBs) using S
 
 ## Key Features
 
-- **S3 Compatible** - Works with MinIO, AWS S3, and other S3-compatible storages
+- **S3 Compatible** - Works with any object storage that exposes an S3-compatible API
 - **Unified Interface** - Single `IBlobClient` abstraction for all operations
 - **Streaming Support** - Efficient memory handling for large files
 - **Metadata Support** - Store and retrieve custom key-value metadata
@@ -28,8 +28,8 @@ dotnet add package AuroraScienceHub.Framework.Blobs
 {
   "S3": {
     "ServerUrl": "http://localhost:9000",
-    "AccessKey": "minioadmin",
-    "SecretKey": "minioadmin",
+    "AccessKey": "access-key",
+    "SecretKey": "secret-key",
     "Bucket": "default-bucket",
     "UseHttps": false
   }
