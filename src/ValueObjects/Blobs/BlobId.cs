@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace AuroraScienceHub.Framework.ValueObjects.Blobs;
 
 /// <summary>
-/// S3 blob identifier with optional prefix and extension support
+/// Blob identifier for S3-compatible storage with optional prefix and extension support
 /// </summary>
 /// <remarks>
 /// Format: blb_{bucket}_{objectKey} where objectKey = [prefix/]uniqueId[.extension]

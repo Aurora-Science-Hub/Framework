@@ -7,7 +7,7 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Unified blob storage abstraction over the Amazon S3 API.
+      Unified blob storage abstraction for S3-compatible object storage.
     </PackageDescription>
     <PackageTags>blobs;s3;storage;aws</PackageTags>
   </PropertyGroup>
