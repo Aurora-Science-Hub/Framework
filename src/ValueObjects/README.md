@@ -24,7 +24,7 @@ dotnet add package AuroraScienceHub.Framework.ValueObjects
 
 ### BlobId
 
-Type-safe identifier for MinIO (S3-compatible) blob storage with S3 bucket naming validation, Guid v7-based object IDs (time-ordered, sortable), and compact Base64Url encoding.
+Type-safe identifier for S3-compatible blob storage with S3 bucket naming validation, Guid v7-based object IDs (time-ordered, sortable), and compact Base64Url encoding.
 
 Format: `blb_{BucketName}_{ObjectKey}` (e.g., `blb_avatars_auSaAYDuWXG9JXl7SxAlww`)
 

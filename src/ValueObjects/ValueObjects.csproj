@@ -7,9 +7,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      Value objects for blob storage operations, including support for MinIO and S3.
+      Value objects for blob storage operations on S3-compatible storage.
     </PackageDescription>
-    <PackageTags>blob-storage;minio;s3;value-objects</PackageTags>
+    <PackageTags>blob-storage;s3;value-objects</PackageTags>
   </PropertyGroup>
 
 </Project>
