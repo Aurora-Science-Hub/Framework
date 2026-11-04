@@ -23,14 +23,14 @@ internal sealed class AiAssistant : IAiAssistant
 
     private readonly AIAgent _agent;
     private readonly IReadOnlyList<IAiToolProvider> _toolProviders;
-    private readonly IOptionsMonitor<AiOptions> _options;
+    private readonly IOptions<AiOptions> _options;
     private readonly AiRequestExecutor _executor;
     private readonly TimeProvider _timeProvider;
 
     public AiAssistant(
         AIAgent agent,
         IEnumerable<IAiToolProvider> toolProviders,
-        IOptionsMonitor<AiOptions> options,
+        IOptions<AiOptions> options,
         AiRequestExecutor executor,
         TimeProvider timeProvider)
     {
@@ -43,7 +43,7 @@ internal sealed class AiAssistant : IAiAssistant
 
     public Task<AiResult> AskAsync(AiRequest request, CancellationToken cancellationToken)
     {
-        var options = _options.CurrentValue;
+        var options = _options.Value;
         var chatOptions = AiChatOptionsFactory.Create(request, options);
 
         return _executor.ExecuteAsync(

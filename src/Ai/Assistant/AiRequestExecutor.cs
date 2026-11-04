@@ -11,11 +11,11 @@ namespace AuroraScienceHub.Framework.Ai.Assistant;
 /// </summary>
 internal sealed class AiRequestExecutor
 {
-    private readonly IOptionsMonitor<AiOptions> _options;
+    private readonly IOptions<AiOptions> _options;
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<AiRequestExecutor> _logger;
 
-    public AiRequestExecutor(IOptionsMonitor<AiOptions> options, TimeProvider timeProvider, ILogger<AiRequestExecutor> logger)
+    public AiRequestExecutor(IOptions<AiOptions> options, TimeProvider timeProvider, ILogger<AiRequestExecutor> logger)
     {
         _options = options;
         _timeProvider = timeProvider;
@@ -34,7 +34,7 @@ internal sealed class AiRequestExecutor
         Func<CancellationToken, Task<(string? Text, UsageDetails? Usage)>> call,
         CancellationToken cancellationToken)
     {
-        using var timeout = new CancellationTokenSource(_options.CurrentValue.RequestTimeout, _timeProvider);
+        using var timeout = new CancellationTokenSource(_options.Value.RequestTimeout, _timeProvider);
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeout.Token);
         var startedAt = _timeProvider.GetTimestamp();
 

@@ -7,7 +7,6 @@ using AuroraScienceHub.Framework.Ai.Tools;
 using AuroraScienceHub.Framework.UnitTests.Ai.TestDoubles;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Time.Testing;
 
 namespace AuroraScienceHub.Framework.UnitTests.Ai;
@@ -19,7 +18,7 @@ internal sealed class AiTestHost
 {
     public AiTestHost(params IAiToolProvider[] extraToolProviders)
     {
-        var options = new StaticOptionsMonitor(Options);
+        var options = Microsoft.Extensions.Options.Options.Create(Options);
         var executor = new AiRequestExecutor(options, Time, NullLogger<AiRequestExecutor>.Instance);
         Assistant = new AiAssistant(
             ChatClient.AsAIAgent(new Microsoft.Agents.AI.ChatClientAgentOptions()),
@@ -41,13 +40,4 @@ internal sealed class AiTestHost
     public AiAssistant Assistant { get; }
 
     public ConversationCompactor Compactor { get; }
-
-    private sealed class StaticOptionsMonitor(AiOptions options) : IOptionsMonitor<AiOptions>
-    {
-        public AiOptions CurrentValue => options;
-
-        public AiOptions Get(string? name) => options;
-
-        public IDisposable? OnChange(Action<AiOptions, string?> listener) => null;
-    }
 }

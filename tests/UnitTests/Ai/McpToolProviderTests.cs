@@ -5,7 +5,6 @@ using AuroraScienceHub.Framework.Ai.Mcp;
 using AuroraScienceHub.Framework.Ai.Options;
 using AuroraScienceHub.Framework.Ai.Tools;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Time.Testing;
 using Shouldly;
 using Xunit;
@@ -24,7 +23,7 @@ public sealed class McpToolProviderTests : IAsyncDisposable
 
     public McpToolProviderTests()
     {
-        _sut = new McpToolProvider(new StaticOptionsMonitor(_options), new HandlerClientFactory(_handler), NullLoggerFactory.Instance, _time);
+        _sut = new McpToolProvider(Microsoft.Extensions.Options.Options.Create(_options), new HandlerClientFactory(_handler), NullLoggerFactory.Instance, _time);
     }
 
     [Fact(DisplayName = "Without configured servers no tools are offered and nothing is connected")]
@@ -74,7 +73,7 @@ public sealed class McpToolProviderTests : IAsyncDisposable
         // Arrange
         _options.Mcp["core"] = new AiMcpServerOptions { Endpoint = new Uri("http://core.test/mcp") };
         await using (var single = new McpToolProvider(
-            new StaticOptionsMonitor(_options),
+            Microsoft.Extensions.Options.Options.Create(_options),
             new HandlerClientFactory(_handler),
             NullLoggerFactory.Instance,
             _time))
@@ -108,15 +107,6 @@ public sealed class McpToolProviderTests : IAsyncDisposable
     {
         await _sut.DisposeAsync();
         _handler.Dispose();
-    }
-
-    private sealed class StaticOptionsMonitor(AiOptions options) : IOptionsMonitor<AiOptions>
-    {
-        public AiOptions CurrentValue => options;
-
-        public AiOptions Get(string? name) => options;
-
-        public IDisposable? OnChange(Action<AiOptions, string?> listener) => null;
     }
 
     private sealed class HandlerClientFactory(HttpMessageHandler handler) : IHttpClientFactory

@@ -23,10 +23,10 @@ internal sealed class ConversationCompactor : IConversationCompactor
     private const string Operation = "compaction";
 
     private readonly IChatClient _chatClient;
-    private readonly IOptionsMonitor<AiOptions> _options;
+    private readonly IOptions<AiOptions> _options;
     private readonly AiRequestExecutor _executor;
 
-    public ConversationCompactor(IChatClient chatClient, IOptionsMonitor<AiOptions> options, AiRequestExecutor executor)
+    public ConversationCompactor(IChatClient chatClient, IOptions<AiOptions> options, AiRequestExecutor executor)
     {
         _chatClient = chatClient;
         _options = options;
@@ -39,7 +39,7 @@ internal sealed class ConversationCompactor : IConversationCompactor
         ChatOptions? callOptions,
         CancellationToken cancellationToken)
     {
-        var chatOptions = AiChatOptionsFactory.Create(Instructions, _options.CurrentValue, callOptions);
+        var chatOptions = AiChatOptionsFactory.Create(Instructions, _options.Value, callOptions);
         ChatMessage[] messages = [new(ChatRole.User, BuildPrompt(previousSummary, history))];
 
         return _executor.ExecuteAsync(

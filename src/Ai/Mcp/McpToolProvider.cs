@@ -29,7 +29,7 @@ namespace AuroraScienceHub.Framework.Ai.Mcp;
 /// </remarks>
 internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
 {
-    private readonly IOptionsMonitor<AiOptions> _options;
+    private readonly IOptions<AiOptions> _options;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILoggerFactory _loggerFactory;
     private readonly TimeProvider _timeProvider;
@@ -37,7 +37,7 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
     private readonly ConcurrentDictionary<Uri, ConnectionAttempt> _servers = new();
 
     public McpToolProvider(
-        IOptionsMonitor<AiOptions> options,
+        IOptions<AiOptions> options,
         IHttpClientFactory httpClientFactory,
         ILoggerFactory loggerFactory,
         TimeProvider timeProvider)
@@ -51,7 +51,7 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
 
     public async Task<IReadOnlyList<AITool>> GetToolsAsync(CancellationToken cancellationToken)
     {
-        var options = _options.CurrentValue;
+        var options = _options.Value;
         var tools = new List<AITool>();
         foreach (var (name, server) in options.Mcp)
         {
@@ -143,7 +143,7 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
                 exception,
                 "MCP server {McpServer} cannot be reached; the assistant answers without its tools for {RetryInterval}",
                 name,
-                _options.CurrentValue.McpRetryInterval);
+                _options.Value.McpRetryInterval);
             return null;
         }
     }
@@ -158,7 +158,7 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
                 TransportMode = HttpTransportMode.StreamableHttp,
             },
             _httpClientFactory.CreateClient(
-                ServiceCollectionExtensions.GetMcpHttpClientName(_options.CurrentValue)),
+                ServiceCollectionExtensions.GetMcpHttpClientName(_options.Value)),
             _loggerFactory,
             ownsHttpClient: true);
 

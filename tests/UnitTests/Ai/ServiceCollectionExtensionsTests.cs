@@ -39,7 +39,7 @@ public sealed class ServiceCollectionExtensionsTests
         registrations.IsService(typeof(IConversationCompactor)).ShouldBeTrue();
     }
 
-    [Fact(DisplayName = "The real graph is resolved while AI is disabled without a key and a model, and the provider client is not created")]
+    [Fact(DisplayName = "The real graph is resolved while AI is disabled without a key and a model")]
     public async Task AddAi_DisabledWithoutKeyAndModel_ResolvesGraph()
     {
         // Arrange
@@ -58,7 +58,7 @@ public sealed class ServiceCollectionExtensionsTests
         provider.GetRequiredService<IAiAssistant>().ShouldNotBeNull();
         provider.GetRequiredService<IConversationCompactor>().ShouldNotBeNull();
         provider.GetRequiredService<AIAgent>().ShouldNotBeNull();
-        provider.GetRequiredService<IChatClient>().ShouldBeOfType<DeferredChatClient>();
+        provider.GetRequiredService<IChatClient>().ShouldBeOfType<DisabledChatClient>();
     }
 
     [Fact(DisplayName = "The assistant and the compactor are resolved when AI is enabled and configured")]

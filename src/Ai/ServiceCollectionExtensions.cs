@@ -43,16 +43,12 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <remarks>
     /// The services are registered even while the AI features are disabled, so the graph is resolvable without a key and
-    /// a model: the provider client is created by the first call, not by the resolution, and a configuration reload
-    /// before that call is taken into account. Callers check <see cref="AiOptions.Enabled"/> before they ask.
+    /// a model: the assistant then asks a <see cref="DisabledChatClient"/>, which fails only if it is called. Callers
+    /// check <see cref="AiOptions.Enabled"/> before they ask.
     /// <para>
-    /// The created client captures <see cref="AiOptions.Provider"/>, <see cref="AiOptions.Endpoint"/>,
-    /// <see cref="AiOptions.ApiKey"/>, <see cref="AiOptions.UseProxy"/>, <see cref="AiOptions.RequestTimeout"/>,
-    /// <see cref="AiOptions.MaxRetries"/> and <see cref="AiOptions.MaxToolCallRounds"/>; a change of these settings needs
-    /// a restart. The other settings are read by every request, so they follow a configuration reload.
+    /// The options are read once, when the services are created: a change of any AI setting applies on a restart.
     /// </para>
-    /// <paramref name="configure"/> is registered as an options change, so it runs again when the configuration is
-    /// reloaded and keeps its changes.
+    /// <paramref name="configure"/> is applied after the configuration is bound.
     /// </remarks>
     /// <param name="services">Service collection</param>
     /// <param name="configuration">Application configuration</param>
@@ -134,13 +130,17 @@ public static class ServiceCollectionExtensions
     }
 
     private static IChatClient CreateChatClient(IServiceProvider provider)
-        => new DeferredChatClient(
-            provider.GetRequiredService<IOptionsMonitor<AiOptions>>(),
-            options => BuildChatClient(provider, options));
+    {
+        var options = provider.GetRequiredService<IOptions<AiOptions>>().Value;
+
+        // A disabled service needs no client, and the SDK would reject the missing key
+        return options.Enabled
+            ? BuildChatClient(provider, options)
+            : DisabledChatClient.Instance;
+    }
 
     /// <summary>
-    /// Client of the provider; the settings it takes are captured for the rest of the process, see
-    /// <see cref="DeferredChatClient"/>
+    /// Client of the provider, built when the services are created
     /// </summary>
     private static IChatClient BuildChatClient(IServiceProvider provider, AiOptions options)
     {

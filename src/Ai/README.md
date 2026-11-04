@@ -50,16 +50,12 @@ builder.Services.AddAi(builder.Configuration);
 
 `AddAi` binds the `Ai` section, validates it on start, and registers the assistant, the compactor and the MCP tool
 provider. The services are registered even while `Ai:Enabled` is `false`, and the graph is resolvable without a key and
-a model: the provider client is created by the first call, not when a service is resolved, so a configuration reload
-before that call is taken into account. Callers check `AiOptions.Enabled` before they ask.
+a model: the assistant then works with a client that fails only if it is called. Callers check `AiOptions.Enabled`
+before they ask.
 
-`Provider`, `Endpoint`, `ApiKey`, `UseProxy`, `RequestTimeout`, `MaxRetries` and `MaxToolCallRounds` are captured when
-the client is created (on the first call); changing one of them needs a restart. The other settings — `Enabled`,
-`Model`, `MaxOutputTokens`, `SendLegacyMaxTokens`, `ReasoningEffort`, `Temperature`, `TopP` and the MCP settings — are
-read for every request and follow a configuration reload.
+The options are read once, when the services are created: every change of the AI settings applies on a restart.
 
-The optional `configure` delegate changes the options after the configuration is bound. It is registered as an options
-change, so it runs again on a configuration reload:
+The optional `configure` delegate changes the options after the configuration is bound:
 
 ```csharp
 builder.Services.AddAi(builder.Configuration, options => options.MaxRetries = 3);
