@@ -9,9 +9,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Ai\Ai.csproj" />
     <ProjectReference Include="..\..\src\AspNetCore\AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\Blobs\Blobs.csproj" />
     <ProjectReference Include="..\..\src\Diagnostics\Diagnostics.csproj" />
