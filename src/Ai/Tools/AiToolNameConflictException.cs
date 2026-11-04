@@ -3,7 +3,8 @@ using AuroraScienceHub.Framework.Ai.Assistant;
 namespace AuroraScienceHub.Framework.Ai.Tools;
 
 /// <summary>
-/// Two <see cref="IAiToolProvider"/> implementations returned tools with the same name
+/// The same tool name is used more than once: by two <see cref="IAiToolProvider"/> implementations, or by a request
+/// and a provider
 /// </summary>
 /// <remarks>
 /// The conflict is a configuration error, not a failure of the provider, so it is thrown to the caller instead of
@@ -23,7 +24,7 @@ public sealed class AiToolNameConflictException : Exception
     }
 
     /// <summary>
-    /// Names returned by more than one provider
+    /// Names used more than once
     /// </summary>
     public IReadOnlyList<string> ToolNames { get; }
 

@@ -49,8 +49,14 @@ builder.Services.AddAi(builder.Configuration);
 ```
 
 `AddAi` binds the `Ai` section, validates it on start, and registers the assistant, the compactor and the MCP tool
-provider. The services are registered even while `Ai:Enabled` is `false`; callers check `AiOptions.Enabled` before they
-ask.
+provider. The services are registered even while `Ai:Enabled` is `false`, and the graph is resolvable without a key and
+a model: the provider client is created by the first call, not when a service is resolved, so a configuration reload
+before that call is taken into account. Callers check `AiOptions.Enabled` before they ask.
+
+`Provider`, `Endpoint`, `ApiKey`, `UseProxy`, `RequestTimeout`, `MaxRetries` and `MaxToolCallRounds` are captured when
+the client is created (on the first call); changing one of them needs a restart. The other settings — `Enabled`,
+`Model`, `MaxOutputTokens`, `SendLegacyMaxTokens`, `ReasoningEffort`, `Temperature`, `TopP` and the MCP settings — are
+read for every request and follow a configuration reload.
 
 The optional `configure` delegate changes the options after the configuration is bound. It is registered as an options
 change, so it runs again on a configuration reload:
@@ -125,6 +131,10 @@ var request = new AiRequest(instructions, summary, messages, question)
 };
 ```
 
+Tools given in `AiRequest.Options.Tools` are used together with the tools of the `IAiToolProvider` services, the tools
+of the request first. A name used more than once — by the request and a provider, or by two providers — fails the
+request with `AiToolNameConflictException`, so one tool never silently shadows another.
+
 The assistant is deliberately not streaming: the answer, its usage and its outcome arrive together, and the caller
 needs the whole text to store it.
 
@@ -159,8 +169,9 @@ public sealed class AuthenticatedMcpToolProvider : IAiToolProvider
 builder.Services.AddSingleton<IAiToolProvider, AuthenticatedMcpToolProvider>();
 ```
 
-Two providers that return a tool with the same name fail the request with `AiToolNameConflictException`, which lists
-the conflicting names: such a configuration would otherwise silently shadow one of the tools.
+Two providers that return a tool with the same name — or a tool of the request that shares a name with a provider
+tool — fail the request with `AiToolNameConflictException`, which lists the conflicting names: such a configuration
+would otherwise silently shadow one of the tools.
 
 ### DeepL translation
 

@@ -17,6 +17,9 @@ public sealed record AiRequest(string Instructions, string? Summary, IReadOnlyLi
     /// </summary>
     /// <remarks>
     /// The options are copied before they are merged with the configured defaults, so a call never changes them.
+    /// <see cref="ChatOptions.Tools"/> of this call are used together with the tools of the
+    /// <see cref="Tools.IAiToolProvider"/> services, the tools of the request first; a name used more than once fails
+    /// the request with <see cref="Tools.AiToolNameConflictException"/>.
     /// </remarks>
     public ChatOptions? Options { get; init; }
 }

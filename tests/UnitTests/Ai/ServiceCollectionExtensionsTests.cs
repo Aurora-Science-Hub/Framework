@@ -5,6 +5,7 @@ using AuroraScienceHub.Framework.Ai.Conversation;
 using AuroraScienceHub.Framework.Ai.Mcp;
 using AuroraScienceHub.Framework.Ai.Options;
 using AuroraScienceHub.Framework.Ai.Tools;
+using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,28 @@ public sealed class ServiceCollectionExtensionsTests
         var registrations = provider.GetRequiredService<IServiceProviderIsService>();
         registrations.IsService(typeof(IAiAssistant)).ShouldBeTrue();
         registrations.IsService(typeof(IConversationCompactor)).ShouldBeTrue();
+    }
+
+    [Fact(DisplayName = "The real graph is resolved while AI is disabled without a key and a model, and the provider client is not created")]
+    public async Task AddAi_DisabledWithoutKeyAndModel_ResolvesGraph()
+    {
+        // Arrange
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?> { ["Ai:Enabled"] = "false" })
+            .Build();
+        var services = new ServiceCollection();
+        services.AddSingleton<IConfiguration>(configuration);
+        services.AddLogging();
+        services.AddAi(configuration);
+
+        // Act
+        await using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true });
+
+        // Assert
+        provider.GetRequiredService<IAiAssistant>().ShouldNotBeNull();
+        provider.GetRequiredService<IConversationCompactor>().ShouldNotBeNull();
+        provider.GetRequiredService<AIAgent>().ShouldNotBeNull();
+        provider.GetRequiredService<IChatClient>().ShouldBeOfType<DeferredChatClient>();
     }
 
     [Fact(DisplayName = "The assistant and the compactor are resolved when AI is enabled and configured")]

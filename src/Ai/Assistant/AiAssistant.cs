@@ -50,7 +50,9 @@ internal sealed class AiAssistant : IAiAssistant
             Operation,
             async token =>
             {
-                var tools = await GetToolsAsync(token);
+                // The tools of the request come first, then those of the providers; a name used twice is a
+                // configuration error, because one tool would otherwise shadow the other
+                var tools = await GetToolsAsync(chatOptions.Tools, token);
                 if (tools.Count > 0)
                 {
                     chatOptions.Tools = [.. tools];
@@ -64,18 +66,20 @@ internal sealed class AiAssistant : IAiAssistant
     }
 
     /// <summary>
-    /// Tools of all providers, merged; a name returned by two providers is a configuration error
+    /// Tools of the request and of all providers, merged; a name used more than once is a configuration error
     /// </summary>
-    /// <exception cref="AiToolNameConflictException">Two providers returned tools with the same name</exception>
-    private async Task<IReadOnlyList<AITool>> GetToolsAsync(CancellationToken cancellationToken)
+    /// <exception cref="AiToolNameConflictException">The request and a provider, or two providers, use the same name</exception>
+    private async Task<IReadOnlyList<AITool>> GetToolsAsync(
+        IList<AITool>? requestTools,
+        CancellationToken cancellationToken)
     {
         var tools = new List<AITool>();
         var names = new HashSet<string>(StringComparer.Ordinal);
         var conflicts = new SortedSet<string>(StringComparer.Ordinal);
 
-        foreach (var provider in _toolProviders)
+        void Add(IEnumerable<AITool> toolsToAdd)
         {
-            foreach (var tool in await provider.GetToolsAsync(cancellationToken))
+            foreach (var tool in toolsToAdd)
             {
                 if (names.Add(tool.Name))
                 {
@@ -86,6 +90,12 @@ internal sealed class AiAssistant : IAiAssistant
                     conflicts.Add(tool.Name);
                 }
             }
+        }
+
+        Add(requestTools ?? []);
+        foreach (var provider in _toolProviders)
+        {
+            Add(await provider.GetToolsAsync(cancellationToken));
         }
 
         if (conflicts.Count > 0)

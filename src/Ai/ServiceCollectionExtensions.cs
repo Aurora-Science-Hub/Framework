@@ -42,11 +42,17 @@ public static class ServiceCollectionExtensions
     /// in the <see cref="AiOptions.OptionKey"/> section
     /// </summary>
     /// <remarks>
-    /// The services are registered even while the AI features are disabled, but they are singletons: the provider client
-    /// is created when the service graph is resolved, which a hosted service does on start, not on the first request.
-    /// Creating it sends nothing, yet the SDK validates the key in its constructor, so a disabled assistant still needs
-    /// a placeholder key; callers check <see cref="AiOptions.Enabled"/> before they ask. <paramref name="configure"/> is
-    /// registered as an options change, so it runs again when the configuration is reloaded and keeps its changes.
+    /// The services are registered even while the AI features are disabled, so the graph is resolvable without a key and
+    /// a model: the provider client is created by the first call, not by the resolution, and a configuration reload
+    /// before that call is taken into account. Callers check <see cref="AiOptions.Enabled"/> before they ask.
+    /// <para>
+    /// The created client captures <see cref="AiOptions.Provider"/>, <see cref="AiOptions.Endpoint"/>,
+    /// <see cref="AiOptions.ApiKey"/>, <see cref="AiOptions.UseProxy"/>, <see cref="AiOptions.RequestTimeout"/>,
+    /// <see cref="AiOptions.MaxRetries"/> and <see cref="AiOptions.MaxToolCallRounds"/>; a change of these settings needs
+    /// a restart. The other settings are read by every request, so they follow a configuration reload.
+    /// </para>
+    /// <paramref name="configure"/> is registered as an options change, so it runs again when the configuration is
+    /// reloaded and keeps its changes.
     /// </remarks>
     /// <param name="services">Service collection</param>
     /// <param name="configuration">Application configuration</param>
@@ -128,9 +134,16 @@ public static class ServiceCollectionExtensions
     }
 
     private static IChatClient CreateChatClient(IServiceProvider provider)
-    {
-        var options = provider.GetRequiredService<IOptions<AiOptions>>().Value;
+        => new DeferredChatClient(
+            provider.GetRequiredService<IOptionsMonitor<AiOptions>>(),
+            options => BuildChatClient(provider, options));
 
+    /// <summary>
+    /// Client of the provider; the settings it takes are captured for the rest of the process, see
+    /// <see cref="DeferredChatClient"/>
+    /// </summary>
+    private static IChatClient BuildChatClient(IServiceProvider provider, AiOptions options)
+    {
         // The factory supports one provider kind; a new one needs a client implementation here
         if (options.Provider != AiProvider.OpenAICompatible)
         {

@@ -67,6 +67,63 @@ public sealed class AiAssistantTests
         _host.ChatClient.Requests.ShouldHaveSingleItem().Options.ShouldNotBeNull().Tools.ShouldBeNull();
     }
 
+    [Fact(DisplayName = "Tools of the request are sent when no provider returns any, and the model is not told they are missing")]
+    public async Task Ask_RequestToolsWithoutProviderTools_SendsThem()
+    {
+        // Arrange
+        var request = s_request with
+        {
+            Options = new ChatOptions { Tools = [AIFunctionFactory.Create(() => "Kp 5", "get_request_tool")] },
+        };
+
+        // Act
+        await _host.Assistant.AskAsync(request, CancellationToken.None);
+
+        // Assert
+        var (messages, options) = _host.ChatClient.Requests.ShouldHaveSingleItem();
+        options.ShouldNotBeNull().Tools.ShouldNotBeNull().ShouldHaveSingleItem().Name.ShouldBe("get_request_tool");
+        messages.ShouldNotContain(message => message.Text != null && message.Text.Contains(AiAssistant.NoToolsNote));
+    }
+
+    [Fact(DisplayName = "Tools of the request and of the providers are all sent, the tools of the request first")]
+    public async Task Ask_RequestAndProviderTools_Merged()
+    {
+        // Arrange
+        _host.Tools.Tools.Add(AIFunctionFactory.Create(() => "Kp 5", "get_provider_tool"));
+        var request = s_request with
+        {
+            Options = new ChatOptions { Tools = [AIFunctionFactory.Create(() => "Wind 400", "get_request_tool")] },
+        };
+
+        // Act
+        await _host.Assistant.AskAsync(request, CancellationToken.None);
+
+        // Assert
+        _host.ChatClient.Requests.ShouldHaveSingleItem().Options.ShouldNotBeNull().Tools.ShouldNotBeNull()
+            .Select(tool => tool.Name).ShouldBe(["get_request_tool", "get_provider_tool"]);
+    }
+
+    [Fact(DisplayName = "A tool of the request named like a provider tool fails the request")]
+    public async Task Ask_RequestToolNameConflict_Throws()
+    {
+        // Arrange
+        _host.Tools.Tools.Add(AIFunctionFactory.Create(() => "Kp 5", "get_current_kp_index"));
+        var request = s_request with
+        {
+            Options = new ChatOptions
+            {
+                Tools = [AIFunctionFactory.Create(() => "Kp 4", "get_current_kp_index")],
+            },
+        };
+
+        // Act
+        var exception = await Should.ThrowAsync<AiToolNameConflictException>(
+            () => _host.Assistant.AskAsync(request, CancellationToken.None));
+
+        // Assert
+        exception.ToolNames.ShouldBe(["get_current_kp_index"]);
+    }
+
     [Fact(DisplayName = "Text the model writes before calling a tool is not part of the answer")]
     public async Task Ask_TextBeforeToolCall_NotInAnswer()
     {
