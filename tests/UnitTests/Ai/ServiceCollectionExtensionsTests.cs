@@ -1,3 +1,4 @@
+using System.Net;
 using AuroraScienceHub.Framework.Ai;
 using AuroraScienceHub.Framework.Ai.Assistant;
 using AuroraScienceHub.Framework.Ai.Conversation;
@@ -19,6 +20,7 @@ namespace AuroraScienceHub.Framework.UnitTests.Ai;
 public sealed class ServiceCollectionExtensionsTests
 {
     private const string ApiKey = "test-secret-key";
+    private const string ProxyAddress = "http://proxy.example.org:3128";
 
     [Fact(DisplayName = "While AI is disabled the services are registered and the provider settings are not validated")]
     public async Task AddAi_Disabled_RegisteredWithoutValidation()
@@ -107,6 +109,50 @@ public sealed class ServiceCollectionExtensionsTests
         handlers.ShouldNotContain(handler => handler.GetType().Name.Contains("Resilience", StringComparison.Ordinal));
     }
 
+    [Fact(DisplayName = "The proxy the caller enables through the options is used by the provider and MCP clients")]
+    public async Task AddAi_UseProxyFromConfigure_ProxiedClientsAreUsed()
+    {
+        // Arrange
+        var settings = ValidSettings();
+        settings["Proxy:Address"] = ProxyAddress;
+        await using var provider = BuildProvider(settings, options => options.UseProxy = true);
+        var options = provider.GetRequiredService<IOptions<AiOptions>>().Value;
+
+        // Act
+        var providerHandler = CreatePrimaryHandler(
+            provider,
+            ServiceCollectionExtensions.GetProviderHttpClientName(options));
+        var mcpHandler = CreatePrimaryHandler(
+            provider,
+            ServiceCollectionExtensions.GetMcpHttpClientName(options));
+
+        // Assert
+        providerHandler.ShouldBeOfType<HttpClientHandler>()
+            .Proxy.ShouldBeOfType<WebProxy>()
+            .Address.ShouldBe(new Uri(ProxyAddress));
+        mcpHandler.ShouldBeOfType<HttpClientHandler>().Proxy.ShouldNotBeNull();
+    }
+
+    [Fact(DisplayName = "The primary handler the host configures stays for the direct clients")]
+    public async Task AddAi_ProxyOff_HostPrimaryHandlerKept()
+    {
+        // Arrange
+        var configuration = new ConfigurationBuilder().AddInMemoryCollection(ValidSettings()).Build();
+        var services = new ServiceCollection();
+        services.AddSingleton<IConfiguration>(configuration);
+        services.AddLogging();
+        services.ConfigureHttpClientDefaults(http => http.UseSocketsHttpHandler(
+            (handler, _) => handler.PooledConnectionLifetime = TimeSpan.FromMinutes(5)));
+        services.AddAi(configuration);
+        await using var provider = services.BuildServiceProvider();
+
+        // Act
+        var handler = CreatePrimaryHandler(provider, ServiceCollectionExtensions.HttpClientName);
+
+        // Assert
+        handler.ShouldBeOfType<SocketsHttpHandler>();
+    }
+
     [Fact(DisplayName = "Changes of the caller are applied after the configuration is bound")]
     public async Task AddAi_Configure_AppliedAfterBinding()
     {
@@ -139,6 +185,20 @@ public sealed class ServiceCollectionExtensionsTests
         // Assert
         toolProviders.Select(toolProvider => toolProvider.GetType())
             .ShouldBe([typeof(McpToolProvider), typeof(EmptyToolProvider)]);
+    }
+
+    /// <summary>
+    /// The handler of the client without the wrappers of the factory, which track the handler lifetime
+    /// </summary>
+    private static HttpMessageHandler CreatePrimaryHandler(IServiceProvider provider, string clientName)
+    {
+        var handler = provider.GetRequiredService<IHttpMessageHandlerFactory>().CreateHandler(clientName);
+        while (handler is DelegatingHandler { InnerHandler: { } innerHandler })
+        {
+            handler = innerHandler;
+        }
+
+        return handler;
     }
 
     private static Dictionary<string, string?> ValidSettings()

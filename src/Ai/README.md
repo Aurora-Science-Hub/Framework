@@ -94,6 +94,8 @@ builder.Services.AddAi(builder.Configuration, options => options.MaxRetries = 3)
 - `SendLegacyMaxTokens` also sends the budget as `max_tokens`, for providers that ignore `max_completion_tokens`
   (DeepSeek); OpenAI rejects `max_tokens` for its reasoning models, so keep it `false` there
 - `Temperature` and `TopP` are `null` unless the provider should use them
+- `UseProxy` sends the provider and the MCP requests through the proxy of the `Proxy` section; the proxied requests use
+  clients of their own, so the primary handler the host configures for every client stays in place for the direct ones
 - An MCP server without `Endpoint` is not used; plain HTTP is accepted for it, as no secret is sent there
 
 ### Asking a question

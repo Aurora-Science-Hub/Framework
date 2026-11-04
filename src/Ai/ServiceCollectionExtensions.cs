@@ -33,6 +33,11 @@ public static class ServiceCollectionExtensions
     public const string McpHttpClientName = "AiMcp";
 
     /// <summary>
+    /// Suffix of the name of the clients that go through the proxy
+    /// </summary>
+    private const string ProxyClientSuffix = "Proxy";
+
+    /// <summary>
     /// Registers <see cref="IAiAssistant"/> and <see cref="IConversationCompactor"/> backed by the provider configured
     /// in the <see cref="AiOptions.OptionKey"/> section
     /// </summary>
@@ -52,7 +57,7 @@ public static class ServiceCollectionExtensions
         Action<AiOptions>? configure = null)
     {
         services.AddOptions<AiOptions>()
-            .BindConfiguration(AiOptions.OptionKey)
+            .Bind(configuration.GetSection(AiOptions.OptionKey))
             .ValidateOnStart();
         if (configure is not null)
         {
@@ -62,24 +67,20 @@ public static class ServiceCollectionExtensions
         services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<AiOptions>, AiOptionsValidator>());
 
         services.AddProxyOptions();
-        // A host may add the standard resilience handler to every HttpClient (Host.ServiceDefaults does). Remove it: its
-        // 30-second timeouts would cut long answers, and its retries would add to those of the SDK. The SDK limits each
-        // attempt (NetworkTimeout), the executor the whole request. The method is the only way to remove handlers added
-        // by ConfigureHttpClientDefaults, but it is still marked experimental
-#pragma warning disable EXTEXP0001
-        var httpClient = services.AddHttpClient(HttpClientName)
-            .RemoveAllResilienceHandlers()
-            .ConfigureHttpClient(client => client.Timeout = Timeout.InfiniteTimeSpan);
+        ConfigureAiClient(services.AddHttpClient(HttpClientName));
 
         // Tool calls run within the time budget of the request as well
-        services.AddHttpClient(McpHttpClientName)
-            .RemoveAllResilienceHandlers()
-            .ConfigureHttpClient(client => client.Timeout = Timeout.InfiniteTimeSpan);
-#pragma warning restore EXTEXP0001
-        if (configuration.GetSection(AiOptions.OptionKey).GetValue<bool>(nameof(AiOptions.UseProxy)))
-        {
-            httpClient.ConfigurePrimaryHttpProxyMessageHandler();
-        }
+        ConfigureAiClient(services.AddHttpClient(McpHttpClientName));
+
+        // A proxied request needs another primary handler, and the host sets one of its own for every client (a pooled
+        // sockets handler whose lifetime it keeps). So the proxy has clients of their own, and the bound options choose
+        // one when a service is resolved: the `configure` delegate counts as well, unlike a check of the configuration
+        // here at registration. The proxied clients are created on first use, so a service with the proxy off never
+        // reads the proxy address
+        ConfigureAiClient(services.AddHttpClient(HttpClientName + ProxyClientSuffix))
+            .ConfigurePrimaryHttpProxyMessageHandler();
+        ConfigureAiClient(services.AddHttpClient(McpHttpClientName + ProxyClientSuffix))
+            .ConfigurePrimaryHttpProxyMessageHandler();
 
         services.TryAddSingleton(TimeProvider.System);
         services.TryAddSingleton(CreateChatClient);
@@ -93,6 +94,39 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Name of the client of the provider that <paramref name="options"/> select
+    /// </summary>
+    internal static string GetProviderHttpClientName(AiOptions options)
+        => options.UseProxy ? HttpClientName + ProxyClientSuffix : HttpClientName;
+
+    /// <summary>
+    /// Name of the client of the MCP servers that <paramref name="options"/> select
+    /// </summary>
+    internal static string GetMcpHttpClientName(AiOptions options)
+        => options.UseProxy ? McpHttpClientName + ProxyClientSuffix : McpHttpClientName;
+
+    /// <summary>
+    /// Prepares a client of the assistant
+    /// </summary>
+    /// <remarks>
+    /// A host may add the standard resilience handler to every HttpClient (Host.ServiceDefaults does). Remove it: its
+    /// 30-second timeouts would cut long answers, and its retries would add to those of the SDK. The SDK limits each
+    /// attempt (NetworkTimeout), the executor the whole request. The timeout of the client is set to infinite for the
+    /// same reason. <c>RemoveAllResilienceHandlers</c> is the only way to remove handlers added by
+    /// <c>ConfigureHttpClientDefaults</c>, but it is still marked experimental
+    /// </remarks>
+    private static IHttpClientBuilder ConfigureAiClient(IHttpClientBuilder builder)
+    {
+#pragma warning disable EXTEXP0001
+        builder
+            .RemoveAllResilienceHandlers()
+            .ConfigureHttpClient(client => client.Timeout = Timeout.InfiniteTimeSpan);
+#pragma warning restore EXTEXP0001
+
+        return builder;
+    }
+
     private static IChatClient CreateChatClient(IServiceProvider provider)
     {
         var options = provider.GetRequiredService<IOptions<AiOptions>>().Value;
@@ -103,7 +137,8 @@ public static class ServiceCollectionExtensions
             throw new AiProviderNotSupportedException(options.Provider);
         }
 
-        var httpClient = provider.GetRequiredService<IHttpClientFactory>().CreateClient(HttpClientName);
+        var httpClient = provider.GetRequiredService<IHttpClientFactory>()
+            .CreateClient(GetProviderHttpClientName(options));
         var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
 
         // Validated when AI is enabled: the endpoint, the key and the model are set

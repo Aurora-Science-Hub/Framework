@@ -157,7 +157,8 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
                 Name = name,
                 TransportMode = HttpTransportMode.StreamableHttp,
             },
-            _httpClientFactory.CreateClient(ServiceCollectionExtensions.McpHttpClientName),
+            _httpClientFactory.CreateClient(
+                ServiceCollectionExtensions.GetMcpHttpClientName(_options.CurrentValue)),
             _loggerFactory,
             ownsHttpClient: true);
 
