@@ -74,7 +74,7 @@ Each package includes its own README with detailed usage instructions and exampl
 
 ### AI & Machine Learning
 
-- **[Ai](src/Ai/)** - OpenAI GPT and DeepL translation service integrations
+- **[Ai](src/Ai/)** - Assistant on Microsoft Agent Framework with MCP tools, conversation compaction, and DeepL translation
 - **[Ocr](src/Ocr/)** - Optical Character Recognition utilities
 
 ### Serialization
