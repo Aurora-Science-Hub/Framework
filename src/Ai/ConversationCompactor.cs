@@ -34,10 +34,10 @@ internal sealed class ConversationCompactor : IConversationCompactor
     public Task<AiResult> CompactAsync(
         string? previousSummary,
         IReadOnlyList<AiChatMessage> history,
-        int maxOutputTokens,
+        ChatOptions? callOptions,
         CancellationToken cancellationToken)
     {
-        var chatOptions = AiChatOptionsFactory.Create(Instructions, maxOutputTokens, _options.CurrentValue);
+        var chatOptions = AiChatOptionsFactory.Create(Instructions, _options.CurrentValue, callOptions);
         ChatMessage[] messages = [new(ChatRole.User, BuildPrompt(previousSummary, history))];
 
         return _executor.ExecuteAsync(

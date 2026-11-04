@@ -12,13 +12,13 @@ namespace AuroraScienceHub.Framework.UnitTests.Ai;
 /// </summary>
 internal sealed class AiTestHost
 {
-    public AiTestHost()
+    public AiTestHost(params IAiToolProvider[] extraToolProviders)
     {
         var options = new StaticOptionsMonitor(Options);
         var executor = new AiRequestExecutor(options, Time, NullLogger<AiRequestExecutor>.Instance);
         Assistant = new AiAssistant(
             ChatClient.AsAIAgent(new Microsoft.Agents.AI.ChatClientAgentOptions()),
-            Tools,
+            [Tools, .. extraToolProviders],
             options,
             executor,
             Time);

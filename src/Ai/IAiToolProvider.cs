@@ -5,7 +5,12 @@ namespace AuroraScienceHub.Framework.Ai;
 /// <summary>
 /// Tools the assistant may call while it answers
 /// </summary>
-internal interface IAiToolProvider
+/// <remarks>
+/// Every registered implementation is used: <see cref="McpToolProvider"/> supplies the servers configured in
+/// <see cref="AiOptions.Mcp"/>, a service may add its own provider, e.g. for an MCP server that needs authentication.
+/// Tools with the same name from two providers are reported as <see cref="AiToolNameConflictException"/>.
+/// </remarks>
+public interface IAiToolProvider
 {
     /// <summary>
     /// Tools available now; those of a server that cannot be reached are left out

@@ -12,9 +12,9 @@ namespace AuroraScienceHub.Framework.Ai;
 /// <remarks>
 /// <para>
 /// A server is connected on the first request, as the Agent Framework samples do: the client and the tool list are
-/// kept as long as the application lives, so a new tool of a server appears after the bot restarts. A server that
-/// cannot be reached is left out and tried again after <see cref="s_retryInterval"/>, so the assistant answers without
-/// its tools meanwhile.
+/// kept as long as the application lives, so a new tool of a server appears after the application restarts. A server
+/// that cannot be reached is left out and tried again after <see cref="AiOptions.McpRetryInterval"/>, so the assistant
+/// answers without its tools meanwhile.
 /// </para>
 /// <para>
 /// Once the tools of a server are loaded, requests get them from the cache without any other work.
@@ -27,17 +27,6 @@ namespace AuroraScienceHub.Framework.Ai;
 /// </remarks>
 internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
 {
-    /// <summary>
-    /// Time to connect to a server and read its tools: a server that does not answer must not take the time budget of
-    /// the request
-    /// </summary>
-    private static readonly TimeSpan s_connectionTimeout = TimeSpan.FromSeconds(5);
-
-    /// <summary>
-    /// Pause before a server that could not be reached is tried again
-    /// </summary>
-    internal static readonly TimeSpan s_retryInterval = TimeSpan.FromMinutes(1);
-
     private readonly IOptionsMonitor<AiOptions> _options;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILoggerFactory _loggerFactory;
@@ -60,8 +49,9 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
 
     public async Task<IReadOnlyList<AITool>> GetToolsAsync(CancellationToken cancellationToken)
     {
+        var options = _options.CurrentValue;
         var tools = new List<AITool>();
-        foreach (var (name, server) in _options.CurrentValue.Mcp)
+        foreach (var (name, server) in options.Mcp)
         {
             if (server.Endpoint is not { } endpoint)
             {
@@ -70,7 +60,7 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
 
             // Loaded before: the tools are given as they are
             var loaded = _servers.GetValueOrDefault(endpoint)?.Connected
-                         ?? await GetOrStartAttempt(name, endpoint).Server.WaitAsync(cancellationToken);
+                         ?? await GetOrStartAttempt(name, endpoint, options).Server.WaitAsync(cancellationToken);
             if (loaded is not null)
             {
                 tools.AddRange(loaded.Tools);
@@ -99,19 +89,19 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
     /// The attempt to await: the one in place, or a new one when there is none or the last attempt failed
     /// long enough ago
     /// </summary>
-    private ConnectionAttempt GetOrStartAttempt(string name, Uri endpoint)
+    private ConnectionAttempt GetOrStartAttempt(string name, Uri endpoint, AiOptions options)
     {
         while (true)
         {
             var now = _timeProvider.GetUtcNow();
             var current = _servers.GetValueOrDefault(endpoint);
-            if (current is not null && !current.IsRetryDue(now))
+            if (current is not null && !current.IsRetryDue(now, options.McpRetryInterval))
             {
                 return current;
             }
 
             // Not started until awaited: an attempt that loses the race below is dropped without connecting
-            var next = new ConnectionAttempt(() => LoadAsync(name, endpoint), now);
+            var next = new ConnectionAttempt(() => LoadAsync(name, endpoint, options.McpConnectionTimeout), now);
             if (current is null ? _servers.TryAdd(endpoint, next) : _servers.TryUpdate(endpoint, next, current))
             {
                 return next;
@@ -125,9 +115,9 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
     /// Connects to the server and reads its tools; never throws
     /// </summary>
     /// <returns><c>null</c> if the server cannot be reached</returns>
-    private async Task<ServerTools?> LoadAsync(string name, Uri endpoint)
+    private async Task<ServerTools?> LoadAsync(string name, Uri endpoint, TimeSpan connectionTimeout)
     {
-        using var timeout = new CancellationTokenSource(s_connectionTimeout, _timeProvider);
+        using var timeout = new CancellationTokenSource(connectionTimeout, _timeProvider);
         McpClient? client = null;
         try
         {
@@ -151,7 +141,7 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
                 exception,
                 "MCP server {McpServer} cannot be reached; the assistant answers without its tools for {RetryInterval}",
                 name,
-                s_retryInterval);
+                _options.CurrentValue.McpRetryInterval);
             return null;
         }
     }
@@ -206,11 +196,11 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
         public bool Started => _result.IsValueCreated;
 
         /// <summary>
-        /// Whether the server could not be reached and <see cref="McpToolProvider.s_retryInterval"/> has passed since
+        /// Whether the server could not be reached and <paramref name="retryInterval"/> has passed since
         /// </summary>
-        public bool IsRetryDue(DateTimeOffset now)
+        public bool IsRetryDue(DateTimeOffset now, TimeSpan retryInterval)
             => Started
                && _result.Value is { IsCompletedSuccessfully: true, Result: null }
-               && now - startedAt >= s_retryInterval;
+               && now - startedAt >= retryInterval;
     }
 }

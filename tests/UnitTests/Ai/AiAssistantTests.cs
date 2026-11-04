@@ -1,4 +1,5 @@
 using AuroraScienceHub.Framework.Ai;
+using AuroraScienceHub.Framework.UnitTests.Ai.TestDoubles;
 using Microsoft.Extensions.AI;
 using OpenAI.Chat;
 using Shouldly;
@@ -128,6 +129,96 @@ public sealed class AiAssistantTests
         options.MaxOutputTokens.ShouldBe(300);
         options.Reasoning.ShouldNotBeNull().Effort.ShouldBe(ReasoningEffort.Low);
         options.RawRepresentationFactory.ShouldNotBeNull()(_host.ChatClient).ShouldBeOfType<ChatCompletionOptions>();
+    }
+
+    [Fact(DisplayName = "The configured model and generation defaults are sent when the call sets none")]
+    public async Task Ask_NoCallOptions_UsesConfiguredDefaults()
+    {
+        // Arrange
+        _host.Options.Model = "default-model";
+        _host.Options.Temperature = 0.4f;
+        _host.Options.TopP = 0.8f;
+
+        // Act
+        await _host.Assistant.AskAsync(s_request, CancellationToken.None);
+
+        // Assert
+        var options = _host.ChatClient.Requests.ShouldHaveSingleItem().Options.ShouldNotBeNull();
+        options.ModelId.ShouldBe("default-model");
+        options.Temperature.ShouldBe(0.4f);
+        options.TopP.ShouldBe(0.8f);
+    }
+
+    [Fact(DisplayName = "Options of a call override the configured defaults and do not affect the next call")]
+    public async Task Ask_CallOptions_OverrideDefaultsForOneCall()
+    {
+        // Arrange
+        _host.Options.Model = "default-model";
+        _host.Options.MaxOutputTokens = 300;
+        _host.Options.Temperature = 0.7f;
+        _host.Options.TopP = 0.9f;
+        var callOptions = new ChatOptions
+        {
+            ModelId = "other-model",
+            MaxOutputTokens = 42,
+            Temperature = 0.1f,
+            TopP = 0.5f,
+            Reasoning = new ReasoningOptions { Effort = ReasoningEffort.High },
+        };
+
+        // Act
+        await _host.Assistant.AskAsync(s_request with { Options = callOptions }, CancellationToken.None);
+        await _host.Assistant.AskAsync(s_request, CancellationToken.None);
+
+        // Assert
+        var first = _host.ChatClient.Requests[0].Options.ShouldNotBeNull();
+        first.ModelId.ShouldBe("other-model");
+        first.MaxOutputTokens.ShouldBe(42);
+        first.Temperature.ShouldBe(0.1f);
+        first.TopP.ShouldBe(0.5f);
+        first.Reasoning.ShouldNotBeNull().Effort.ShouldBe(ReasoningEffort.High);
+        callOptions.Instructions.ShouldBeNull();
+
+        var second = _host.ChatClient.Requests[1].Options.ShouldNotBeNull();
+        second.ModelId.ShouldBe("default-model");
+        second.MaxOutputTokens.ShouldBe(300);
+        second.Temperature.ShouldBe(0.7f);
+        second.TopP.ShouldBe(0.9f);
+        second.Reasoning.ShouldNotBeNull().Effort.ShouldBe(ReasoningEffort.None);
+    }
+
+    [Fact(DisplayName = "Tools of every provider are offered to the model")]
+    public async Task Ask_SeveralToolProviders_ToolsMerged()
+    {
+        // Arrange
+        var extra = new FakeToolProvider();
+        extra.Tools.Add(AIFunctionFactory.Create(() => "second", "second_tool"));
+        var host = new AiTestHost(extra);
+        host.Tools.Tools.Add(AIFunctionFactory.Create(() => "first", "first_tool"));
+
+        // Act
+        await host.Assistant.AskAsync(s_request, CancellationToken.None);
+
+        // Assert
+        host.ChatClient.Requests.ShouldHaveSingleItem().Options.ShouldNotBeNull()
+            .Tools.ShouldNotBeNull().Select(tool => tool.Name).ShouldBe(["first_tool", "second_tool"]);
+    }
+
+    [Fact(DisplayName = "A tool name returned by two providers is reported with the conflicting names")]
+    public async Task Ask_DuplicateToolNames_Throws()
+    {
+        // Arrange
+        var extra = new FakeToolProvider();
+        extra.Tools.Add(AIFunctionFactory.Create(() => "second", "same_tool"));
+        var host = new AiTestHost(extra);
+        host.Tools.Tools.Add(AIFunctionFactory.Create(() => "first", "same_tool"));
+
+        // Act
+        var exception = await Should.ThrowAsync<AiToolNameConflictException>(
+            () => host.Assistant.AskAsync(s_request, CancellationToken.None));
+
+        // Assert
+        exception.ToolNames.ShouldBe(["same_tool"]);
     }
 
     [Fact(DisplayName = "A successful answer comes with its text and usage")]

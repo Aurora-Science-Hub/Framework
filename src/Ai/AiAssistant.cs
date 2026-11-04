@@ -20,20 +20,20 @@ internal sealed class AiAssistant : IAiAssistant
         "No tools are available now: do not try to call any. If the answer needs data you would look up, say that it cannot be looked up right now.";
 
     private readonly AIAgent _agent;
-    private readonly IAiToolProvider _toolProvider;
+    private readonly IReadOnlyList<IAiToolProvider> _toolProviders;
     private readonly IOptionsMonitor<AiOptions> _options;
     private readonly AiRequestExecutor _executor;
     private readonly TimeProvider _timeProvider;
 
     public AiAssistant(
         AIAgent agent,
-        IAiToolProvider toolProvider,
+        IEnumerable<IAiToolProvider> toolProviders,
         IOptionsMonitor<AiOptions> options,
         AiRequestExecutor executor,
         TimeProvider timeProvider)
     {
         _agent = agent;
-        _toolProvider = toolProvider;
+        _toolProviders = [.. toolProviders];
         _options = options;
         _executor = executor;
         _timeProvider = timeProvider;
@@ -42,13 +42,13 @@ internal sealed class AiAssistant : IAiAssistant
     public Task<AiResult> AskAsync(AiRequest request, CancellationToken cancellationToken)
     {
         var options = _options.CurrentValue;
-        var chatOptions = AiChatOptionsFactory.Create(request.Instructions, options.MaxOutputTokens, options);
+        var chatOptions = AiChatOptionsFactory.Create(request, options);
 
         return _executor.ExecuteAsync(
             Operation,
             async token =>
             {
-                var tools = await _toolProvider.GetToolsAsync(token);
+                var tools = await GetToolsAsync(token);
                 if (tools.Count > 0)
                 {
                     chatOptions.Tools = [.. tools];
@@ -59,6 +59,39 @@ internal sealed class AiAssistant : IAiAssistant
                 return (FinalText(response.Messages), response.Usage);
             },
             cancellationToken);
+    }
+
+    /// <summary>
+    /// Tools of all providers, merged; a name returned by two providers is a configuration error
+    /// </summary>
+    /// <exception cref="AiToolNameConflictException">Two providers returned tools with the same name</exception>
+    private async Task<IReadOnlyList<AITool>> GetToolsAsync(CancellationToken cancellationToken)
+    {
+        var tools = new List<AITool>();
+        var names = new HashSet<string>(StringComparer.Ordinal);
+        var conflicts = new SortedSet<string>(StringComparer.Ordinal);
+
+        foreach (var provider in _toolProviders)
+        {
+            foreach (var tool in await provider.GetToolsAsync(cancellationToken))
+            {
+                if (names.Add(tool.Name))
+                {
+                    tools.Add(tool);
+                }
+                else
+                {
+                    conflicts.Add(tool.Name);
+                }
+            }
+        }
+
+        if (conflicts.Count > 0)
+        {
+            throw new AiToolNameConflictException(conflicts);
+        }
+
+        return tools;
     }
 
     /// <summary>

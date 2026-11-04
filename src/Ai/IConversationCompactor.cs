@@ -1,3 +1,5 @@
+using Microsoft.Extensions.AI;
+
 namespace AuroraScienceHub.Framework.Ai;
 
 /// <summary>
@@ -14,11 +16,14 @@ public interface IConversationCompactor
     /// </remarks>
     /// <param name="previousSummary">Summary of the part of the conversation before <paramref name="history"/>, if any</param>
     /// <param name="history">Messages to fold into the summary, oldest first</param>
-    /// <param name="maxOutputTokens">Maximum size of the summary in tokens</param>
+    /// <param name="callOptions">
+    /// Options of this call, e.g. <see cref="ChatOptions.MaxOutputTokens"/> for the summary budget; a property left unset
+    /// comes from <see cref="AiOptions"/>
+    /// </param>
     /// <param name="cancellationToken">Cancellation token</param>
     Task<AiResult> CompactAsync(
         string? previousSummary,
         IReadOnlyList<AiChatMessage> history,
-        int maxOutputTokens,
+        ChatOptions? callOptions,
         CancellationToken cancellationToken);
 }

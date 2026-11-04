@@ -102,6 +102,40 @@ public sealed class ServiceCollectionExtensionsTests
         handlers.ShouldNotContain(handler => handler.GetType().Name.Contains("Resilience", StringComparison.Ordinal));
     }
 
+    [Fact(DisplayName = "Changes of the caller are applied after the configuration is bound")]
+    public async Task AddAi_Configure_AppliedAfterBinding()
+    {
+        // Arrange
+        await using var provider = BuildProvider(ValidSettings(), options => options.MaxOutputTokens = 2000);
+
+        // Act
+        var options = provider.GetRequiredService<IOptions<AiOptions>>().Value;
+
+        // Assert
+        options.Model.ShouldBe("test-model");
+        options.MaxOutputTokens.ShouldBe(2000);
+    }
+
+    [Fact(DisplayName = "A tool provider of the service is used together with the MCP provider")]
+    public async Task AddAi_CustomToolProvider_RegisteredAlongsideMcp()
+    {
+        // Arrange
+        var configuration = new ConfigurationBuilder().AddInMemoryCollection(ValidSettings()).Build();
+        var services = new ServiceCollection();
+        services.AddSingleton<IConfiguration>(configuration);
+        services.AddLogging();
+        services.AddAi(configuration);
+        services.AddSingleton<IAiToolProvider>(new EmptyToolProvider());
+        await using var provider = services.BuildServiceProvider();
+
+        // Act
+        var toolProviders = provider.GetServices<IAiToolProvider>().ToList();
+
+        // Assert
+        toolProviders.Select(toolProvider => toolProvider.GetType())
+            .ShouldBe([typeof(McpToolProvider), typeof(EmptyToolProvider)]);
+    }
+
     private static Dictionary<string, string?> ValidSettings()
         => new()
         {
@@ -111,13 +145,19 @@ public sealed class ServiceCollectionExtensionsTests
             ["Ai:Model"] = "test-model",
         };
 
-    private static ServiceProvider BuildProvider(Dictionary<string, string?> settings)
+    private static ServiceProvider BuildProvider(Dictionary<string, string?> settings, Action<AiOptions>? configure = null)
     {
         var configuration = new ConfigurationBuilder().AddInMemoryCollection(settings).Build();
         var services = new ServiceCollection();
         services.AddSingleton<IConfiguration>(configuration);
         services.AddLogging();
-        services.AddAi(configuration);
+        services.AddAi(configuration, configure);
         return services.BuildServiceProvider();
+    }
+
+    private sealed class EmptyToolProvider : IAiToolProvider
+    {
+        public Task<IReadOnlyList<AITool>> GetToolsAsync(CancellationToken cancellationToken)
+            => Task.FromResult<IReadOnlyList<AITool>>([]);
     }
 }

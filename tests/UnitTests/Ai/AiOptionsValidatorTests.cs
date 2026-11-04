@@ -43,6 +43,58 @@ public sealed class AiOptionsValidatorTests
         result.Failures.ShouldNotBeNull().Count().ShouldBe(6);
     }
 
+    [Fact(DisplayName = "Unset output limit, temperature and top-p are valid: the provider defaults apply")]
+    public void Validate_OptionalSettingsUnset_Succeeds()
+    {
+        // Arrange
+        var options = new AiOptions { Enabled = true, Endpoint = new Uri("https://ai.example.org"), ApiKey = "key", Model = "model" };
+
+        // Act & Assert
+        _sut.Validate(name: null, options).Succeeded.ShouldBeTrue();
+    }
+
+    [Theory(DisplayName = "Temperature and top-p are checked against their ranges")]
+    [InlineData(-0.1f, 0.5f)]
+    [InlineData(2.1f, 0.5f)]
+    [InlineData(0.5f, -0.1f)]
+    [InlineData(0.5f, 1.1f)]
+    public void Validate_SamplingOutOfRange_Fails(float temperature, float topP)
+    {
+        // Arrange
+        var options = new AiOptions
+        {
+            Enabled = true,
+            Endpoint = new Uri("https://ai.example.org"),
+            ApiKey = "key",
+            Model = "model",
+            Temperature = temperature,
+            TopP = topP,
+        };
+
+        // Act & Assert
+        _sut.Validate(name: null, options).Failures.ShouldNotBeNull().ShouldHaveSingleItem();
+    }
+
+    [Theory(DisplayName = "The MCP timeouts must be positive")]
+    [InlineData(0, 60)]
+    [InlineData(5, 0)]
+    public void Validate_McpTimeouts_NotPositive_Fails(int connectionTimeoutSeconds, int retryIntervalSeconds)
+    {
+        // Arrange
+        var options = new AiOptions
+        {
+            Enabled = true,
+            Endpoint = new Uri("https://ai.example.org"),
+            ApiKey = "key",
+            Model = "model",
+            McpConnectionTimeout = TimeSpan.FromSeconds(connectionTimeoutSeconds),
+            McpRetryInterval = TimeSpan.FromSeconds(retryIntervalSeconds),
+        };
+
+        // Act & Assert
+        _sut.Validate(name: null, options).Failures.ShouldNotBeNull().ShouldHaveSingleItem();
+    }
+
     [Fact(DisplayName = "While AI is disabled the settings are not validated")]
     public void Validate_Disabled_Skipped()
         => _sut.Validate(name: null, new AiOptions { Enabled = false }).Skipped.ShouldBeTrue();

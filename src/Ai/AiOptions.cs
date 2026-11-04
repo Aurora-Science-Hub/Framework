@@ -53,9 +53,13 @@ public sealed class AiOptions
     public int MaxRetries { get; set; } = 1;
 
     /// <summary>
-    /// Maximum number of tokens in an answer
+    /// Maximum number of tokens in an answer; <c>null</c> means the limit is not sent and the provider default applies
     /// </summary>
-    public int MaxOutputTokens { get; set; } = 1500;
+    /// <remarks>
+    /// The value is an upper bound, not a target size of the answer. It can be overridden for a single call with
+    /// <see cref="ChatOptions.MaxOutputTokens"/>.
+    /// </remarks>
+    public int? MaxOutputTokens { get; set; }
 
     /// <summary>
     /// Whether the answer budget is also sent as the legacy <c>max_tokens</c>, for providers that ignore
@@ -68,6 +72,16 @@ public sealed class AiOptions
     /// disables reasoning (faster and cheaper answers)
     /// </summary>
     public ReasoningEffort ReasoningEffort { get; set; } = ReasoningEffort.None;
+
+    /// <summary>
+    /// Temperature of the answer for models that support it; <c>null</c> means the provider default applies
+    /// </summary>
+    public float? Temperature { get; set; }
+
+    /// <summary>
+    /// Top-P of the answer for models that support it; <c>null</c> means the provider default applies
+    /// </summary>
+    public float? TopP { get; set; }
 
     /// <summary>
     /// Whether requests go through the shared proxy (the <c>Proxy</c> section)
@@ -86,4 +100,15 @@ public sealed class AiOptions
     /// All the calls share <see cref="RequestTimeout"/>.
     /// </remarks>
     public int MaxToolCallRounds { get; set; } = 5;
+
+    /// <summary>
+    /// Time to connect to an MCP server and read its tools; a server that does not answer must not take the time budget
+    /// of the request
+    /// </summary>
+    public TimeSpan McpConnectionTimeout { get; set; } = TimeSpan.FromSeconds(5);
+
+    /// <summary>
+    /// Pause before an MCP server that could not be reached is tried again
+    /// </summary>
+    public TimeSpan McpRetryInterval { get; set; } = TimeSpan.FromMinutes(1);
 }

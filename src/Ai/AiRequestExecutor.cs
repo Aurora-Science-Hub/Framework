@@ -59,6 +59,11 @@ internal sealed class AiRequestExecutor
 
             throw new OperationCanceledException("The AI request was aborted", exception, cancellationToken);
         }
+        catch (AiToolNameConflictException)
+        {
+            // A configuration error, not a failure of the provider: the caller must see it
+            throw;
+        }
         catch (Exception exception)
         {
             var outcome = AiFailureClassifier.Classify(exception);

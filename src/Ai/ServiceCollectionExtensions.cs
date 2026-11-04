@@ -33,13 +33,25 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <remarks>
     /// The services are registered even while the AI features are disabled; the provider client is created on the first
-    /// request, so callers check <see cref="AiOptions.Enabled"/> before they ask.
+    /// request, so callers check <see cref="AiOptions.Enabled"/> before they ask. <paramref name="configure"/> is
+    /// registered as an options change, so it runs again when the configuration is reloaded and keeps its changes.
     /// </remarks>
-    public static IServiceCollection AddAi(this IServiceCollection services, IConfiguration configuration)
+    /// <param name="services">Service collection</param>
+    /// <param name="configuration">Application configuration</param>
+    /// <param name="configure">Changes of the options applied after the configuration is bound</param>
+    public static IServiceCollection AddAi(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        Action<AiOptions>? configure = null)
     {
         services.AddOptions<AiOptions>()
             .BindConfiguration(AiOptions.OptionKey)
             .ValidateOnStart();
+        if (configure is not null)
+        {
+            services.Configure(configure);
+        }
+
         services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<AiOptions>, AiOptionsValidator>());
 
         services.AddProxyOptions();
@@ -66,7 +78,8 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton(CreateChatClient);
         services.TryAddSingleton(CreateAgent);
         services.TryAddSingleton<AiRequestExecutor>();
-        services.TryAddSingleton<IAiToolProvider, McpToolProvider>();
+        // Every implementation is used; a service may add its own provider for an MCP server that needs authentication
+        services.TryAddEnumerable(ServiceDescriptor.Singleton<IAiToolProvider, McpToolProvider>());
         services.TryAddSingleton<IAiAssistant, AiAssistant>();
         services.TryAddSingleton<IConversationCompactor, ConversationCompactor>();
 

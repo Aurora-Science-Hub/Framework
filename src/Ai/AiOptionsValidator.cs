@@ -44,9 +44,20 @@ internal sealed class AiOptionsValidator : IValidateOptions<AiOptions>
             failures.Add($"{Key(nameof(AiOptions.RequestTimeout))} must be positive");
         }
 
-        if (options.MaxOutputTokens <= 0)
+        // No output limit is a valid value: the provider default applies
+        if (options.MaxOutputTokens is <= 0)
         {
-            failures.Add($"{Key(nameof(AiOptions.MaxOutputTokens))} must be positive");
+            failures.Add($"{Key(nameof(AiOptions.MaxOutputTokens))} must be positive when set");
+        }
+
+        if (options.Temperature is < 0 or > 2)
+        {
+            failures.Add($"{Key(nameof(AiOptions.Temperature))} must be between 0 and 2");
+        }
+
+        if (options.TopP is < 0 or > 1)
+        {
+            failures.Add($"{Key(nameof(AiOptions.TopP))} must be between 0 and 1");
         }
 
         if (options.MaxRetries is < 0 or > MaxRetriesLimit)
@@ -58,6 +69,16 @@ internal sealed class AiOptionsValidator : IValidateOptions<AiOptions>
         if (options.MaxToolCallRounds < 1)
         {
             failures.Add($"{Key(nameof(AiOptions.MaxToolCallRounds))} must be positive");
+        }
+
+        if (options.McpConnectionTimeout <= TimeSpan.Zero)
+        {
+            failures.Add($"{Key(nameof(AiOptions.McpConnectionTimeout))} must be positive");
+        }
+
+        if (options.McpRetryInterval <= TimeSpan.Zero)
+        {
+            failures.Add($"{Key(nameof(AiOptions.McpRetryInterval))} must be positive");
         }
 
         foreach (var (serverName, server) in options.Mcp)

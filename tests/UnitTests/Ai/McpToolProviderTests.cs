@@ -36,18 +36,22 @@ public sealed class McpToolProviderTests : IAsyncDisposable
         _handler.Requests.ShouldBe(0);
     }
 
-    [Fact(DisplayName = "An unreachable server is left out and tried again only after the retry interval")]
+    [Fact(DisplayName = "An unreachable server is left out and tried again only after the configured retry interval")]
     public async Task GetTools_Unreachable_LeftOutUntilRetry()
     {
         // Arrange
         _options.Mcp["core"] = new AiMcpServerOptions { Endpoint = new Uri("http://core.test/mcp") };
+        _options.McpRetryInterval = TimeSpan.FromMinutes(2);
 
         // Act
         var first = await _sut.GetToolsAsync(CancellationToken.None);
         var requestsAfterFirst = _handler.Requests;
         var second = await _sut.GetToolsAsync(CancellationToken.None);
         var requestsAfterSecond = _handler.Requests;
-        _time.Advance(McpToolProvider.s_retryInterval);
+        _time.Advance(_options.McpRetryInterval - TimeSpan.FromSeconds(1));
+        await _sut.GetToolsAsync(CancellationToken.None);
+        var requestsBeforeInterval = _handler.Requests;
+        _time.Advance(TimeSpan.FromSeconds(1));
         await _sut.GetToolsAsync(CancellationToken.None);
 
         // Assert
@@ -55,7 +59,8 @@ public sealed class McpToolProviderTests : IAsyncDisposable
         second.ShouldBeEmpty();
         requestsAfterFirst.ShouldBeGreaterThan(0);
         requestsAfterSecond.ShouldBe(requestsAfterFirst);
-        _handler.Requests.ShouldBeGreaterThan(requestsAfterSecond);
+        requestsBeforeInterval.ShouldBe(requestsAfterSecond);
+        _handler.Requests.ShouldBeGreaterThan(requestsBeforeInterval);
     }
 
     [Fact(DisplayName = "Concurrent first requests share one connection attempt")]
