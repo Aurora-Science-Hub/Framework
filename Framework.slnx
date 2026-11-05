@@ -122,6 +122,9 @@
     </Project>
     <File Path="src\Directory.Build.props" />
   </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Ai/Ai.Sample.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests\UnitTests\UnitTests.csproj">
       <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
