@@ -61,6 +61,31 @@ public sealed class ServiceCollectionExtensionsTests
         provider.GetRequiredService<IChatClient>().ShouldBeOfType<DisabledChatClient>();
     }
 
+    [Fact(DisplayName = "The options and the client keep the disabled startup snapshot after a configuration change")]
+    public async Task AddAi_EnabledChangedAfterResolution_KeepsDisabledSnapshot()
+    {
+        // Arrange
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?> { ["Ai:Enabled"] = "false" })
+            .Build();
+        var services = new ServiceCollection();
+        services.AddSingleton<IConfiguration>(configuration);
+        services.AddLogging();
+        services.AddAi(configuration);
+        await using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true });
+        var options = provider.GetRequiredService<IOptions<AiOptions>>();
+        var client = provider.GetRequiredService<IChatClient>();
+
+        // Act
+        configuration["Ai:Enabled"] = "true";
+
+        // Assert
+        options.Value.Enabled.ShouldBeFalse();
+        provider.GetRequiredService<IOptions<AiOptions>>().Value.Enabled.ShouldBeFalse();
+        client.ShouldBeOfType<DisabledChatClient>();
+        provider.GetRequiredService<IChatClient>().ShouldBeOfType<DisabledChatClient>();
+    }
+
     [Fact(DisplayName = "The assistant and the compactor are resolved when AI is enabled and configured")]
     public async Task AddAi_Enabled_ResolvesServices()
     {

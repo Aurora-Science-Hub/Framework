@@ -2,10 +2,10 @@
 
 All notable changes to this project are documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 
-## [Unreleased]
+## [11.1.0]
 
 ### Added
 

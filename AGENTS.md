@@ -192,6 +192,13 @@ Before completing any code change:
 - In CI the version is pinned via `-p:MinVerVersionOverride` (computed by the CI bash script from `PackageBaseVersion`): pre-release on non-`main` branches, stable on `main`/semver tags.
 - **To bump the version, change `PackageBaseVersion` in `Directory.Build.props` — nothing else.** Never set `<Version>` or `<PackageVersion>` in a `.csproj`.
 
+### Changelog
+
+- Document every user-visible package change in the root `CHANGELOG.md` in the same pull request.
+- Use `PackageBaseVersion` as the section heading: `## [11.1.0]`. Do not create an `Unreleased` section or a release-date placeholder. The prerelease suffix of the package version already marks an unpublished build.
+- Group entries under `Added`, `Changed`, `Fixed`, and `Removed` as applicable. Mark breaking changes explicitly and include the migration steps.
+- Keep the changelog consistent with the package README and the pull request description.
+
 ---
 
 ## Testing
