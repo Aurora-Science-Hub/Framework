@@ -207,6 +207,7 @@ public sealed class AiAssistantTests
         // Assert
         var options = _host.ChatClient.Requests.ShouldHaveSingleItem().Options.ShouldNotBeNull();
         options.ModelId.ShouldBe("default-model");
+        options.Reasoning.ShouldBeNull();
         options.Temperature.ShouldBe(0.4f);
         options.TopP.ShouldBe(0.8f);
     }
@@ -246,7 +247,7 @@ public sealed class AiAssistantTests
         second.MaxOutputTokens.ShouldBe(300);
         second.Temperature.ShouldBe(0.7f);
         second.TopP.ShouldBe(0.9f);
-        second.Reasoning.ShouldNotBeNull().Effort.ShouldBe(ReasoningEffort.None);
+        second.Reasoning.ShouldBeNull();
     }
 
     [Fact(DisplayName = "Tools of every provider are offered to the model")]
@@ -307,6 +308,16 @@ public sealed class AiAssistantTests
         // Assert
         result.Outcome.ShouldBe(AiRequestOutcome.Empty);
         result.Text.ShouldBeNull();
+    }
+
+    [Fact(DisplayName = "An error of the application code is not reported as a provider failure")]
+    public async Task Ask_ApplicationFails_Throws()
+    {
+        // Arrange
+        _host.ChatClient.Respond = _ => throw new InvalidOperationException("The AI features are disabled.");
+
+        // Act & Assert
+        await Should.ThrowAsync<InvalidOperationException>(() => _host.Assistant.AskAsync(s_request, CancellationToken.None));
     }
 
     [Fact(DisplayName = "A failure of the provider is reported, not thrown")]

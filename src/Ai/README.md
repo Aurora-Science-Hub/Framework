@@ -17,8 +17,8 @@ telemetry, and DeepL translation. The API exposes Agent Framework types such as 
 
 - **Assistant** — `IAiAssistant.AskAsync` sends the instructions, the summary, the recent history and the question, and
   calls the tools the model asks for
-- **Failures as outcomes** — a provider failure is reported in `AiResult.Outcome` and never thrown; only the
-  cancellation of the caller throws
+- **Failures as outcomes** — a provider failure is reported in `AiResult.Outcome` and never thrown. Application errors
+  and cancellation by the caller propagate
 - **Time budget** — `Ai:RequestTimeout` limits the whole request, retries and tool rounds included
 - **MCP tools** — Streamable HTTP servers from the `Ai:Mcp` section; an unreachable server is left out and retried
 - **Per-call options** — a caller overrides the model, the answer budget, the reasoning effort, the temperature and
@@ -42,7 +42,8 @@ The types are grouped by concern: `AuroraScienceHub.Framework.Ai.Assistant` (`IA
 11.1.0 replaces the `IGptClient` of the 11.0.x line with the Agent Framework based assistant. Removing the GPT client
 is a breaking change, and it ships in a minor release on purpose: the core and the bot are the only consumers of the
 package, and both move to the new client in the same release train, so there is no version of the package that has to
-serve both. The removal is called out in the release notes; a consumer that needs the GPT client stays on 11.0.x.
+serve both. The removal is called out in the [changelog](../../CHANGELOG.md). A consumer that needs the GPT client stays
+on 11.0.x.
 
 ## Usage
 
@@ -79,7 +80,7 @@ builder.Services.AddAi(builder.Configuration, options => options.MaxRetries = 3)
     "MaxRetries": 1,
     "MaxOutputTokens": null,
     "SendLegacyMaxTokens": false,
-    "ReasoningEffort": "None",
+    "ReasoningEffort": null,
     "Temperature": null,
     "TopP": null,
     "MaxToolCallRounds": 5,
@@ -99,6 +100,7 @@ builder.Services.AddAi(builder.Configuration, options => options.MaxRetries = 3)
   provider default applies
 - `SendLegacyMaxTokens` also sends the budget as `max_tokens`, for providers that ignore `max_completion_tokens`
   (DeepSeek); OpenAI rejects `max_tokens` for its reasoning models, so keep it `false` there
+- `ReasoningEffort` is `null` unless the provider should use it; `null` leaves `ChatOptions.Reasoning` unset
 - `Temperature` and `TopP` are `null` unless the provider should use them
 - `UseProxy` sends the provider and the MCP requests through the proxy of the `Proxy` section; the proxied requests use
   clients of their own, so the primary handler the host configures for every client stays in place for the direct ones

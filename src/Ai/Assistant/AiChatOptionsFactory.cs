@@ -33,7 +33,11 @@ internal static class AiChatOptionsFactory
         chatOptions.Instructions = instructions;
         chatOptions.ModelId ??= options.Model;
         chatOptions.MaxOutputTokens ??= options.MaxOutputTokens;
-        chatOptions.Reasoning ??= new ReasoningOptions { Effort = options.ReasoningEffort };
+        if (chatOptions.Reasoning is null && options.ReasoningEffort is { } reasoningEffort)
+        {
+            chatOptions.Reasoning = new ReasoningOptions { Effort = reasoningEffort };
+        }
+
         chatOptions.Temperature ??= options.Temperature;
         chatOptions.TopP ??= options.TopP;
 

@@ -28,6 +28,17 @@ internal static class AiFailureClassifier
         };
 
     /// <summary>
+    /// Whether <paramref name="exception"/> came from the provider, its transport, or the request time budget
+    /// </summary>
+    public static bool IsProviderFailure(Exception exception)
+        => exception switch
+        {
+            AggregateException { InnerExceptions.Count: > 0 } aggregate => IsProviderFailure(aggregate.InnerExceptions[^1]),
+            ClientResultException or HttpRequestException or TaskCanceledException or TimeoutException => true,
+            _ => false,
+        };
+
+    /// <summary>
     /// The error the provider answered with (status and message, e.g. "model not found"), if the failure has one; it
     /// never contains the API key
     /// </summary>

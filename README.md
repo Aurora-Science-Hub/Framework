@@ -40,7 +40,8 @@ dotnet add package AuroraScienceHub.Framework.EntityFramework
 # ... other packages
 ```
 
-Each package includes its own README with detailed usage instructions and examples.
+Each package includes its own README with detailed usage instructions and examples. Release notes and breaking changes
+are listed in [CHANGELOG.md](CHANGELOG.md).
 
 ## Available Packages
 

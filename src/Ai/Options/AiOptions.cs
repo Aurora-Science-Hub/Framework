@@ -68,10 +68,10 @@ public sealed class AiOptions
     public bool SendLegacyMaxTokens { get; set; }
 
     /// <summary>
-    /// Reasoning effort of models that support it; <see cref="Microsoft.Extensions.AI.ReasoningEffort.None"/>
-    /// disables reasoning (faster and cheaper answers)
+    /// Reasoning effort of models that support it; <c>null</c> means the option is not sent and the provider default
+    /// applies
     /// </summary>
-    public ReasoningEffort ReasoningEffort { get; set; } = ReasoningEffort.None;
+    public ReasoningEffort? ReasoningEffort { get; set; }
 
     /// <summary>
     /// Temperature of the answer for models that support it; <c>null</c> means the provider default applies

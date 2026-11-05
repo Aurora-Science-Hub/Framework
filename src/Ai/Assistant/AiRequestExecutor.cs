@@ -23,8 +23,8 @@ internal sealed class AiRequestExecutor
     }
 
     /// <summary>
-    /// Runs <paramref name="call"/>; never throws for a failure of the provider, only when
-    /// <paramref name="cancellationToken"/> is cancelled
+    /// Runs <paramref name="call"/> and turns a failure of the provider into an <see cref="AiResult"/>. Application
+    /// errors and cancellation by the caller propagate
     /// </summary>
     /// <param name="operation">Name of the operation for the logs</param>
     /// <param name="call">The call; returns the answer text and the usage</param>
@@ -66,7 +66,7 @@ internal sealed class AiRequestExecutor
             // A configuration error, not a failure of the provider: the caller must see it
             throw;
         }
-        catch (Exception exception)
+        catch (Exception exception) when (timeout.IsCancellationRequested || AiFailureClassifier.IsProviderFailure(exception))
         {
             var outcome = AiFailureClassifier.Classify(exception);
             var providerError = AiFailureClassifier.FindProviderError(exception);

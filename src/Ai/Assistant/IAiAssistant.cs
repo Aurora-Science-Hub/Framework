@@ -1,3 +1,5 @@
+using AuroraScienceHub.Framework.Ai.Tools;
+
 namespace AuroraScienceHub.Framework.Ai.Assistant;
 
 /// <summary>
@@ -9,8 +11,10 @@ public interface IAiAssistant
     /// Asks the model the question of the <paramref name="request"/>
     /// </summary>
     /// <remarks>
-    /// Never throws for a failure of the provider: it is reported in <see cref="AiResult.Outcome"/>. Throws
-    /// <see cref="OperationCanceledException"/> only when <paramref name="cancellationToken"/> is cancelled.
+    /// A failure of the provider is reported in <see cref="AiResult.Outcome"/>. Errors of the application code are not
+    /// converted to provider outcomes.
     /// </remarks>
+    /// <exception cref="AiToolNameConflictException">A tool name is used more than once</exception>
+    /// <exception cref="OperationCanceledException"><paramref name="cancellationToken"/> is cancelled</exception>
     Task<AiResult> AskAsync(AiRequest request, CancellationToken cancellationToken);
 }
