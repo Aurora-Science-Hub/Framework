@@ -9,6 +9,10 @@ MCP tools, conversation compaction, and DeepL translation.
 `IConversationCompactor` that folds older messages of a conversation into a summary. The assistant calls the tools of
 the configured MCP servers and of any tool provider (`IAiToolProvider`) a service registers itself.
 
+The package does not try to cover or replace Microsoft Agent Framework. It configures its `AIAgent` and `IChatClient`
+from application settings and adds validation, retries, time budgets, MCP tool discovery, conversation compaction,
+telemetry, and DeepL translation. The API exposes Agent Framework types such as `AIAgent` and `ChatOptions` directly.
+
 ## Key Features
 
 - **Assistant** — `IAiAssistant.AskAsync` sends the instructions, the summary, the recent history and the question, and
@@ -133,6 +137,32 @@ request with `AiToolNameConflictException`, so one tool never silently shadows a
 
 The assistant is deliberately not streaming: the answer, its usage and its outcome arrive together, and the caller
 needs the whole text to store it.
+
+### Console sample
+
+The [console sample](../../samples/Ai/) registers the package, sends one question, and prints the answer and token
+usage. Its `appsettings.json` contains the DeepSeek connection settings without an API key.
+
+1. Set the API key:
+
+   ```bash
+   export Ai__ApiKey="your-api-key"
+   ```
+
+2. Run the sample from the repository root:
+
+   ```bash
+   dotnet run --project samples/Ai/Ai.Sample.csproj
+   ```
+
+3. Pass a custom question after `--` if needed:
+
+   ```bash
+   dotnet run --project samples/Ai/Ai.Sample.csproj -- "What is the Kp index?"
+   ```
+
+The host loads environment variables by default, so other settings can be overridden with variables such as
+`Ai__Model` and `Ai__Endpoint`.
 
 ### Summarizing a conversation
 
