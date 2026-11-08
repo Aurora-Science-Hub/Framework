@@ -13,7 +13,11 @@ internal sealed class ValidationProblemEnricher : ProblemDetailsEnricher<Validat
 
     protected override void Enrich(ProblemDetails problem, ValidationException exception)
     {
-        problem.Status = StatusCodes.Status400BadRequest;
+        // Subclasses such as EntityNotFoundException keep the status code that DefaultExceptionProblemEnricher maps
+        if (!DefaultExceptionProblemEnricher.TryGetStatusCode(exception, out _))
+        {
+            problem.Status = StatusCodes.Status400BadRequest;
+        }
 
         if (exception.Reason.Any())
         {

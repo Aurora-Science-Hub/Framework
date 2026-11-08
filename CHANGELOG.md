@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 
+## [11.1.1]
+
+### Fixed
+
+- `AuroraScienceHub.Framework.AspNetCore`: `EntityNotFoundException` now returns `404 Not Found` and
+  `AccessDeniedException` returns `403 Forbidden`. Previously the validation problem enricher overwrote their status
+  with `400 Bad Request`. `ValidationException` and its other subclasses still return `400` with the validation errors.
+
 ## [11.1.0]
 
 ### Added
