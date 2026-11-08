@@ -20,9 +20,15 @@ internal sealed class DefaultExceptionProblemEnricher : ProblemDetailsEnricher<E
         [typeof(EntityNotFoundException)] = StatusCodes.Status404NotFound,
     };
 
+    /// <summary>
+    /// Gets the status code mapped to the exact type of the exception
+    /// </summary>
+    public static bool TryGetStatusCode(Exception exception, out int statusCode)
+        => s_exceptionStatusCodes.TryGetValue(exception.GetType(), out statusCode);
+
     protected override void Enrich(ProblemDetails problem, Exception exception)
     {
-        if (s_exceptionStatusCodes.TryGetValue(exception.GetType(), out var statusCode))
+        if (TryGetStatusCode(exception, out var statusCode))
         {
             problem.Status = statusCode;
         }
