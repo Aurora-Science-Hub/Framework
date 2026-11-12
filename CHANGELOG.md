@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 
+## [11.1.2]
+
+### Changed
+
+- All packages: .NET 11 dependencies move from `11.0.0-rc.2.26504.105` to the `11.0.0` release, and
+  `Microsoft.SourceLink.GitHub` moves to `11.0.100`. The release closes the known vulnerabilities of the release
+  candidate packages, including GHSA-cpw3-h88j-9f6x in `System.Text.Json`, which failed restore with NuGet audit.
+
 ## [11.1.1]
 
 ### Fixed
