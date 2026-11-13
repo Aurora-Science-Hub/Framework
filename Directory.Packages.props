@@ -71,7 +71,7 @@
     <PackageVersion Include="Npgsql.NetTopologySuite" Version="10.0.2" />
     <PackageVersion Include="Npgsql.OpenTelemetry" Version="10.0.0" />
     <PackageVersion Include="OpenAI" Version="2.14.0" />
-    <PackageVersion Include="OpenTelemetry" Version="1.19.1" />
+    <PackageVersion Include="OpenTelemetry" Version="1.21.0" />
     <PackageVersion Include="Moq" Version="4.21.0" />
     <PackageVersion Include="Npgsql" Version="10.0.2" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
