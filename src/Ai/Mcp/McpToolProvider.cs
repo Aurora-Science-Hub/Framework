@@ -51,6 +51,10 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
 
     public async Task<IReadOnlyList<AITool>> GetToolsAsync(CancellationToken cancellationToken)
     {
+        // The shared connection attempt has its own token. A request that is already cancelled must
+        // not return its result, even when the attempt has completed before this call.
+        cancellationToken.ThrowIfCancellationRequested();
+
         var options = _options.Value;
         var tools = new List<AITool>();
         foreach (var (name, server) in options.Mcp)
@@ -69,6 +73,7 @@ internal sealed class McpToolProvider : IAiToolProvider, IAsyncDisposable
             }
         }
 
+        cancellationToken.ThrowIfCancellationRequested();
         return tools;
     }
 
