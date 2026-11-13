@@ -19,6 +19,12 @@ Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 - Dependencies: `System.Text.Json` is pinned to the stable `11.0.0`; the transitive `11.0.0-rc.2` package is flagged
   by NU1902.
 
+### Fixed
+
+- `AuroraScienceHub.Framework.Ai`: `McpToolProvider.GetToolsAsync` observes the request cancellation even when the
+  shared connection attempt has already completed. A cancelled request no longer returns tools as if the server
+  were reachable.
+
 ## [11.1.1]
 
 ### Fixed
