@@ -86,6 +86,7 @@
     <PackageVersion Include="NuGet.Packaging" Version="7.9.0" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.23.0" />
     <PackageVersion Include="System.Formats.Asn1" Version="11.0.0-rc.2.26504.105" />
+    <PackageVersion Include="System.Text.Json" Version="11.0.0" />
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.23.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.12" />
