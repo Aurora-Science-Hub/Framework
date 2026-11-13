@@ -5,6 +5,20 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 
+## [11.2.0]
+
+### Added
+
+- `AuroraScienceHub.Framework.AspNetCore`: `AuthenticatedOutputCachePolicy` and the `AllowAuthenticated()` output
+  cache builder extension allow caching authenticated machine-to-machine endpoints. The policy re-enables lookup and
+  storage for an authenticated GET/HEAD after the default ASP.NET Core policy, and repeats the opt-in in the response
+  phase for `11.0.0-rc.2`.
+
+### Changed
+
+- Dependencies: `System.Text.Json` is pinned to the stable `11.0.0`; the transitive `11.0.0-rc.2` package is flagged
+  by NU1902.
+
 ## [11.1.1]
 
 ### Fixed
