@@ -12,9 +12,9 @@
 
   <PropertyGroup Label="Package info">
     <PackageDescription>
-      ASP.NET Core extensions for composition, diagnostics, problem details (RFC 7807), security utilities, and routing enhancements.
+      ASP.NET Core extensions for composition, diagnostics, problem details (RFC 7807), security utilities, routing enhancements, and output caching.
     </PackageDescription>
-    <PackageTags>aspnetcore;aspnet;web;api;problem-details;rfc7807;routing;security;middleware;healthchecks</PackageTags>
+    <PackageTags>aspnetcore;aspnet;web;api;problem-details;rfc7807;routing;security;middleware;healthchecks;output-caching</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -12,6 +12,7 @@ Extends the Composition framework with ASP.NET Core-specific functionality, prov
 - **Problem Details** - RFC 7807 compliant error responses
 - **Security Utilities** - Authentication and authorization helpers
 - **Routing Extensions** - Simplified endpoint configuration
+- **Output Caching** - Opt-in caching for authenticated machine-to-machine endpoints
 
 ## Installation
 
@@ -107,6 +108,25 @@ public class UserModuleOptions : ApplicationModuleOptionsBase
 }
 ```
 
+
+### Output Caching for Authenticated Endpoints
+
+ASP.NET Core's default output cache policy refuses to cache any request that carries an
+`Authorization` header. For machine-to-machine endpoints whose response is the same for every
+caller, opt in explicitly:
+
+```csharp
+builder.Services.AddOutputCache();
+
+app.MapGet("/api/forecast", GetForecast)
+    .CacheOutput(policy => policy
+        .AllowAuthenticated()
+        .Expire(TimeSpan.FromSeconds(30)));
+```
+
+Use it only when the response does not depend on the caller: the policy re-enables lookup and
+storage for an authenticated GET or HEAD, and the endpoint stays behind authentication and
+authorization.
 
 ## License
 
