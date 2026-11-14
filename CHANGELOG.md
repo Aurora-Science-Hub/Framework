@@ -13,6 +13,7 @@ Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 - Dependencies: `Microsoft.Extensions.AI`, `Microsoft.Extensions.AI.OpenAI`, `Microsoft.Extensions.Caching.Hybrid`,
   `Microsoft.Extensions.Diagnostics.Testing`, `Microsoft.Extensions.Http.Resilience`,
   `Microsoft.Extensions.ServiceDiscovery` and `Microsoft.Extensions.TimeProvider.Testing` move from `10.11.0` to `11.0.0`
+- `EFCore.NamingConventions` moves from the `10.0.0-rc.2` prerelease to the stable `10.0.1`, so packing no longer raises NU5104
 - `global.json` pins the stable SDK `11.0.100`, so `allowPrerelease` is gone
 
 ### Removed
