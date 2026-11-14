@@ -5,6 +5,20 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 
+## [11.3.0]
+
+### Changed
+
+- Dependencies: .NET 11 packages are pinned to the stable `11.0.0` line, and `Microsoft.SourceLink.GitHub` to `11.0.100`. The packages no longer depend on `11.0.0-rc.2` prereleases
+- Dependencies: `Microsoft.Extensions.AI`, `Microsoft.Extensions.AI.OpenAI`, `Microsoft.Extensions.Caching.Hybrid`,
+  `Microsoft.Extensions.Diagnostics.Testing`, `Microsoft.Extensions.Http.Resilience`,
+  `Microsoft.Extensions.ServiceDiscovery` and `Microsoft.Extensions.TimeProvider.Testing` move from `10.11.0` to `11.0.0`
+- `global.json` pins the stable SDK `11.0.100`, so `allowPrerelease` is gone
+
+### Removed
+
+- The `NU5104` suppression: stable packages no longer carry prerelease dependencies
+
 ## [11.2.0]
 
 ### Added

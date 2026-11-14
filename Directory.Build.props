@@ -11,7 +11,6 @@
     <WarningLevel>9999</WarningLevel>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);NU5104</NoWarn> <!-- NU5104: A stable release of a package should not have a prerelease dependency. -->
 
 
     <!-- Pack everything with embedded .pdb -->
@@ -32,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageBaseVersion>11.2.0</PackageBaseVersion>
+    <PackageBaseVersion>11.3.0</PackageBaseVersion>
     <MinVerTagPrefix></MinVerTagPrefix>
   </PropertyGroup>
 
