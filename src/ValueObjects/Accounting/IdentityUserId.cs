@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace AuroraScienceHub.Framework.ValueObjects.Accounting;
 
 /// <summary>
-/// Opaque user subject within a trusted identity provider issuer
+/// User identifier assigned by an identity provider
 /// </summary>
 [JsonConverter(typeof(IdentityUserIdJsonConverter))]
 public sealed record IdentityUserId
