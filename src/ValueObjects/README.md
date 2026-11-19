@@ -22,6 +22,12 @@ dotnet add package AuroraScienceHub.Framework.ValueObjects
 
 ## Value Objects
 
+### IdentityUserId
+
+`AuroraScienceHub.Framework.ValueObjects.Accounting.IdentityUserId` represents a user identifier assigned by an
+identity provider. It accepts a nonblank string and preserves its original value. With `System.Text.Json`, it
+serializes as a string and can also be used as a dictionary key.
+
 ### BlobId
 
 Type-safe identifier for S3-compatible blob storage with S3 bucket naming validation, Guid v7-based object IDs (time-ordered, sortable), and compact Base64Url encoding.

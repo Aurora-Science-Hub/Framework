@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 
+## [11.4.0]
+
+### Added
+
+- `AuroraScienceHub.Framework.ValueObjects`: `Accounting.IdentityUserId` represents a user identifier assigned by an
+  identity provider. It preserves the original nonblank value and serializes as a JSON string, including when used as
+  a dictionary key.
+
 ## [11.3.0]
 
 ### Changed
