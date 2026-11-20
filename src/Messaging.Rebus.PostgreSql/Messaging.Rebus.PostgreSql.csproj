@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>AuroraScienceHub.Framework.Messaging.Rebus.PostgreSql</AssemblyName>
+    <PackageId>AuroraScienceHub.Framework.Messaging.Rebus.PostgreSql</PackageId>
+    <PackageDescription>Transactional Rebus outbox integration for Entity Framework Core and PostgreSQL.</PackageDescription>
+    <PackageTags>rebus;outbox;postgresql;ef-core</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Rebus.PostgreSql" />
+  </ItemGroup>
+
+</Project>

@@ -23,6 +23,7 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Blobs/Blobs.csproj" />
+    <Project Path="src/Messaging.Rebus.PostgreSql/Messaging.Rebus.PostgreSql.csproj" />
     <Project Path="src/ValueObjects/ValueObjects.csproj" />
     <Project Path="src\Ai\Ai.csproj">
       <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
@@ -126,6 +127,7 @@
     <Project Path="samples/Ai/Ai.Sample.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/OutboxTests/OutboxTests.csproj" />
     <Project Path="tests\UnitTests\UnitTests.csproj">
       <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
       <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />

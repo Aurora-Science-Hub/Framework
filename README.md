@@ -64,6 +64,7 @@ are listed in [CHANGELOG.md](CHANGELOG.md).
 - **[Entities](src/Entities/)** - Domain entity interfaces, strong-typed IDs, and DDD patterns
 - **[EntityFramework](src/EntityFramework/)** - EF Core extensions with auditing, soft deletes, and migrations
 - **[EntityFramework.NpgSql](src/EntityFramework.NpgSql/)** - PostgreSQL-specific DbContext factories and conventions
+- **[Messaging.Rebus.PostgreSql](src/Messaging.Rebus.PostgreSql/)** - Transactional Rebus outbox integration with EF Core
 - **[ClickHouse](src/ClickHouse/)** - ClickHouse database integration
 
 ### Caching & Performance

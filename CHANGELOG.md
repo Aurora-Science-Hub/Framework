@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Package versions follow the rules in [AGENTS.md](AGENTS.md#package-versioning).
 
+## [11.5.0]
+
+### Added
+
+- `AuroraScienceHub.Framework.Messaging.Rebus.PostgreSql`: enlist Rebus outbox messages in the active EF Core PostgreSQL transaction.
+
 ## [11.4.0]
 
 ### Added

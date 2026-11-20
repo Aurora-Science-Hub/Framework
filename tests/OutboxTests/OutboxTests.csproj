@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Messaging.Rebus.PostgreSql/Messaging.Rebus.PostgreSql.csproj" />
+    <PackageReference Include="Npgsql" />
+    <PackageReference Include="Rebus" />
+    <PackageReference Include="Rebus.RabbitMq" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="Testcontainers.RabbitMq" />
+  </ItemGroup>
+
+</Project>
